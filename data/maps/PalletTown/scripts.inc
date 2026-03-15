@@ -387,7 +387,26 @@ PalletTown_Movement_SignLadyMoveOutOfWayLeft::
 	step_end
 
 PalletTown_EventScript_FatMan::
-	msgbox PalletTown_Text_CanStoreItemsAndMonsInPC, MSGBOX_NPC
+	lock
+	faceplayer
+	goto_if_set FLAG_GOT_TM35_FROM_PALLET_FAT_MAN, PalletTown_EventScript_FatManAlreadyGaveTM
+	msgbox PalletTown_Text_FatManTakeThisTM
+	checkitemspace ITEM_TM35
+	goto_if_eq VAR_RESULT, FALSE, PalletTown_EventScript_FatManNoRoomForTM
+	giveitem_msg PalletTown_Text_ReceivedTM35FromFatMan, ITEM_TM35
+	setflag FLAG_GOT_TM35_FROM_PALLET_FAT_MAN
+	msgbox PalletTown_Text_FatManExplainsTM
+	release
+	end
+
+PalletTown_EventScript_FatManNoRoomForTM::
+	msgbox PalletTown_Text_FatManNoRoomForTM
+	release
+	end
+
+PalletTown_EventScript_FatManAlreadyGaveTM::
+	msgbox PalletTown_Text_FatManAlreadyGaveTM
+	release
 	end
 
 PalletTown_EventScript_OaksLabSign::

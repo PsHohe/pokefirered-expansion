@@ -1409,3 +1409,6 @@ Text_TestMsg::
 	.include "data/scripts/dexnav.inc"
 	.include "data/text/apprentice.inc"
 	.include "data/text/tv.inc"
+
+	.include "data/maps/TestingGrounds/scripts.inc"
+	.include "data/maps/TestingGrounds/text.inc"

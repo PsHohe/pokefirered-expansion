@@ -43,7 +43,8 @@
     "gMapGroup_IndoorTwoIslandRoute",
     "gMapGroup_IndoorSixIslandRoute",
     "gMapGroup_IndoorSevenIslandRoute",
-    "gMapGroup_IndoorDynamic"
+    "gMapGroup_IndoorDynamic",
+    "gMapGroup_TestingGrounds"
   ],
   "gMapGroup_Link": [
     "BattleColosseum_2P",
@@ -621,5 +622,8 @@
     "BattlePyramidSquare14",
     "BattlePyramidSquare15",
     "BattlePyramidSquare16"
+  ],
+  "gMapGroup_TestingGrounds": [
+    "TestingGrounds"
   ]
 }

@@ -189,7 +189,8 @@
       "id": "MAPSEC_RUSTURF_TUNNEL"
     },
     {
-      "id": "MAPSEC_ABANDONED_SHIP"
+      "id": "MAPSEC_ABANDONED_SHIP",
+      "name": "TESTING GROUNDS"
     },
     {
       "id": "MAPSEC_NEW_MAUVILLE"
