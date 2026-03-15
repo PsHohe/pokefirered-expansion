@@ -1,6 +1,17 @@
 TestingGrounds_MapScripts::
 	.byte 0
 
+TestingGrounds_EventScript_TmRevendor::
+	lock
+	faceplayer
+	message Text_MayIHelpYou
+	waitmessage
+	special OpenTMRevendorShop
+	waitstate
+	msgbox Text_PleaseComeAgain
+	release
+	end
+
 TestingGrounds_EventScript_FatMan::
 		lock
 		faceplayer

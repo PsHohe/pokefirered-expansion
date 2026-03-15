@@ -42,6 +42,7 @@
 #include "script_menu.h"
 #include "script.h"
 #include "sound.h"
+#include "shop.h"
 #include "string_util.h"
 #include "strings.h"
 #include "task.h"
@@ -60,6 +61,7 @@
 #include "constants/moves.h"
 #include "constants/region_map_sections.h"
 #include "constants/songs.h"
+#include "data/tm_revendor.h"
 
 #define TAG_ITEM_ICON 5500
 
@@ -2077,6 +2079,67 @@ static const u8 sMartMaps[][3] = {
     {MAP(MAP_SEVEN_ISLAND_MART),    1},
     {MAP(MAP_SIX_ISLAND_MART),      1}
 };
+
+static EWRAM_DATA u16 sTmRevendorItemsForSale[NELEMS(sTmRevendorFixedItems) + NELEMS(sTmRevendorFlagItems) + 1] = {0};
+
+static bool8 IsTmRevendorItemInList(const u16 *items, u16 count, u16 itemId)
+{
+    u16 i;
+
+    for (i = 0; i < count; i++)
+    {
+        if (items[i] == itemId)
+            return TRUE;
+    }
+
+    return FALSE;
+}
+
+static void BuildTmRevendorItemsForSale(void)
+{
+    u16 i;
+    u16 j;
+    u16 itemCount = 0;
+
+    for (i = 0; i < NELEMS(sTmRevendorFixedItems); i++)
+    {
+        u16 itemId = sTmRevendorFixedItems[i];
+
+        if (!IsTmRevendorItemInList(sTmRevendorItemsForSale, itemCount, itemId))
+            sTmRevendorItemsForSale[itemCount++] = itemId;
+    }
+
+    for (i = 0; i < NELEMS(sTmRevendorFlagItems); i++)
+    {
+        u16 itemId = sTmRevendorFlagItems[i].itemId;
+
+        if (FlagGet(sTmRevendorFlagItems[i].flag)
+         && !IsTmRevendorItemInList(sTmRevendorItemsForSale, itemCount, itemId))
+        {
+            sTmRevendorItemsForSale[itemCount++] = itemId;
+        }
+    }
+
+    for (i = 1; i < itemCount; i++)
+    {
+        u16 itemId = sTmRevendorItemsForSale[i];
+        j = i;
+        while (j > 0 && sTmRevendorItemsForSale[j - 1] > itemId)
+        {
+            sTmRevendorItemsForSale[j] = sTmRevendorItemsForSale[j - 1];
+            j--;
+        }
+        sTmRevendorItemsForSale[j] = itemId;
+    }
+
+    sTmRevendorItemsForSale[itemCount] = ITEM_NONE;
+}
+
+void OpenTMRevendorShop(void)
+{
+    BuildTmRevendorItemsForSale();
+    CreatePokemartMenu(sTmRevendorItemsForSale);
+}
 
 u8 GetMartClerkObjectId(void)
 {

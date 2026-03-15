@@ -500,4 +500,5 @@ gSpecials::
 	def_special CloseFrontierExchangeCornerItemIconWindow
 	def_special HasMovesToRelearn
 	def_special CanTeachMoveBoxMon
+	def_special OpenTMRevendorShop
 gSpecialsEnd::
