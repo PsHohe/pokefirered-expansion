@@ -1415,3 +1415,6 @@ Text_TestMsg::
 
 	.include "data/maps/TestingGrounds/scripts.inc"
 	.include "data/maps/TestingGrounds/text.inc"
+
+	.include "data/maps/OrphanageBedroom/scripts.inc"
+	.include "data/maps/OrphanageBedroom/text.inc"

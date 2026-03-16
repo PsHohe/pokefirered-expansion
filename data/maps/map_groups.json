@@ -624,6 +624,7 @@
     "BattlePyramidSquare16"
   ],
   "gMapGroup_TestingGrounds": [
-    "TestingGrounds"
+    "TestingGrounds",
+    "OrphanageBedroom"
   ]
 }

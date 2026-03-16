@@ -53,6 +53,13 @@
       "elevation": 0,
       "dest_map": "MAP_PALLET_TOWN",
       "dest_warp_id": "3"
+    },
+    {
+      "x": 3,
+      "y": 9,
+      "elevation": 0,
+      "dest_map": "MAP_ORPHANAGE_BEDROOM",
+      "dest_warp_id": "0"
     }
   ],
   "coord_events": [],
