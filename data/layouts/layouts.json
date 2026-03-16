@@ -5045,7 +5045,7 @@
       "id": "LAYOUT_ORPHANAGE_BEDROOM",
       "name": "OrphanageBedroom_Layout",
       "width": 12,
-      "height": 9,
+      "height": 10,
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_Building",
