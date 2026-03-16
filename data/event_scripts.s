@@ -1063,6 +1063,9 @@ Text_TheDoorIsOpen::
 	.include "data/text/white_out.inc"
 	.include "data/text/poke_mart.inc"
 
+@ TMs Revendor
+	.include "data/text/tms_revendor.inc"
+
 Text_MonFlewAway::
 	.string "The {STR_VAR_1} flew away!$"
 

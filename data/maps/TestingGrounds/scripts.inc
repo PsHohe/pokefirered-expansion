@@ -4,7 +4,7 @@ TestingGrounds_MapScripts::
 TestingGrounds_EventScript_TmRevendor::
 	lock
 	faceplayer
-	message Text_MayIHelpYou
+	message Text_TmsRevendor
 	waitmessage
 	special OpenTMRevendorShop
 	waitstate
