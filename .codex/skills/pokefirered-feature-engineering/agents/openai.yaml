@@ -1,0 +1,4 @@
+interface:
+  display_name: "PokeFireRed Feature Engineering"
+  short_description: "Implement combat, item, and shop features safely"
+  default_prompt: "Use $pokefirered-feature-engineering to implement technical gameplay features in this repository, especially combat, items, and shops."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "PokeFireRed Map Scripting"
+  short_description: "Build map scripts for pokefirered-expansion engine"
+  default_prompt: "Use $pokefirered-map-scripting to implement or modify map scripts in this repository correctly."
