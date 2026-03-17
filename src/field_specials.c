@@ -46,6 +46,7 @@
 #include "string_util.h"
 #include "strings.h"
 #include "task.h"
+#include "tm_case.h"
 #include "text_window.h"
 #include "tilesets.h"
 #include "wallclock.h"
@@ -2138,7 +2139,7 @@ static void BuildTmRevendorItemsForSale(void)
 void OpenTMRevendorShop(void)
 {
     BuildTmRevendorItemsForSale();
-    CreatePokemartMenu(sTmRevendorItemsForSale);
+    InitTMReprinter(sTmRevendorItemsForSale, CB2_ReturnToFieldContinueScriptPlayMapMusic);
 }
 
 u8 GetMartClerkObjectId(void)

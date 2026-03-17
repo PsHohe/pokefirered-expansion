@@ -58,6 +58,13 @@ enum {
     COLOR_CURSOR_ERASE = 0xFF
 };
 
+enum {
+    TMCASE_SORT_NUMBER,
+    TMCASE_SORT_NAME,
+    TMCASE_SORT_TYPE,
+    TMCASE_SORT_COUNT,
+};
+
 // Base position for TM/HM disc sprite
 #define DISC_BASE_X 41
 #define DISC_BASE_Y 46
@@ -92,13 +99,16 @@ static EWRAM_DATA struct {
     u8 discSpriteId;
     u8 maxTMsShown;
     u8 numTMs;
+    u8 sortMode;
+    u8 reprinterItemCount;
     u8 contextMenuWindowId;
     u8 scrollArrowsTaskId;
     u16 currItem;
+    u16 *reprinterItems;
+    const u16 *reprinterSourceItems;
     const u8 * menuActionIndices;
     u8 numMenuActions;
     s16 seqId;
-    u8 unused[8];
 } * sTMCaseDynamicResources = NULL;
 
 // Save the player's bag state when the Pokedude's bag is being shown
@@ -125,6 +135,7 @@ static void List_MoveCursorFunc(s32 itemIndex, bool8 onInit, struct ListMenu *li
 static void List_ItemPrintFunc(u8 windowId, u32 itemId, u8 y);
 static void PrintDescription(s32 itemIndex);
 static void PrintMoveInfo(u16 itemId);
+static u16 GetListItemIdByIndex(u16 itemIndex);
 static void PrintListCursorAtRow(u8 y, u8 colorIdx);
 static void CreateListScrollArrows(void);
 static void TMCaseSetup_GetTMCount(void);
@@ -144,6 +155,11 @@ static void Action_Exit(u8 taskId);
 static void Task_SelectedTMHM_GiveParty(u8 taskId);
 static void Task_SelectedTMHM_GivePC(u8 taskId);
 static void Task_SelectedTMHM_Sell(u8 taskId);
+static void Task_SelectedTMHM_Reprinter(u8 taskId);
+static void Task_Reprinter_PlaceYesNo(u8 taskId);
+static void Task_Reprinter_TryPurchase(u8 taskId);
+static void Task_Reprinter_Cancel(u8 taskId);
+static void Task_Reprinter_AfterMessage(u8 taskId);
 static void Task_AskConfirmSaleWithAmount(u8 taskId);
 static void Task_PlaceYesNoBox(u8 taskId);
 static void Task_SaleOfTMsCanceled(u8 taskId);
@@ -167,6 +183,12 @@ static void PrintPlayersMoney(void);
 static void HandleCreateYesNoMenu(u8 taskId, const struct YesNoFuncTable * ptrs);
 static u8 AddContextMenu(u8 * windowId, u8 windowIndex);
 static void RemoveContextMenu(u8 * windowId);
+static void TMReprinterSetup_LoadItems(void);
+static void TMReprinterSortItems(void);
+static s32 TMReprinterCompareItems(u16 lhs, u16 rhs);
+static void TMReprinterCycleSortMode(u8 taskId);
+static void TMReprinterSetCursorToItem(u16 itemId);
+static const u8 *TMReprinterGetSortModeText(void);
 static u8 CreateDiscSprite(u16 itemId);
 static void SetDiscSpriteAnim(struct Sprite *sprite, u8 tmIdx);
 static void TintDiscpriteByType(u8 type);
@@ -208,7 +230,8 @@ static void (*const sSelectTMActionTasks[])(u8 taskId) = {
     [TMCASE_FIELD]      = Task_SelectedTMHM_Field,
     [TMCASE_GIVE_PARTY] = Task_SelectedTMHM_GiveParty,
     [TMCASE_SELL]       = Task_SelectedTMHM_Sell,
-    [TMCASE_GIVE_PC]    = Task_SelectedTMHM_GivePC
+    [TMCASE_GIVE_PC]    = Task_SelectedTMHM_GivePC,
+    [TMCASE_REPRINTER]  = Task_SelectedTMHM_Reprinter
 };
 
 static const struct MenuAction sMenuActions[] = {
@@ -221,9 +244,19 @@ static const u8 sMenuActionIndices_Field[] = {TMCASE_ACTION_USE, TMCASE_ACTION_G
 static const u8 sMenuActionIndices_UnionRoom[] = {TMCASE_ACTION_GIVE, TMCASE_ACTION_EXIT};
 
 static const struct YesNoFuncTable sYesNoFuncTable = {Task_PrintSaleConfirmedText, Task_SaleOfTMsCanceled};
+static const struct YesNoFuncTable sTMReprinterYesNoFuncTable = {Task_Reprinter_TryPurchase, Task_Reprinter_Cancel};
 
 static const u8 sText_ClearTo18[] = _("{CLEAR_TO 18}");
 static const u8 sText_SingleSpace[] = _(" ");
+static const u8 sText_TMReprinter[] = _("TM PRINTER");
+static const u8 sText_TMReprinterWillBePutAway[] = _("The TM PRINTER was\nshut down.");
+static const u8 sText_TMReprinterSortNumber[] = _("NO.");
+static const u8 sText_TMReprinterSortName[] = _("A-Z");
+static const u8 sText_TMReprinterSortType[] = _("TYPE");
+static const u8 sText_TMReprinterConfirm[] = _("Reprint {STR_VAR_1}\nfor ¥{STR_VAR_2}?");
+static const u8 sText_TMReprinterComplete[] = _("The machine printed\na fresh {STR_VAR_1}.");
+static const u8 sText_TMReprinterNoBagSpace[] = _("There's no room left\nin your BAG.");
+static const u8 sText_TMReprinterNoMoney[] = _("You don't have enough money.");
 
 static ALIGNED(4) const u16 sPal3Override[] = {RGB(8, 8, 8), RGB(30, 16, 6)};
 
@@ -414,6 +447,10 @@ void InitTMCase(u8 type, void (* exitCallback)(void), bool8 allowSelectClose)
     sTMCaseDynamicResources->nextScreenCallback = NULL;
     sTMCaseDynamicResources->scrollArrowsTaskId = TASK_NONE;
     sTMCaseDynamicResources->contextMenuWindowId = WINDOW_NONE;
+    sTMCaseDynamicResources->reprinterItems = NULL;
+    sTMCaseDynamicResources->reprinterSourceItems = NULL;
+    sTMCaseDynamicResources->sortMode = TMCASE_SORT_NUMBER;
+    sTMCaseDynamicResources->reprinterItemCount = 0;
     if (type != TMCASE_REOPENING)
         sTMCaseStaticResources.menuType = type;
     if (exitCallback != NULL)
@@ -422,6 +459,12 @@ void InitTMCase(u8 type, void (* exitCallback)(void), bool8 allowSelectClose)
         sTMCaseStaticResources.allowSelectClose = allowSelectClose;
     gTextFlags.autoScroll = FALSE;
     SetMainCallback2(CB2_SetUpTMCaseUI_Blocking);
+}
+
+void InitTMReprinter(const u16 *itemsForSale, void (* exitCallback)(void))
+{
+    InitTMCase(TMCASE_REPRINTER, exitCallback, FALSE);
+    sTMCaseDynamicResources->reprinterSourceItems = itemsForSale;
 }
 
 static void CB2_Idle(void)
@@ -506,7 +549,10 @@ static bool8 DoSetUpTMCaseUI(void)
             gMain.state++;
         break;
     case 9:
-        SortItemsInBag(&gBagPockets[POCKET_TM_HM], SORT_BY_INDEX);
+        if (sTMCaseStaticResources.menuType == TMCASE_REPRINTER)
+            TMReprinterSetup_LoadItems();
+        else
+            SortItemsInBag(&gBagPockets[POCKET_TM_HM], SORT_BY_INDEX);
         gMain.state++;
         break;
     case 10:
@@ -526,6 +572,8 @@ static bool8 DoSetUpTMCaseUI(void)
         break;
     case 13:
         PrintTitle();
+        if (sTMCaseStaticResources.menuType == TMCASE_REPRINTER)
+            PrintPlayersMoney();
         gMain.state++;
         break;
     case 14:
@@ -541,7 +589,14 @@ static bool8 DoSetUpTMCaseUI(void)
         gMain.state++;
         break;
     case 16:
-        sTMCaseDynamicResources->discSpriteId = CreateDiscSprite(GetBagItemId(POCKET_TM_HM, sTMCaseStaticResources.scrollOffset + sTMCaseStaticResources.selectedRow));
+        {
+            u16 selectedIndex = sTMCaseStaticResources.scrollOffset + sTMCaseStaticResources.selectedRow;
+            u16 selectedItem = ITEM_NONE;
+
+            if (selectedIndex < sTMCaseDynamicResources->numTMs)
+                selectedItem = GetListItemIdByIndex(selectedIndex);
+            sTMCaseDynamicResources->discSpriteId = CreateDiscSprite(selectedItem);
+        }
         gMain.state++;
         break;
     case 17:
@@ -631,18 +686,20 @@ static bool8 HandleLoadTMCaseGraphicsAndPalettes(void)
 static void CreateTMCaseListMenuBuffers(void)
 {
     struct BagPocket * pocket = &gBagPockets[POCKET_TM_HM];
-    sListMenuItemsBuffer = Alloc((pocket->capacity + 1) * sizeof(struct ListMenuItem));
-    sListMenuStringsBuffer = Alloc(sTMCaseDynamicResources->numTMs * 29);
+    u16 listCapacity = (sTMCaseStaticResources.menuType == TMCASE_REPRINTER) ? sTMCaseDynamicResources->numTMs : pocket->capacity;
+    u16 listStringsCount = max(sTMCaseDynamicResources->numTMs, 1);
+
+    sListMenuItemsBuffer = Alloc((listCapacity + 1) * sizeof(struct ListMenuItem));
+    sListMenuStringsBuffer = Alloc(listStringsCount * 29);
 }
 
 static void InitTMCaseListMenuItems(void)
 {
-    struct BagPocket * pocket = &gBagPockets[POCKET_TM_HM];
     u16 i;
 
     for (i = 0; i < sTMCaseDynamicResources->numTMs; i++)
     {
-        GetTMNumberAndMoveString(sListMenuStringsBuffer[i], pocket->itemSlots[i].itemId);
+        GetTMNumberAndMoveString(sListMenuStringsBuffer[i], GetListItemIdByIndex(i));
         sListMenuItemsBuffer[i].name = sListMenuStringsBuffer[i];
         sListMenuItemsBuffer[i].id = i;
     }
@@ -691,6 +748,14 @@ static void GetTMNumberAndMoveString(u8 *dest, u16 itemId)
     StringCopy(dest, gStringVar4);
 }
 
+static u16 GetListItemIdByIndex(u16 itemIndex)
+{
+    if (sTMCaseStaticResources.menuType == TMCASE_REPRINTER)
+        return sTMCaseDynamicResources->reprinterItems[itemIndex];
+    else
+        return GetBagItemId(POCKET_TM_HM, itemIndex);
+}
+
 static void List_MoveCursorFunc(s32 itemIndex, bool8 onInit, struct ListMenu *list)
 {
     u16 itemId;
@@ -698,7 +763,7 @@ static void List_MoveCursorFunc(s32 itemIndex, bool8 onInit, struct ListMenu *li
     if (itemIndex == LIST_CANCEL)
         itemId = ITEM_NONE;
     else
-        itemId = GetBagItemId(POCKET_TM_HM, itemIndex);
+        itemId = GetListItemIdByIndex(itemIndex);
 
     if (onInit != TRUE)
     {
@@ -713,7 +778,15 @@ static void List_ItemPrintFunc(u8 windowId, u32 itemIndex, u8 y)
 {
     if (itemIndex != LIST_CANCEL)
     {
-        u16 itemId = GetBagItemId(POCKET_TM_HM, itemIndex);
+        u16 itemId = GetListItemIdByIndex(itemIndex);
+        if (sTMCaseStaticResources.menuType == TMCASE_REPRINTER)
+        {
+            ConvertIntToDecimalStringN(gStringVar1, GetItemPrice(itemId), STR_CONV_MODE_RIGHT_ALIGN, MAX_MONEY_DIGITS);
+            StringExpandPlaceholders(gStringVar4, gText_PokedollarVar1);
+            TMCase_Print(windowId, FONT_SMALL, gStringVar4, 97, y, 0, 0, TEXT_SKIP_DRAW, COLOR_DARK);
+            return;
+        }
+
         if (!IsItemHM(itemId))
         {
             if (!GetItemImportance(itemId))
@@ -738,9 +811,14 @@ static void PrintDescription(s32 itemIndex)
 {
     const u8 * str;
     if (itemIndex != LIST_CANCEL)
-        str = GetItemDescription(GetBagItemId(POCKET_TM_HM, itemIndex));
+    {
+        if (sTMCaseStaticResources.menuType == TMCASE_REPRINTER)
+            str = gMovesInfo[ItemIdToBattleMoveId(GetListItemIdByIndex(itemIndex))].description;
+        else
+            str = GetItemDescription(GetListItemIdByIndex(itemIndex));
+    }
     else
-        str = gText_TMCaseWillBePutAway;
+        str = (sTMCaseStaticResources.menuType == TMCASE_REPRINTER) ? sText_TMReprinterWillBePutAway : gText_TMCaseWillBePutAway;
     FillWindowPixelBuffer(WIN_DESCRIPTION, 0);
     TMCase_Print(WIN_DESCRIPTION, FONT_NORMAL, str, 2, 3, 1, 0, 0, COLOR_LIGHT);
 }
@@ -811,13 +889,20 @@ static void TMCaseSetup_GetTMCount(void)
     struct BagPocket *pocket = &gBagPockets[POCKET_TM_HM];
     u16 i;
 
-    CompactItemsInBagPocket(POCKET_TM_HM);
-    sTMCaseDynamicResources->numTMs = 0;
-    for (i = 0; i < pocket->capacity; i++)
+    if (sTMCaseStaticResources.menuType == TMCASE_REPRINTER)
     {
-        if (pocket->itemSlots[i].itemId == ITEM_NONE)
-            break;
-        sTMCaseDynamicResources->numTMs++;
+        sTMCaseDynamicResources->numTMs = sTMCaseDynamicResources->reprinterItemCount;
+    }
+    else
+    {
+        CompactItemsInBagPocket(POCKET_TM_HM);
+        sTMCaseDynamicResources->numTMs = 0;
+        for (i = 0; i < pocket->capacity; i++)
+        {
+            if (pocket->itemSlots[i].itemId == ITEM_NONE)
+                break;
+            sTMCaseDynamicResources->numTMs++;
+        }
     }
     sTMCaseDynamicResources->maxTMsShown = min(sTMCaseDynamicResources->numTMs + 1, 5);
 }
@@ -854,6 +939,8 @@ static void TMCaseSetup_UpdateVisualMenuOffset(void)
 
 static void DestroyTMCaseBuffers(void)
 {
+    if (sTMCaseDynamicResources != NULL && sTMCaseDynamicResources->reprinterItems != NULL)
+        Free(sTMCaseDynamicResources->reprinterItems);
     if (sTMCaseDynamicResources != NULL)
         Free(sTMCaseDynamicResources);
     if (sTilemapBuffer != NULL)
@@ -899,7 +986,15 @@ static void Task_HandleListInput(u8 taskId)
         {
             input = ListMenu_ProcessInput(tListTaskId);
             ListMenuGetScrollAndRow(tListTaskId, &sTMCaseStaticResources.scrollOffset, &sTMCaseStaticResources.selectedRow);
-            if (JOY_NEW(SELECT_BUTTON) && sTMCaseStaticResources.allowSelectClose == TRUE)
+
+            if (sTMCaseStaticResources.menuType == TMCASE_REPRINTER
+             && JOY_NEW(R_BUTTON)
+             && sTMCaseDynamicResources->numTMs > 1)
+            {
+                PlaySE(SE_SELECT);
+                TMReprinterCycleSortMode(taskId);
+            }
+            else if (JOY_NEW(SELECT_BUTTON) && sTMCaseStaticResources.allowSelectClose == TRUE)
             {
                 PlaySE(SE_SELECT);
                 gSpecialVar_ItemId = ITEM_NONE;
@@ -922,8 +1017,11 @@ static void Task_HandleListInput(u8 taskId)
                     RemoveScrollArrows();
                     PrintListCursor(tListTaskId, COLOR_CURSOR_SELECTED);
                     tListPos = input;
-                    tQuantity = GetBagItemQuantity(POCKET_TM_HM, input);
-                    gSpecialVar_ItemId = GetBagItemId(POCKET_TM_HM, input);
+                    if (sTMCaseStaticResources.menuType == TMCASE_REPRINTER)
+                        tQuantity = 1;
+                    else
+                        tQuantity = GetBagItemQuantity(POCKET_TM_HM, input);
+                    gSpecialVar_ItemId = GetListItemIdByIndex(input);
                     gTasks[taskId].func = sSelectTMActionTasks[sTMCaseStaticResources.menuType];
                     break;
                 }
@@ -1187,6 +1285,71 @@ static void Task_SelectedTMHM_Sell(u8 taskId)
             StringExpandPlaceholders(gStringVar4, gText_HowManyToSell);
             PrintMessageWithFollowupTask(taskId, GetDialogBoxFontId(), gStringVar4, Task_InitQuantitySelectUI);
         }
+    }
+}
+
+static void Task_SelectedTMHM_Reprinter(u8 taskId)
+{
+    ConvertIntToDecimalStringN(gStringVar2, GetItemPrice(gSpecialVar_ItemId), STR_CONV_MODE_LEFT_ALIGN, MAX_MONEY_DIGITS);
+    CopyItemName(gSpecialVar_ItemId, gStringVar1);
+    StringExpandPlaceholders(gStringVar4, sText_TMReprinterConfirm);
+    PrintMessageWithFollowupTask(taskId, GetDialogBoxFontId(), gStringVar4, Task_Reprinter_PlaceYesNo);
+}
+
+static void Task_Reprinter_PlaceYesNo(u8 taskId)
+{
+    HandleCreateYesNoMenu(taskId, &sTMReprinterYesNoFuncTable);
+}
+
+static void Task_Reprinter_TryPurchase(u8 taskId)
+{
+    u32 price = GetItemPrice(gSpecialVar_ItemId);
+
+    if (!CheckBagHasSpace(gSpecialVar_ItemId, 1))
+    {
+        PrintMessageWithFollowupTask(taskId, GetDialogBoxFontId(), sText_TMReprinterNoBagSpace, Task_Reprinter_AfterMessage);
+        return;
+    }
+
+    if (GetMoney(&gSaveBlock1Ptr->money) < price)
+    {
+        PrintMessageWithFollowupTask(taskId, GetDialogBoxFontId(), sText_TMReprinterNoMoney, Task_Reprinter_AfterMessage);
+        return;
+    }
+
+    RemoveMoney(&gSaveBlock1Ptr->money, price);
+    AddBagItem(gSpecialVar_ItemId, 1);
+    PlaySE(SE_SHOP);
+    PrintMoneyAmountInMoneyBox(WIN_MONEY, GetMoney(&gSaveBlock1Ptr->money), 0);
+
+    CopyItemName(gSpecialVar_ItemId, gStringVar1);
+    StringExpandPlaceholders(gStringVar4, sText_TMReprinterComplete);
+    PrintMessageWithFollowupTask(taskId, GetDialogBoxFontId(), gStringVar4, Task_Reprinter_AfterMessage);
+}
+
+static void Task_Reprinter_Cancel(u8 taskId)
+{
+    s16 * data = gTasks[taskId].data;
+
+    ClearDialogWindowAndFrameToTransparent(WIN_MESSAGE, FALSE);
+    PutWindowTilemap(WIN_LIST);
+    PutWindowTilemap(WIN_DESCRIPTION);
+    PutWindowTilemap(WIN_TITLE);
+    PutWindowTilemap(WIN_MOVE_INFO_LABELS);
+    PutWindowTilemap(WIN_MOVE_INFO);
+    PutWindowTilemap(WIN_MONEY);
+    ScheduleBgCopyTilemapToVram(0);
+    ScheduleBgCopyTilemapToVram(1);
+    PrintListCursor(tListTaskId, COLOR_DARK);
+    ReturnToList(taskId);
+}
+
+static void Task_Reprinter_AfterMessage(u8 taskId)
+{
+    if (JOY_NEW(A_BUTTON | B_BUTTON))
+    {
+        PlaySE(SE_SELECT);
+        Task_Reprinter_Cancel(taskId);
     }
 }
 
@@ -1502,6 +1665,8 @@ static void InitWindowTemplatesAndPals(void)
     PutWindowTilemap(WIN_TITLE);
     PutWindowTilemap(WIN_MOVE_INFO_LABELS);
     PutWindowTilemap(WIN_MOVE_INFO);
+    if (sTMCaseStaticResources.menuType == TMCASE_REPRINTER)
+        PutWindowTilemap(WIN_MONEY);
     ScheduleBgCopyTilemapToVram(0);
 }
 
@@ -1528,8 +1693,15 @@ static void PrintMessageWithFollowupTask(u8 taskId, u8 fontId, const u8 * str, T
 
 static void PrintTitle(void)
 {
-    u32 distance = 72 - GetStringWidth(FONT_NORMAL_COPY_1, gText_TMCase, 0);
-    AddTextPrinterParameterized3(WIN_TITLE, FONT_NORMAL_COPY_1, distance / 2, 1, sTextColors[COLOR_LIGHT], 0, gText_TMCase);
+    const u8 *titleText = (sTMCaseStaticResources.menuType == TMCASE_REPRINTER) ? sText_TMReprinter : gText_TMCase;
+    u32 distance;
+
+    FillWindowPixelBuffer(WIN_TITLE, PIXEL_FILL(0));
+    distance = 72 - GetStringWidth(FONT_NORMAL_COPY_1, titleText, 0);
+    AddTextPrinterParameterized3(WIN_TITLE, FONT_NORMAL_COPY_1, distance / 2, 1, sTextColors[COLOR_LIGHT], 0, titleText);
+    if (sTMCaseStaticResources.menuType == TMCASE_REPRINTER)
+        TMCase_Print(WIN_TITLE, FONT_SMALL, TMReprinterGetSortModeText(), 56, 1, 0, 0, 0, COLOR_LIGHT);
+    CopyWindowToVram(WIN_TITLE, COPYWIN_GFX);
 }
 
 static void DrawMoveInfoLabels(void)
@@ -1621,6 +1793,157 @@ static void RemoveContextMenu(u8 * windowId)
     RemoveWindow(*windowId);
     ScheduleBgCopyTilemapToVram(0);
     *windowId = WINDOW_NONE;
+}
+
+static void TMReprinterSetup_LoadItems(void)
+{
+    u16 i;
+    u16 itemCount = 0;
+
+    if (sTMCaseDynamicResources->reprinterItems == NULL)
+        sTMCaseDynamicResources->reprinterItems = Alloc(NUM_ALL_MACHINES * sizeof(u16));
+
+    if (sTMCaseDynamicResources->reprinterItems == NULL)
+    {
+        sTMCaseDynamicResources->reprinterItemCount = 0;
+        return;
+    }
+
+    if (sTMCaseDynamicResources->reprinterSourceItems == NULL)
+    {
+        sTMCaseDynamicResources->reprinterItemCount = 0;
+        return;
+    }
+
+    for (i = 0; sTMCaseDynamicResources->reprinterSourceItems[i] != ITEM_NONE && itemCount < NUM_ALL_MACHINES; i++)
+    {
+        u16 itemId = sTMCaseDynamicResources->reprinterSourceItems[i];
+        u16 j;
+        bool8 duplicate = FALSE;
+
+        if (!IsItemTMHM(itemId))
+            continue;
+
+        for (j = 0; j < itemCount; j++)
+        {
+            if (sTMCaseDynamicResources->reprinterItems[j] == itemId)
+            {
+                duplicate = TRUE;
+                break;
+            }
+        }
+
+        if (!duplicate)
+            sTMCaseDynamicResources->reprinterItems[itemCount++] = itemId;
+    }
+
+    sTMCaseDynamicResources->reprinterItemCount = itemCount;
+    sTMCaseDynamicResources->sortMode = TMCASE_SORT_NUMBER;
+    TMReprinterSortItems();
+}
+
+static void TMReprinterSortItems(void)
+{
+    u16 i;
+
+    for (i = 1; i < sTMCaseDynamicResources->reprinterItemCount; i++)
+    {
+        u16 itemId = sTMCaseDynamicResources->reprinterItems[i];
+        u16 j = i;
+
+        while (j > 0 && TMReprinterCompareItems(itemId, sTMCaseDynamicResources->reprinterItems[j - 1]) < 0)
+        {
+            sTMCaseDynamicResources->reprinterItems[j] = sTMCaseDynamicResources->reprinterItems[j - 1];
+            j--;
+        }
+
+        sTMCaseDynamicResources->reprinterItems[j] = itemId;
+    }
+}
+
+static s32 TMReprinterCompareItems(u16 lhs, u16 rhs)
+{
+    switch (sTMCaseDynamicResources->sortMode)
+    {
+    case TMCASE_SORT_NAME:
+        {
+            s32 cmp = StringCompare(gMovesInfo[ItemIdToBattleMoveId(lhs)].name, gMovesInfo[ItemIdToBattleMoveId(rhs)].name);
+
+            if (cmp != 0)
+                return cmp;
+            return lhs - rhs;
+        }
+    case TMCASE_SORT_TYPE:
+        {
+            s32 lhsType = gMovesInfo[ItemIdToBattleMoveId(lhs)].type;
+            s32 rhsType = gMovesInfo[ItemIdToBattleMoveId(rhs)].type;
+
+            if (lhsType != rhsType)
+                return lhsType - rhsType;
+
+            s32 cmp = StringCompare(gMovesInfo[ItemIdToBattleMoveId(lhs)].name, gMovesInfo[ItemIdToBattleMoveId(rhs)].name);
+            if (cmp != 0)
+                return cmp;
+            return lhs - rhs;
+        }
+    case TMCASE_SORT_NUMBER:
+    default:
+        return lhs - rhs;
+    }
+}
+
+static void TMReprinterCycleSortMode(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+    u16 selectedItem = ITEM_NONE;
+
+    if (sTMCaseStaticResources.scrollOffset + sTMCaseStaticResources.selectedRow < sTMCaseDynamicResources->numTMs)
+        selectedItem = GetListItemIdByIndex(sTMCaseStaticResources.scrollOffset + sTMCaseStaticResources.selectedRow);
+
+    DestroyListMenuTask(tListTaskId, NULL, NULL);
+    sTMCaseDynamicResources->sortMode = (sTMCaseDynamicResources->sortMode + 1) % TMCASE_SORT_COUNT;
+    TMReprinterSortItems();
+    TMReprinterSetCursorToItem(selectedItem);
+    InitTMCaseListMenuItems();
+    tListTaskId = ListMenuInit(&gMultiuseListMenuTemplate, sTMCaseStaticResources.scrollOffset, sTMCaseStaticResources.selectedRow);
+    PrintTitle();
+}
+
+static void TMReprinterSetCursorToItem(u16 itemId)
+{
+    u16 itemIndex = sTMCaseDynamicResources->numTMs;
+    u16 i;
+
+    if (itemId != ITEM_NONE)
+    {
+        for (i = 0; i < sTMCaseDynamicResources->numTMs; i++)
+        {
+            if (sTMCaseDynamicResources->reprinterItems[i] == itemId)
+            {
+                itemIndex = i;
+                break;
+            }
+        }
+    }
+
+    sTMCaseStaticResources.selectedRow = itemIndex;
+    sTMCaseStaticResources.scrollOffset = 0;
+    TMCaseSetup_InitListMenuPositions();
+    TMCaseSetup_UpdateVisualMenuOffset();
+}
+
+static const u8 *TMReprinterGetSortModeText(void)
+{
+    switch (sTMCaseDynamicResources->sortMode)
+    {
+    case TMCASE_SORT_NAME:
+        return sText_TMReprinterSortName;
+    case TMCASE_SORT_TYPE:
+        return sText_TMReprinterSortType;
+    case TMCASE_SORT_NUMBER:
+    default:
+        return sText_TMReprinterSortNumber;
+    }
 }
 
 static u8 CreateDiscSprite(u16 itemId)

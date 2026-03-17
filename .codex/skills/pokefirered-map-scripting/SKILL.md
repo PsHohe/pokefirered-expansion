@@ -34,7 +34,6 @@ Implement map gameplay logic correctly in this codebase by editing the right sou
 
 4. Validate after edits:
 - Run `make -j8` to ensure assembly/data changes compile.
-- If gameplay behavior changed, run `make check`.
 
 ## Design Consultant Subagent
 

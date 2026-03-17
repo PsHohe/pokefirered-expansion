@@ -9,6 +9,7 @@ enum {
     TMCASE_GIVE_PC,
     TMCASE_POKEDUDE,
     TMCASE_REOPENING,
+    TMCASE_REPRINTER,
 };
 
 // Alternative value for 'allowSelectClose' argument to InitTMCase.
@@ -16,6 +17,7 @@ enum {
 #define TMCASE_KEEP_PREV 0xFF
 
 void InitTMCase(u8 type, void (* exitCallback)(void), bool8 allowSelectClose);
+void InitTMReprinter(const u16 *itemsForSale, void (* exitCallback)(void));
 void ResetTMCaseCursorPos(void);
 void Pokedude_InitTMCase(void);
 
