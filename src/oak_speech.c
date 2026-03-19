@@ -68,6 +68,12 @@ static void Task_OakSpeech_IsInhabitedFarAndWide(u8);
 static void Task_OakSpeech_IStudyPokemon(u8);
 static void Task_OakSpeech_ReturnNidoranFToPokeBall(u8);
 static void Task_OakSpeech_TellMeALittleAboutYourself(u8);
+static void Task_OakSpeech_SetupPreface(u8);
+static void Task_OakSpeech_AskLevelCap(u8);
+static void Task_OakSpeech_HandleLevelCapInput(u8);
+static void Task_OakSpeech_AskBattleStyle(u8);
+static void Task_OakSpeech_HandleBattleStyleInput(u8);
+static void Task_OakSpeech_ExplainOptionsMenu(u8);
 static void Task_OakSpeech_FadeOutOak(u8);
 static void Task_OakSpeech_AskPlayerGender(u8);
 static void Task_OakSpeech_ShowGenderOptions(u8);
@@ -1263,8 +1269,108 @@ static void Task_OakSpeech_TellMeALittleAboutYourself(u8 taskId)
         else
         {
             OakSpeechPrintMessage(gOakSpeech_Text_TellMeALittleAboutYourself, sOakSpeechResources->textSpeed, FALSE);
-            gTasks[taskId].func = Task_OakSpeech_FadeOutOak;
+            gTasks[taskId].func = Task_OakSpeech_SetupPreface;
         }
+    }
+}
+
+static void Task_OakSpeech_SetupPreface(u8 taskId)
+{
+    if (!IsTextPrinterActiveOnWindow(WIN_INTRO_TEXTBOX))
+    {
+        OakSpeechPrintMessage(gOakSpeech_Text_AdventureSetupPreface, sOakSpeechResources->textSpeed, FALSE);
+        gTasks[taskId].func = Task_OakSpeech_AskLevelCap;
+    }
+}
+
+static void Task_OakSpeech_AskLevelCap(u8 taskId)
+{
+    if (!IsTextPrinterActiveOnWindow(WIN_INTRO_TEXTBOX))
+    {
+        OakSpeechPrintMessage(gOakSpeech_Text_LevelCapQuestion, sOakSpeechResources->textSpeed, FALSE);
+        gTasks[taskId].tTimer = 0;
+        gTasks[taskId].func = Task_OakSpeech_HandleLevelCapInput;
+    }
+}
+
+static void Task_OakSpeech_HandleLevelCapInput(u8 taskId)
+{
+    s8 input;
+
+    if (IsTextPrinterActiveOnWindow(WIN_INTRO_TEXTBOX))
+        return;
+
+    if (gTasks[taskId].tTimer == 0)
+    {
+        CreateYesNoMenuAtPos(&sIntro_WindowTemplates[WIN_INTRO_YESNO], FONT_NORMAL, 0, 2, GetStandardFrameBaseTileNum(), 14, 0);
+        gTasks[taskId].tTimer = 1;
+        return;
+    }
+
+    input = Menu_ProcessInputNoWrapClearOnChoose();
+    switch (input)
+    {
+    case 0: // YES
+        PlaySE(SE_SELECT);
+        gSaveBlock2Ptr->optionsLevelCapEnabled = OPTIONS_LEVEL_CAP_ON;
+        gTasks[taskId].func = Task_OakSpeech_AskBattleStyle;
+        break;
+    case 1: // NO
+    case MENU_B_PRESSED:
+        PlaySE(SE_SELECT);
+        gSaveBlock2Ptr->optionsLevelCapEnabled = OPTIONS_LEVEL_CAP_OFF;
+        gTasks[taskId].func = Task_OakSpeech_AskBattleStyle;
+        break;
+    }
+}
+
+static void Task_OakSpeech_AskBattleStyle(u8 taskId)
+{
+    if (!IsTextPrinterActiveOnWindow(WIN_INTRO_TEXTBOX))
+    {
+        OakSpeechPrintMessage(gOakSpeech_Text_BattleStyleQuestion, sOakSpeechResources->textSpeed, FALSE);
+        gTasks[taskId].tTimer = 0;
+        gTasks[taskId].func = Task_OakSpeech_HandleBattleStyleInput;
+    }
+}
+
+static void Task_OakSpeech_HandleBattleStyleInput(u8 taskId)
+{
+    s8 input;
+
+    if (IsTextPrinterActiveOnWindow(WIN_INTRO_TEXTBOX))
+        return;
+
+    if (gTasks[taskId].tTimer == 0)
+    {
+        CreateYesNoMenuAtPos(&sIntro_WindowTemplates[WIN_INTRO_YESNO], FONT_NORMAL, 0, 2, GetStandardFrameBaseTileNum(), 14, 0);
+        gTasks[taskId].tTimer = 1;
+        return;
+    }
+
+    input = Menu_ProcessInputNoWrapClearOnChoose();
+    switch (input)
+    {
+    case 0: // YES
+    case MENU_B_PRESSED:
+        PlaySE(SE_SELECT);
+        gSaveBlock2Ptr->optionsBattleStyle = OPTIONS_BATTLE_STYLE_SHIFT;
+        gTasks[taskId].func = Task_OakSpeech_ExplainOptionsMenu;
+        break;
+    case 1: // NO
+        PlaySE(SE_SELECT);
+        gSaveBlock2Ptr->optionsBattleStyle = OPTIONS_BATTLE_STYLE_SET;
+        gTasks[taskId].func = Task_OakSpeech_ExplainOptionsMenu;
+        break;
+    }
+}
+
+static void Task_OakSpeech_ExplainOptionsMenu(u8 taskId)
+{
+    if (!IsTextPrinterActiveOnWindow(WIN_INTRO_TEXTBOX))
+    {
+        OakSpeechPrintMessage(gOakSpeech_Text_AdventureSetupCanChangeLater, sOakSpeechResources->textSpeed, FALSE);
+        gTasks[taskId].func = Task_OakSpeech_FadeOutOak;
     }
 }
 

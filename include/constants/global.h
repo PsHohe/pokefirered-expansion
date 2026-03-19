@@ -165,6 +165,9 @@ enum Gender
 #define OPTIONS_BATTLE_STYLE_SHIFT  0
 #define OPTIONS_BATTLE_STYLE_SET    1
 
+#define OPTIONS_LEVEL_CAP_OFF       0
+#define OPTIONS_LEVEL_CAP_ON        1
+
 enum __attribute__((packed)) Direction
 {
     DIR_NONE,

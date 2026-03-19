@@ -1418,3 +1418,18 @@ Text_TestMsg::
 
 	.include "data/maps/OrphanageBedroom/scripts.inc"
 	.include "data/maps/OrphanageBedroom/text.inc"
+
+	.include "data/maps/HavenTownOrphanage/scripts.inc"
+	.include "data/maps/HavenTownOrphanage/text.inc"
+
+	.include "data/maps/HavenTown_Orphanage_1F/scripts.inc"
+	.include "data/maps/HavenTown_Orphanage_1F/text.inc"
+
+	.include "data/maps/Route001/scripts.inc"
+	.include "data/maps/Route001/text.inc"
+
+	.include "data/maps/HavenTown/scripts.inc"
+	.include "data/maps/HavenTown/text.inc"
+
+	.include "data/maps/HavenTown_Orphanage_2F/scripts.inc"
+	.include "data/maps/HavenTown_Orphanage_2F/text.inc"

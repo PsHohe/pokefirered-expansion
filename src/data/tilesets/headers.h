@@ -1241,3 +1241,14 @@ const struct Tileset gTileset_BattleFactory =
     .metatileAttributes = gMetatileAttributes_BattleFactory,
     .callback = NULL,
 };
+
+const struct Tileset gTileset_Orphanage =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_Orphanage,
+    .palettes = gTilesetPalettes_Orphanage,
+    .metatiles = gMetatiles_Orphanage,
+    .metatileAttributes = gMetatileAttributes_Orphanage,
+    .callback = NULL,
+};

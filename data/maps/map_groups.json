@@ -44,7 +44,10 @@
     "gMapGroup_IndoorSixIslandRoute",
     "gMapGroup_IndoorSevenIslandRoute",
     "gMapGroup_IndoorDynamic",
-    "gMapGroup_TestingGrounds"
+    "gMapGroup_TestingGrounds",
+    "gMapGroup_IndoorHaven",
+    "gMapGroup_MainOutdoors",
+    "gMapGroup_IndoorOrphanage"
   ],
   "gMapGroup_Link": [
     "BattleColosseum_2P",
@@ -626,5 +629,15 @@
   "gMapGroup_TestingGrounds": [
     "TestingGrounds",
     "OrphanageBedroom"
+  ],
+  "gMapGroup_IndoorHaven": [],
+  "gMapGroup_MainOutdoors": [
+    "HavenTownOrphanage",
+    "Route001",
+    "HavenTown"
+  ],
+  "gMapGroup_IndoorOrphanage": [
+    "HavenTown_Orphanage_1F",
+    "HavenTown_Orphanage_2F"
   ]
 }

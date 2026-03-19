@@ -16,12 +16,15 @@ enum
     MENUITEM_TEXTSPEED = 0,
     MENUITEM_BATTLESCENE,
     MENUITEM_BATTLESTYLE,
+    MENUITEM_LEVELCAP,
     MENUITEM_SOUND,
     MENUITEM_BUTTONMODE,
     MENUITEM_FRAMETYPE,
     MENUITEM_CANCEL,
     MENUITEM_COUNT
 };
+
+#define MENUITEMS_ON_SCREEN 7
 
 // Window Ids
 enum
@@ -35,9 +38,10 @@ struct OptionMenu
 {
     /*0x00*/ u16 option[MENUITEM_COUNT];
     /*0x0E*/ u16 cursorPos;
-    /*0x10*/ u8 loadState;
-    /*0x11*/ u8 state;
-    /*0x12*/ u8 loadPaletteState;
+    /*0x10*/ u16 scrollOffset;
+    /*0x12*/ u8 loadState;
+    /*0x13*/ u8 state;
+    /*0x14*/ u8 loadPaletteState;
 };
 
 static EWRAM_DATA struct OptionMenu *sOptionMenuPtr = NULL;
@@ -61,6 +65,7 @@ static void PrintOptionMenuHeader(void);
 static void DrawOptionMenuBg(void);
 static void LoadOptionMenuItemNames(void);
 static void UpdateSettingSelectionDisplay(u16 selection);
+static bool8 OptionMenu_UpdateScrollOffset(void);
 
 // Data Definitions
 static const struct WindowTemplate sOptionMenuWinTemplates[] =
@@ -127,13 +132,14 @@ static const struct BgTemplate sOptionMenuBgTemplates[] =
 };
 
 static const u16 sOptionMenuPalette[] = INCBIN_U16("graphics/misc/option_menu.gbapal");
-static const u16 sOptionMenuItemCounts[MENUITEM_COUNT] = {3, 2, 2, 2, 3, 10, 0};
+static const u16 sOptionMenuItemCounts[MENUITEM_COUNT] = {3, 2, 2, 2, 2, 3, 10, 0};
 
 static const u8 *const sOptionMenuItemsNames[MENUITEM_COUNT] =
 {
     [MENUITEM_TEXTSPEED]   = gText_TextSpeed,
     [MENUITEM_BATTLESCENE] = gText_BattleScene,
     [MENUITEM_BATTLESTYLE] = gText_BattleStyle,
+    [MENUITEM_LEVELCAP]    = gText_LevelCap,
     [MENUITEM_SOUND]       = gText_Sound,
     [MENUITEM_BUTTONMODE]  = gText_ButtonMode,
     [MENUITEM_FRAMETYPE]   = gText_Frame,
@@ -157,6 +163,12 @@ static const u8 *const sBattleStyleOptions[] =
 {
     gText_BattleStyleShift,
     gText_BattleStyleSet
+};
+
+static const u8 *const sLevelCapOptions[] =
+{
+    gText_LevelCapOff,
+    gText_LevelCapOn
 };
 
 static const u8 *const sSoundOptions[] =
@@ -202,9 +214,11 @@ void CB2_InitOptionMenu(void)
     sOptionMenuPtr->loadPaletteState = 0;
     sOptionMenuPtr->state = 0;
     sOptionMenuPtr->cursorPos = 0;
+    sOptionMenuPtr->scrollOffset = 0;
     sOptionMenuPtr->option[MENUITEM_TEXTSPEED] = gSaveBlock2Ptr->optionsTextSpeed;
     sOptionMenuPtr->option[MENUITEM_BATTLESCENE] = gSaveBlock2Ptr->optionsBattleSceneOff;
     sOptionMenuPtr->option[MENUITEM_BATTLESTYLE] = gSaveBlock2Ptr->optionsBattleStyle;
+    sOptionMenuPtr->option[MENUITEM_LEVELCAP] = gSaveBlock2Ptr->optionsLevelCapEnabled;
     sOptionMenuPtr->option[MENUITEM_SOUND] = gSaveBlock2Ptr->optionsSound;
     sOptionMenuPtr->option[MENUITEM_BUTTONMODE] = gSaveBlock2Ptr->optionsButtonMode;
     sOptionMenuPtr->option[MENUITEM_FRAMETYPE] = gSaveBlock2Ptr->optionsWindowFrameType;
@@ -386,6 +400,12 @@ static void Task_OptionMenu(u8 taskId)
         case 4:
             BufferOptionMenuString(sOptionMenuPtr->cursorPos);
             break;
+        case 5:
+            LoadOptionMenuItemNames();
+            for (u8 i = 0; i < MENUITEM_COUNT; i++)
+                BufferOptionMenuString(i);
+            UpdateSettingSelectionDisplay(sOptionMenuPtr->cursorPos);
+            break;
         }
         break;
     case 3:
@@ -438,7 +458,9 @@ static u8 OptionMenu_ProcessInput(void)
             sOptionMenuPtr->cursorPos = MENUITEM_CANCEL;
         else
             sOptionMenuPtr->cursorPos = sOptionMenuPtr->cursorPos - 1;
-        return 3;        
+        if (OptionMenu_UpdateScrollOffset())
+            return 5;
+        return 3;
     }
     else if (JOY_REPEAT(DPAD_DOWN))
     {
@@ -446,6 +468,8 @@ static u8 OptionMenu_ProcessInput(void)
             sOptionMenuPtr->cursorPos = MENUITEM_TEXTSPEED;
         else
             sOptionMenuPtr->cursorPos = sOptionMenuPtr->cursorPos + 1;
+        if (OptionMenu_UpdateScrollOffset())
+            return 5;
         return 3;
     }
     else if (JOY_NEW(B_BUTTON) || JOY_NEW(A_BUTTON))
@@ -463,11 +487,16 @@ static void BufferOptionMenuString(u8 selection)
     u8 str[20];
     u8 buf[12];
     u8 dst[3];
+    s16 visibleSelection;
     u8 x, y;
-    
+
+    visibleSelection = (s16)selection - (s16)sOptionMenuPtr->scrollOffset;
+    if (visibleSelection < 0 || visibleSelection >= MENUITEMS_ON_SCREEN)
+        return;
+
     memcpy(dst, sOptionMenuTextColor, 3);
     x = 0x82;
-    y = ((GetFontAttribute(FONT_NORMAL, FONTATTR_MAX_LETTER_HEIGHT) - 1) * selection) + 2;
+    y = ((GetFontAttribute(FONT_NORMAL, FONTATTR_MAX_LETTER_HEIGHT) - 1) * visibleSelection) + 2;
     FillWindowPixelRect(1, 1, x, y, 0x46, GetFontAttribute(FONT_NORMAL, FONTATTR_MAX_LETTER_HEIGHT));
 
     switch (selection)
@@ -480,6 +509,9 @@ static void BufferOptionMenuString(u8 selection)
         break;
     case MENUITEM_BATTLESTYLE:
         AddTextPrinterParameterized3(1, FONT_NORMAL, x, y, dst, -1, sBattleStyleOptions[sOptionMenuPtr->option[selection]]);
+        break;
+    case MENUITEM_LEVELCAP:
+        AddTextPrinterParameterized3(1, FONT_NORMAL, x, y, dst, -1, sLevelCapOptions[sOptionMenuPtr->option[selection]]);
         break;
     case MENUITEM_SOUND:
         AddTextPrinterParameterized3(1, FONT_NORMAL, x, y, dst, -1, sSoundOptions[sOptionMenuPtr->option[selection]]);
@@ -508,6 +540,7 @@ static void CloseAndSaveOptionMenu(u8 taskId)
     gSaveBlock2Ptr->optionsTextSpeed = sOptionMenuPtr->option[MENUITEM_TEXTSPEED];
     gSaveBlock2Ptr->optionsBattleSceneOff = sOptionMenuPtr->option[MENUITEM_BATTLESCENE];
     gSaveBlock2Ptr->optionsBattleStyle = sOptionMenuPtr->option[MENUITEM_BATTLESTYLE];
+    gSaveBlock2Ptr->optionsLevelCapEnabled = sOptionMenuPtr->option[MENUITEM_LEVELCAP];
     gSaveBlock2Ptr->optionsSound = sOptionMenuPtr->option[MENUITEM_SOUND];
     gSaveBlock2Ptr->optionsButtonMode = sOptionMenuPtr->option[MENUITEM_BUTTONMODE];
     gSaveBlock2Ptr->optionsWindowFrameType = sOptionMenuPtr->option[MENUITEM_FRAMETYPE];
@@ -551,20 +584,40 @@ static void DrawOptionMenuBg(void)
 static void LoadOptionMenuItemNames(void)
 {
     u8 i;
-    
+    u8 maxLetterHeight;
+
+    maxLetterHeight = GetFontAttribute(FONT_NORMAL, FONTATTR_MAX_LETTER_HEIGHT);
     FillWindowPixelBuffer(1, PIXEL_FILL(1));
-    for (i = 0; i < MENUITEM_COUNT; i++)
+    for (i = 0; i < MENUITEMS_ON_SCREEN && i + sOptionMenuPtr->scrollOffset < MENUITEM_COUNT; i++)
     {
-        AddTextPrinterParameterized(WIN_OPTIONS, FONT_NORMAL, sOptionMenuItemsNames[i], 8, (u8)((i * (GetFontAttribute(FONT_NORMAL, FONTATTR_MAX_LETTER_HEIGHT))) + 2) - i, TEXT_SKIP_DRAW, NULL);    
+        u8 selection = i + sOptionMenuPtr->scrollOffset;
+        AddTextPrinterParameterized(WIN_OPTIONS, FONT_NORMAL, sOptionMenuItemsNames[selection], 8, (u8)((i * maxLetterHeight) + 2) - i, TEXT_SKIP_DRAW, NULL);
     }
 }
 
 static void UpdateSettingSelectionDisplay(u16 selection)
 {
+    s16 visibleSelection;
     u16 maxLetterHeight, y;
-    
+
+    visibleSelection = (s16)selection - (s16)sOptionMenuPtr->scrollOffset;
+    if (visibleSelection < 0 || visibleSelection >= MENUITEMS_ON_SCREEN)
+        return;
+
     maxLetterHeight = GetFontAttribute(FONT_NORMAL, FONTATTR_MAX_LETTER_HEIGHT);
-    y = selection * (maxLetterHeight - 1) + 0x3A;
+    y = visibleSelection * (maxLetterHeight - 1) + 0x3A;
     SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(y, y + maxLetterHeight));
     SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(0x10, 0xE0));
+}
+
+static bool8 OptionMenu_UpdateScrollOffset(void)
+{
+    u16 oldOffset = sOptionMenuPtr->scrollOffset;
+
+    if (sOptionMenuPtr->cursorPos < sOptionMenuPtr->scrollOffset)
+        sOptionMenuPtr->scrollOffset = sOptionMenuPtr->cursorPos;
+    else if (sOptionMenuPtr->cursorPos >= sOptionMenuPtr->scrollOffset + MENUITEMS_ON_SCREEN)
+        sOptionMenuPtr->scrollOffset = sOptionMenuPtr->cursorPos - MENUITEMS_ON_SCREEN + 1;
+
+    return oldOffset != sOptionMenuPtr->scrollOffset;
 }

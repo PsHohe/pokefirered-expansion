@@ -336,3 +336,6 @@ const u32 gMetatileAttributes_BattleDome[] = INCBIN_U32("data/tilesets/secondary
 
 const u16 gMetatiles_BattleFactory[] = INCBIN_U16("data/tilesets/secondary/battle_factory/metatiles.bin");
 const u32 gMetatileAttributes_BattleFactory[] = INCBIN_U32("data/tilesets/secondary/battle_factory/metatile_attributes.bin");
+
+const u16 gMetatiles_Orphanage[] = INCBIN_U16("data/tilesets/secondary/orphanage/metatiles.bin");
+const u32 gMetatileAttributes_Orphanage[] = INCBIN_U32("data/tilesets/secondary/orphanage/metatile_attributes.bin");

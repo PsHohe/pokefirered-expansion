@@ -1,0 +1,10 @@
+HavenTown_Orphanage_1F_MapScripts::
+	.byte 0
+
+HavenTown_Orphanage_1F_QuickRest::
+	msgbox HavenTown_Orphanage_1F_Text_YouShouldTakeQuickRest
+	closemessage
+	call EventScript_OutOfCenterPartyHeal
+	msgbox HavenTown_Orphanage_1F_Text_LookingGreatTakeCare
+	release
+	end

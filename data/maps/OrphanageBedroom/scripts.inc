@@ -22,3 +22,11 @@ EventScript_Orphanage_PlayersHouse_2F_ShutDownPC::
 EventScript_Orphanage_PsyduckDoll::
 	msgbox Orphanage_Text_PsyduckDoll, MSGBOX_SIGN
 	end
+
+EventScript_Orphanage_Textbooks::
+    msgbox Orphanage_Text_Textbooks, MSGBOX_SIGN
+    end
+
+EventScript_Orphanage_OtherKidBox::
+    msgbox Orphanage_Text_OtherKidBox, MSGBOX_SIGN
+    end

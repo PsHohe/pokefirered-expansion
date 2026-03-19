@@ -2307,3 +2307,22 @@ const u16 gTilesetPalettes_BattleFactory[][16] =
     INCBIN_U16("data/tilesets/secondary/battle_factory/palettes/14.gbapal"),
     INCBIN_U16("data/tilesets/secondary/battle_factory/palettes/15.gbapal"),
 };
+
+const u16 gTilesetPalettes_Orphanage[][16] =
+{
+    INCBIN_U16("data/tilesets/secondary/orphanage/palettes/00.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/orphanage/palettes/01.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/orphanage/palettes/02.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/orphanage/palettes/03.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/orphanage/palettes/04.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/orphanage/palettes/05.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/orphanage/palettes/06.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/orphanage/palettes/07.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/orphanage/palettes/08.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/orphanage/palettes/09.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/orphanage/palettes/10.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/orphanage/palettes/11.gbapal"),
+    INCBIN_U16("data/tilesets/secondary/orphanage/palettes/12.gbapal"),
+};
+
+const u32 gTilesetTiles_Orphanage[] = INCBIN_U32("data/tilesets/secondary/orphanage/tiles.4bpp.lz");

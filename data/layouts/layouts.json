@@ -5044,7 +5044,7 @@
     {
       "id": "LAYOUT_ORPHANAGE_BEDROOM",
       "name": "OrphanageBedroom_Layout",
-      "width": 12,
+      "width": 15,
       "height": 10,
       "border_width": 2,
       "border_height": 2,
@@ -5052,6 +5052,66 @@
       "secondary_tileset": "gTileset_GenericBuilding1",
       "border_filepath": "data/layouts/OrphanageBedroom/border.bin",
       "blockdata_filepath": "data/layouts/OrphanageBedroom/map.bin"
+    },
+    {
+      "id": "LAYOUT_HAVEN_TOWN_ORPHANAGE",
+      "name": "HavenTownOrphanage_Layout",
+      "width": 22,
+      "height": 25,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_PalletTown",
+      "border_filepath": "data/layouts/HavenTownOrphanage/border.bin",
+      "blockdata_filepath": "data/layouts/HavenTownOrphanage/map.bin"
+    },
+    {
+      "id": "LAYOUT_HAVEN_TOWN_ORPHANAGE_1F",
+      "name": "HavenTown_Orphanage_1F_Layout",
+      "width": 15,
+      "height": 11,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_School",
+      "border_filepath": "data/layouts/HavenTown_Orphanage_1F/border.bin",
+      "blockdata_filepath": "data/layouts/HavenTown_Orphanage_1F/map.bin"
+    },
+    {
+      "id": "LAYOUT_ROUTE001",
+      "name": "Route001_Layout",
+      "width": 20,
+      "height": 20,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_PalletTown",
+      "border_filepath": "data/layouts/Route001/border.bin",
+      "blockdata_filepath": "data/layouts/Route001/map.bin"
+    },
+    {
+      "id": "LAYOUT_HAVEN_TOWN",
+      "name": "HavenTown_Layout",
+      "width": 22,
+      "height": 25,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_PalletTown",
+      "border_filepath": "data/layouts/HavenTown/border.bin",
+      "blockdata_filepath": "data/layouts/HavenTown/map.bin"
+    },
+    {
+      "id": "LAYOUT_HAVEN_TOWN_ORPHANAGE_2F",
+      "name": "HavenTown_Orphanage_2F_Layout",
+      "width": 15,
+      "height": 11,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_Orphanage",
+      "border_filepath": "data/layouts/HavenTown_Orphanage_2F/border.bin",
+      "blockdata_filepath": "data/layouts/HavenTown_Orphanage_2F/map.bin"
     }
   ]
 }

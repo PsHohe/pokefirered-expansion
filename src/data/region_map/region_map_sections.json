@@ -1153,6 +1153,22 @@
       "y": 10,
       "width": 1,
       "height": 1
+    },
+    {
+      "id": "MAPSEC_ORPHANAGE",
+      "name": "ORPHANAGE"
+    },
+    {
+      "id": "MAPSEC_HAVENTOWN_ORPHANAGE",
+      "name": "HAVENTOWN ORPHANAGE"
+    },
+    {
+      "id": "MAPSEC_ROUTE_001",
+      "name": "ROUTE 1"
+    },
+    {
+      "id": "MAPSEC_HAVENTOWN",
+      "name": "HAVEN TOWN"
     }
   ]
 }

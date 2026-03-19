@@ -211,6 +211,22 @@ gOakSpeech_Text_TellMeALittleAboutYourself::
     .string "But first, tell me a little about\n"
     .string "yourself.\p$"
 
+gOakSpeech_Text_AdventureSetupPreface::
+    .string "Before we begin, let's set a couple\n"
+    .string "of adventure options.\p$"
+
+gOakSpeech_Text_LevelCapQuestion::
+    .string "Would you like to use LEVEL CAPS?\n"
+    .string "NO is the easier option.\p$"
+
+gOakSpeech_Text_BattleStyleQuestion::
+    .string "Would you like to use SHIFT style?\n"
+    .string "YES is the easier option.\p$"
+
+gOakSpeech_Text_AdventureSetupCanChangeLater::
+    .string "You can change these options later\n"
+    .string "in the OPTIONS menu.\p$"
+
 gOakSpeech_Text_YourNameWhatIsIt::
     .string "Let's begin with your name.\n"
     .string "What is it?\p$"
