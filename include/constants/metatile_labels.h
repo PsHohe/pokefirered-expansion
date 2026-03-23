@@ -177,6 +177,9 @@
 // gTileset_MtEmber
 #define METATILE_MtEmber_CaveEntrance  0x346
 
+// gTileset_NewHaven
+#define METATILE_NewHaven_Door  0x293
+
 // gTileset_PalletTown
 #define METATILE_PalletTown_Door         0x2A3
 #define METATILE_PalletTown_OaksLabDoor  0x2AC

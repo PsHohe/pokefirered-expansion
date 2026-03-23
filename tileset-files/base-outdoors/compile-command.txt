@@ -1,0 +1,1 @@
+porytiles compile-primary -target-base-game=pokefirered -dual-layer -Wall -o $HOME/projects/pokefirered-expansion/data/tilesets/primary/base_outdoors $HOME/projects/pokefirered-expansion/tileset-files/base-outdoors $HOME/projects/pokefirered-expansion/include/constants/metatile_behaviors.h

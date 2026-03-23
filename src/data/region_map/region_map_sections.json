@@ -1169,6 +1169,10 @@
     {
       "id": "MAPSEC_HAVENTOWN",
       "name": "HAVEN TOWN"
+    },
+    {
+      "id": "MAPSEC_TESTING_GROUNDS",
+      "name": "TESTING GROUNDS"
     }
   ]
 }

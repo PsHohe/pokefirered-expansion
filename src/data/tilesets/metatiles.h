@@ -339,3 +339,12 @@ const u32 gMetatileAttributes_BattleFactory[] = INCBIN_U32("data/tilesets/second
 
 const u16 gMetatiles_Orphanage[] = INCBIN_U16("data/tilesets/secondary/orphanage/metatiles.bin");
 const u32 gMetatileAttributes_Orphanage[] = INCBIN_U32("data/tilesets/secondary/orphanage/metatile_attributes.bin");
+
+const u16 gMetatiles_base_outdoors[] = INCBIN_U16("data/tilesets/primary/base_outdoors/metatiles.bin");
+const u32 gMetatileAttributes_base_outdoors[] = INCBIN_U32("data/tilesets/primary/base_outdoors/metatile_attributes.bin");
+
+const u16 gMetatiles_HavenTown[] = INCBIN_U16("data/tilesets/secondary/haven_town/metatiles.bin");
+const u32 gMetatileAttributes_HavenTown[] = INCBIN_U32("data/tilesets/secondary/haven_town/metatile_attributes.bin");
+
+const u16 gMetatiles_NewHaven[] = INCBIN_U16("data/tilesets/secondary/new_haven/metatiles.bin");
+const u32 gMetatileAttributes_NewHaven[] = INCBIN_U32("data/tilesets/secondary/new_haven/metatile_attributes.bin");

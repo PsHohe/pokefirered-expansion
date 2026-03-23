@@ -1433,3 +1433,6 @@ Text_TestMsg::
 
 	.include "data/maps/HavenTown_Orphanage_2F/scripts.inc"
 	.include "data/maps/HavenTown_Orphanage_2F/text.inc"
+
+	.include "data/maps/TestingTilesets/scripts.inc"
+	.include "data/maps/TestingTilesets/text.inc"

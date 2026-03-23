@@ -5080,8 +5080,8 @@
     {
       "id": "LAYOUT_ROUTE001",
       "name": "Route001_Layout",
-      "width": 20,
-      "height": 20,
+      "width": 28,
+      "height": 46,
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_General",
@@ -5092,7 +5092,7 @@
     {
       "id": "LAYOUT_HAVEN_TOWN",
       "name": "HavenTown_Layout",
-      "width": 22,
+      "width": 36,
       "height": 25,
       "border_width": 2,
       "border_height": 2,
@@ -5112,6 +5112,18 @@
       "secondary_tileset": "gTileset_Orphanage",
       "border_filepath": "data/layouts/HavenTown_Orphanage_2F/border.bin",
       "blockdata_filepath": "data/layouts/HavenTown_Orphanage_2F/map.bin"
+    },
+    {
+      "id": "LAYOUT_TESTING_TILESETS",
+      "name": "TestingTilesets_Layout",
+      "width": 20,
+      "height": 20,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_NewHaven",
+      "border_filepath": "data/layouts/TestingTilesets/border.bin",
+      "blockdata_filepath": "data/layouts/TestingTilesets/map.bin"
     }
   ]
 }

@@ -18,6 +18,11 @@
       "map": "MAP_HAVEN_TOWN_ORPHANAGE",
       "offset": 0,
       "direction": "left"
+    },
+    {
+      "map": "MAP_ROUTE001",
+      "offset": -24,
+      "direction": "right"
     }
   ],
   "object_events": [],
@@ -39,6 +44,14 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "HavenTown_Rival2Mailbox"
+    },
+    {
+      "type": "sign",
+      "x": 20,
+      "y": 8,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "NULL"
     }
   ]
 }

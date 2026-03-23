@@ -628,7 +628,8 @@
   ],
   "gMapGroup_TestingGrounds": [
     "TestingGrounds",
-    "OrphanageBedroom"
+    "OrphanageBedroom",
+    "TestingTilesets"
   ],
   "gMapGroup_IndoorHaven": [],
   "gMapGroup_MainOutdoors": [

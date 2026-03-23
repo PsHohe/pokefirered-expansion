@@ -1,0 +1,2 @@
+id,behavior,terrainType,encounterType
+65,MB_WARP_DOOR,TILE_TERRAIN_NORMAL,TILE_ENCOUNTER_NONE

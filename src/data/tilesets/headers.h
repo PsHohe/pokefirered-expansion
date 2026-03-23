@@ -1252,3 +1252,36 @@ const struct Tileset gTileset_Orphanage =
     .metatileAttributes = gMetatileAttributes_Orphanage,
     .callback = NULL,
 };
+
+const struct Tileset gTileset_base_outdoors =
+{
+    .isCompressed = TRUE,
+    .isSecondary = FALSE,
+    .tiles = gTilesetTiles_base_outdoors,
+    .palettes = gTilesetPalettes_base_outdoors,
+    .metatiles = gMetatiles_base_outdoors,
+    .metatileAttributes = gMetatileAttributes_base_outdoors,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_HavenTown =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_HavenTown,
+    .palettes = gTilesetPalettes_HavenTown,
+    .metatiles = gMetatiles_HavenTown,
+    .metatileAttributes = gMetatileAttributes_HavenTown,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_NewHaven =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_NewHaven,
+    .palettes = gTilesetPalettes_NewHaven,
+    .metatiles = gMetatiles_NewHaven,
+    .metatileAttributes = gMetatileAttributes_NewHaven,
+    .callback = NULL,
+};

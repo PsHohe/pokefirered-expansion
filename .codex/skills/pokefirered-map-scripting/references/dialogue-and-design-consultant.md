@@ -28,6 +28,18 @@ Use a prompt equivalent to:
 - Avoid modern slang that feels out-of-setting.
 - Keep iconic Pokemon stylistic conventions where appropriate (for example: "POKeMON" formatting already used by project text labels).
 
+## Dialob box constants
+
+Recommended usage by case:
+
+- MSGBOX_NPC: normal A-button NPC talk when you want auto lock + faceplayer + release.
+- MSGBOX_SIGN: signs/background objects (no facing), auto lockall + releaseall.
+- MSGBOX_DEFAULT (or omit arg): use inside larger/cutscene scripts where you already manage lock/release/facing yourself.
+- MSGBOX_YESNO: prompt the player and branch on VAR_RESULT (YES/NO).
+- MSGBOX_AUTOCLOSE: mainly post-trainer-battle continuation scripts; it closes with release.
+- MSGBOX_GETPOINTS: special BP-style message/fanfare flow.
+Practical rule: if the message helper should handle locking/facing, use NPC/SIGN; if your script already controls flow, use default (explicit or omitted).
+
 ## Line-Length Constraint
 
 Hard rule:
