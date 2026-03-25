@@ -23,6 +23,7 @@
 - `make tidy` : Remove built ROM/ELF/map artifacts.
 - `make clean` : Full cleanup (artifacts, generated assets, tools, test tools).
 Note: adding `-j8` is the correct way to make `make` run faster in this device.
+Only run `make check` when you change deep features of the game, not basic scripting, as it takes a very long time to run, even for targeted tests.
 
 ## Main Organization
 - `src/` : Primary game logic and systems.
@@ -39,4 +40,3 @@ Note: adding `-j8` is the correct way to make `make` run faster in this device.
 ## Agent Working Notes
 - Prefer editing source/data inputs, not generated outputs or build artifacts (`build/`, `*.gba`, `*.elf`, `*.map`).
 - If changing build behavior, inspect `Makefile`, `make_tools.mk`, and the relevant `*_rules.mk` file together.
-- When touching gameplay behavior, run `make check` before finalizing.

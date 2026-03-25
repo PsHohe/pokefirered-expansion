@@ -8,3 +8,7 @@ HavenTown_Orphanage_1F_QuickRest::
 	msgbox HavenTown_Orphanage_1F_Text_LookingGreatTakeCare
 	release
 	end
+
+HavenTown_Orphanage_1F_Vera::
+	weightedmsgbox MSGBOX_NPC, HavenTown_Orphanage_1F_Text_VeraCommon, HavenTown_Orphanage_1F_Text_VeraMid, HavenTown_Orphanage_1F_Text_VeraRare
+	end
