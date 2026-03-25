@@ -2155,6 +2155,38 @@
 	.2byte \slot
 	.endm
 
+	@ Shows one of the provided texts with descending weights.
+	@ For N texts, weights are N, N-1, ..., 1 in argument order.
+	.macro weightedmsgbox type:req, text:req, texts:vararg
+	.set _weightedmsgbox_n, 0
+	.irp _weightedmsgbox_text, \text, \texts
+	.set _weightedmsgbox_n, _weightedmsgbox_n + 1
+	.endr
+
+	.if _weightedmsgbox_n < 2
+	.error "weightedmsgbox requires at least 2 text arguments"
+	.endif
+
+	.set _weightedmsgbox_sum, (_weightedmsgbox_n * (_weightedmsgbox_n + 1)) / 2
+	.if _weightedmsgbox_sum > 0xFFFF
+	.error "weightedmsgbox has too many texts (weight sum exceeds 0xFFFF)"
+	.endif
+
+	random _weightedmsgbox_sum
+
+	.set _weightedmsgbox_weight, _weightedmsgbox_n
+	.set _weightedmsgbox_cumulative, 0
+	.irp _weightedmsgbox_text, \text, \texts
+	.set _weightedmsgbox_cumulative, _weightedmsgbox_cumulative + _weightedmsgbox_weight
+	goto_if_ge VAR_RESULT, _weightedmsgbox_cumulative, 1f
+	msgbox \_weightedmsgbox_text, \type
+	goto 2f
+	1:
+	.set _weightedmsgbox_weight, _weightedmsgbox_weight - 1
+	.endr
+	2:
+	.endm
+
 	@ Sets VAR_RESULT to one of the arguments (via setorcopyvar).
 	.macro randomelement element:req, elements:vararg
 	.set _randomelement_n, 0

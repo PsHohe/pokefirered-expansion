@@ -8,3 +8,7 @@ HavenTown_Orphanage_Mailbox::
 HavenTown_Orphanage_Zigzagoon::
     msgbox HavenTown_Orphanage_Text_Zigzagoon
     end
+
+HavenTown_Orphanage_Iris::
+	weightedmsgbox MSGBOX_NPC, HavenTown_Orphanage_Text_IrisCommon, HavenTown_Orphanage_Text_IrisMid, HavenTown_Orphanage_Text_IrisRare
+	end
