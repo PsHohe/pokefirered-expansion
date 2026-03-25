@@ -1,5 +1,7 @@
 # Troubleshooting
 
+These checks assume the `pokefirered-expansion` object-event pipeline and build conditionals.
+
 ## Pink block with sprite fragments when moving
 
 Cause:
@@ -43,4 +45,4 @@ Cause:
 
 Fix:
 1. Verify declarations and definitions exist in all required files.
-2. Verify new entries are outside incompatible `#if IS_FRLG` blocks unless intentionally FRLG-only.
+2. Verify new entries are in the active compile path and not gated by mismatched `#if IS_FRLG`/`#if !IS_FRLG` blocks unless intentionally version-specific.

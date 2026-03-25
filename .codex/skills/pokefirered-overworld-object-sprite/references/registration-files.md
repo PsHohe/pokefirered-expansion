@@ -1,6 +1,6 @@
 # Registration Files
 
-Use this checklist when adding a new object-event NPC sprite.
+Use this checklist when adding a new object-event NPC sprite in `pokefirered-expansion`.
 
 1. Conversion rule:
 - `spritesheet_rules.mk`

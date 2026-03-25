@@ -1,0 +1,4 @@
+interface:
+  display_name: "PokeFireRed OW Sprite"
+  short_description: "Add and register NPC overworld sprites"
+  default_prompt: "Use $pokefirered-overworld-object-sprite to add and register a new NPC object-event overworld sprite in this repo."

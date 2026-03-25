@@ -1,9 +1,8 @@
----
-name: pokeemerald-overworld-object-sprite
-description: Add or update a non-Pokemon object-event overworld sprite in pokeemerald-expansion. Use when a request involves adding an NPC/character sprite from a PNG, wiring a new OBJ_EVENT_GFX_* constant, registering object-event graphics/palette structs, updating sprite conversion rules in spritesheet_rules.mk, or fixing visual issues such as pink blocks, fragmented frames, or incorrect overworld colors.
+name: pokefirered-overworld-object-sprite
+description: Add or update a non-Pokemon object-event overworld sprite in pokefirered-expansion. Use when a request involves adding an NPC/character sprite from a PNG, wiring a new OBJ_EVENT_GFX_* constant, registering object-event graphics/palette structs, updating sprite conversion rules in spritesheet_rules.mk, or fixing visual issues such as pink blocks, fragmented frames, or incorrect overworld colors.
 ---
 
-# Pokeemerald Overworld Object Sprite
+# Pokefirered Overworld Object Sprite
 
 ## Overview
 
@@ -44,7 +43,7 @@ $(OBJEVENTGFXDIR)/people/<name>.4bpp: %.4bpp: %.png
 
 6. Build and validate.
 - Run `make -j8`.
-- If build fails with undefined palette/graphics symbols, verify declarations are not in the wrong conditional block (`#if IS_FRLG` etc).
+- If build fails with undefined palette/graphics symbols, verify declarations are in the active build path and not accidentally placed under mismatched conditionals (`#if IS_FRLG`/`#if !IS_FRLG`, etc).
 
 7. Use on map objects.
 - In `data/maps/<MapName>/map.json`, set:
