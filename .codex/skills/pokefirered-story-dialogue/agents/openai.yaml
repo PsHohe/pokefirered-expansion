@@ -1,0 +1,4 @@
+interface:
+  display_name: "PokeFireRed Story & Dialogue"
+  short_description: "Implement Pokemon story/dialogue decisions"
+  default_prompt: "Use $pokefirered-story-dialogue to design and implement story and dialogue decisions in this repository."
