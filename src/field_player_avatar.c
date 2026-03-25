@@ -35,6 +35,7 @@ static u8 ObjectEventCB2_NoMovement2(struct ObjectEvent * object, struct Sprite 
 static bool8 TryUpdatePlayerSpinDirection(void);
 static bool8 TryInterruptObjectEventSpecialAnim(struct ObjectEvent * playerObjEvent, u8 direction);
 static void npc_clear_strange_bits(struct ObjectEvent * playerObjEvent);
+static void HandleBenchNorthMovementLock(struct ObjectEvent *playerObjEvent, u8 *direction, u16 *heldKeys);
 static void MovePlayerAvatarUsingKeypadInput(u8 direction, u16 newKeys, u16 heldKeys);
 static void PlayerAllowForcedMovementIfMovingSameDirection(void);
 static bool8 ForcedMovement_None(void);
@@ -125,6 +126,7 @@ void player_step(u8 direction, u16 newKeys, u16 heldKeys)
         {
             npc_clear_strange_bits(playerObjEvent);
             DoPlayerAvatarTransition();
+            HandleBenchNorthMovementLock(playerObjEvent, &direction, &heldKeys);
             if (!TryDoMetatileBehaviorForcedMovement())
             {
                 if (GetFollowerNPCData(FNPC_DATA_FORCED_MOVEMENT) != FNPC_FORCED_NONE)
@@ -140,6 +142,20 @@ void player_step(u8 direction, u16 newKeys, u16 heldKeys)
             }
         }
     }
+}
+
+static void HandleBenchNorthMovementLock(struct ObjectEvent *playerObjEvent, u8 *direction, u16 *heldKeys)
+{
+    if (playerObjEvent->currentMetatileBehavior != MB_BENCH_NORTH)
+        return;
+
+    if (playerObjEvent->facingDirection != DIR_SOUTH)
+        PlayerFaceDirection(DIR_SOUTH);
+
+    if (*direction != DIR_SOUTH)
+        *direction = DIR_NONE;
+
+    *heldKeys &= ~B_BUTTON;
 }
 
 static bool8 TryInterruptObjectEventSpecialAnim(struct ObjectEvent *playerObjEvent, u8 direction)

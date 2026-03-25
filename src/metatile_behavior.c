@@ -549,6 +549,7 @@ bool8 MetatileBehavior_IsSurfableAndNotWaterfall(u8 metatileBehavior)
 bool8 MetatileBehavior_IsEastBlocked(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_IMPASSABLE_EAST
+     || metatileBehavior == MB_BENCH_NORTH
      || metatileBehavior == MB_IMPASSABLE_NORTHEAST
      || metatileBehavior == MB_IMPASSABLE_SOUTHEAST)
             return TRUE;
@@ -559,6 +560,7 @@ bool8 MetatileBehavior_IsEastBlocked(u8 metatileBehavior)
 bool8 MetatileBehavior_IsWestBlocked(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_IMPASSABLE_WEST
+     || metatileBehavior == MB_BENCH_NORTH
      || metatileBehavior == MB_IMPASSABLE_NORTHWEST
      || metatileBehavior == MB_IMPASSABLE_SOUTHWEST)
             return TRUE;
@@ -569,6 +571,7 @@ bool8 MetatileBehavior_IsWestBlocked(u8 metatileBehavior)
 bool8 MetatileBehavior_IsNorthBlocked(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_IMPASSABLE_NORTH
+     || metatileBehavior == MB_BENCH_NORTH
      || metatileBehavior == MB_IMPASSABLE_NORTHEAST
      || metatileBehavior == MB_IMPASSABLE_NORTHWEST)
             return TRUE;
