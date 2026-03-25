@@ -85,9 +85,10 @@ static void Task_OakSpeech_YourNameWhatIsIt(u8);
 static void Task_OakSpeech_FadeOutForPlayerNamingScreen(u8);
 static void Task_OakSpeech_HandleRivalNameInput(u8);
 static void Task_OakSpeech_DoNamingScreen(u8);
-static void Task_OakSpeech_WaitThenAskSecondRivalName(u8);
 static void Task_OakSpeech_ConfirmName(u8);
 static void Task_OakSpeech_HandleConfirmNameInput(u8);
+static void Task_OakSpeech_SetUpSecondRivalTransition(u8);
+static void Task_OakSpeech_SwapToSecondRivalPic(u8);
 static void Task_OakSpeech_FadeOutPlayerPic(u8);
 static void Task_OakSpeech_FadeOutRivalPic(u8);
 static void Task_OakSpeech_FadeInRivalPic(u8);
@@ -1667,8 +1668,7 @@ static void Task_OakSpeech_HandleConfirmNameInput(u8 taskId)
         {
             StringExpandPlaceholders(gStringVar4, gOakSpeech_Text_RememberRivalsName);
             OakSpeechPrintMessage(gStringVar4, sOakSpeechResources->textSpeed, TRUE);
-            sOakSpeechResources->rivalToName = RIVAL_NAME_2;
-            gTasks[taskId].func = Task_OakSpeech_WaitThenAskSecondRivalName;
+            gTasks[taskId].func = Task_OakSpeech_SetUpSecondRivalTransition;
         }
         else
         {
@@ -1688,10 +1688,39 @@ static void Task_OakSpeech_HandleConfirmNameInput(u8 taskId)
     }
 }
 
-static void Task_OakSpeech_WaitThenAskSecondRivalName(u8 taskId)
+static void Task_OakSpeech_SetUpSecondRivalTransition(u8 taskId)
 {
     if (!IsTextPrinterActiveOnWindow(WIN_INTRO_TEXTBOX))
-        gTasks[taskId].func = Task_OakSpeech_RepeatNameQuestion;
+    {
+        ClearDialogWindowAndFrame(WIN_INTRO_TEXTBOX, TRUE);
+        CreateFadeInTask(taskId, 2);
+        gTasks[taskId].tTimer = 24;
+        gTasks[taskId].func = Task_OakSpeech_SwapToSecondRivalPic;
+    }
+}
+
+static void Task_OakSpeech_SwapToSecondRivalPic(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+
+    if (tTrainerPicFadeState != 0)
+    {
+        ClearTrainerPic();
+        if (tTimer != 0)
+        {
+            tTimer--;
+        }
+        else
+        {
+            sOakSpeechResources->rivalToName = RIVAL_NAME_2;
+            gTasks[taskId].tTrainerPicPosX = 0;
+            gSpriteCoordOffsetX = 0;
+            ChangeBgX(2, 0, BG_COORD_SET);
+            LoadTrainerPic(RIVAL_PIC, 0);
+            CreateFadeOutTask(taskId, 2);
+            gTasks[taskId].func = Task_OakSpeech_AskRivalsName;
+        }
+    }
 }
 
 static void Task_OakSpeech_FadeOutPlayerPic(u8 taskId)
