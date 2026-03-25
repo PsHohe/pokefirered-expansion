@@ -93,7 +93,7 @@ static void ClearEReaderTrainer(void)
 
 static void WarpToPlayersRoom(void)
 {
-    SetWarpDestination(MAP_GROUP(MAP_PALLET_TOWN_PLAYERS_HOUSE_2F), MAP_NUM(MAP_PALLET_TOWN_PLAYERS_HOUSE_2F), -1, 6, 6);
+    SetWarpDestination(MAP_GROUP(MAP_HAVEN_TOWN_ORPHANAGE_2F), MAP_NUM(MAP_HAVEN_TOWN_ORPHANAGE_2F), -1, 3, 5);
     WarpIntoMap();
 }
 
@@ -118,11 +118,13 @@ void ResetMenuAndMonGlobals(void)
 void NewGameInitData(void)
 {
     u8 rivalName[PLAYER_NAME_LENGTH + 1];
+    u8 rivalName2[PLAYER_NAME_LENGTH + 1];
 
     if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_CORRUPT)
         RtcReset();
 
     StringCopy(rivalName, gSaveBlock1Ptr->rivalName);
+    StringCopy(rivalName2, gSaveBlock1Ptr->rivalName2);
     gDifferentSaveFile = TRUE;
     ZeroPlayerPartyMons();
     ZeroEnemyPartyMons();
@@ -163,6 +165,7 @@ void NewGameInitData(void)
     WarpToPlayersRoom();
     RunScriptImmediately(EventScript_ResetAllMapFlags);
     StringCopy(gSaveBlock1Ptr->rivalName, rivalName);
+    StringCopy(gSaveBlock1Ptr->rivalName2, rivalName2);
     ResetTrainerTowerResults();
     ResetItemFlags();
     ResetDexNav();

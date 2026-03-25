@@ -22,6 +22,30 @@ gNameChoice_Kaz::
 gNameChoice_Toru::
     .string "TORU$"
 
+gNameChoice_Adrian::
+    .string "ADRIAN$"
+
+gNameChoice_Dorian::
+    .string "DORIAN$"
+
+gNameChoice_Rowan::
+    .string "ROWAN$"
+
+gNameChoice_Blaire::
+    .string "BLAIRE$"
+
+gNameChoice_Cedric::
+    .string "CEDRIC$"
+
+gNameChoice_Lucian::
+    .string "LUCIAN$"
+
+gNameChoice_Orion::
+    .string "ORION$"
+
+gNameChoice_Silas::
+    .string "SILAS$"
+
 gNameChoice_Ash::
     .string "ASH$"
 
@@ -190,7 +214,7 @@ gOakSpeech_Text_WelcomeToTheWorld::
     .string "Hello, there!\n"
     .string "Glad to meet you!\p"
     .string "Welcome to the world of POKéMON!\p"
-    .string "My name is OAK.\p"
+    .string "My name is MYRTLE.\p"
     .string "People affectionately refer to me\n"
     .string "as the POKéMON PROFESSOR.\p$"
 
@@ -220,8 +244,8 @@ gOakSpeech_Text_LevelCapQuestion::
     .string "NO is the easier option.\p$"
 
 gOakSpeech_Text_BattleStyleQuestion::
-    .string "Would you like to use SHIFT style?\n"
-    .string "YES is the easier option.\p$"
+    .string "Choose your BATTLE STYLE.\n"
+    .string "SHIFT is the easier option.\p$"
 
 gOakSpeech_Text_AdventureSetupCanChangeLater::
     .string "You can change these options later\n"
@@ -236,24 +260,39 @@ gOakSpeech_Text_SoYourNameIsPlayer::
     .string "So your name is {PLAYER}.$"
 
 gOakSpeech_Text_WhatWasHisName::
-    .string "This is my grandson.\p"
-    .string "He's been your rival since you both\n"
+    .string "This is your friend from the\n"
+    .string "orphanage.\p"
+    .string "You've known each other since you\n"
     .string "were babies.\p"
     .string "…Erm, what was his name now?$"
 
 gOakSpeech_Text_YourRivalsNameWhatWasIt::
-    .string "Your rival's name, what was it now?$"
+    .string "Your orphanage friend's name,\n"
+    .string "what was it now?$"
+
+gOakSpeech_Text_YourSecondRivalsNameWhatWasIt::
+    .string "And that town kid's name,\n"
+    .string "what was it now?$"
 
 gOakSpeech_Text_ConfirmRivalName::
     .string "…Er, was it {RIVAL}?$"
 
+gOakSpeech_Text_ConfirmRival2Name::
+    .string "…Er, was it {RIVAL2}?$"
+
 gOakSpeech_Text_RememberRivalsName::
-    .string "That's right! I remember now!\n"
-    .string "His name is {RIVAL}!\p$"
+    .string "That's right! His name is {RIVAL}!\p"
+    .string "Now then… There's that kid from town\n"
+    .string "who always bugs you.\p$"
+
+gOakSpeech_Text_RememberRival2Name::
+    .string "Right! That kid's name is {RIVAL2}!\p$"
 
 gOakSpeech_Text_LetsGo::
     .string "{PLAYER}!\p"
     .string "Your very own POKéMON legend is\n"
     .string "about to unfold!\p"
+    .string "{RIVAL} and {RIVAL2} are waiting\n"
+    .string "for you out there!\p"
     .string "A world of dreams and adventures\n"
     .string "with POKéMON awaits! Let's go!$"

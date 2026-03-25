@@ -1071,7 +1071,8 @@ struct SaveBlock1
 #endif //FREE_MYSTERY_EVENT_BUFFERS
     /*0x3A08*/ struct RecordMixingGift recordMixingGift; // unused
     /*0x3A4C*/ u8 rivalName[PLAYER_NAME_LENGTH + 1];
-    /*0x3A54*/ struct FameCheckerSaveData fameChecker[NUM_FAMECHECKER_PERSONS];
+               u8 rivalName2[PLAYER_NAME_LENGTH + 1];
+    /*0x3A5C*/ struct FameCheckerSaveData fameChecker[NUM_FAMECHECKER_PERSONS];
 #if FREE_UNION_ROOM_CHAT == FALSE
     /*0x3AD4*/ u8 registeredTexts[UNION_ROOM_KB_ROW_COUNT][21];
 #endif //FREE_UNION_ROOM_CHAT

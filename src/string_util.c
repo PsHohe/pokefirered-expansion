@@ -428,6 +428,11 @@ static u8 *ExpandPlaceholder_RivalName(void)
     }
 }
 
+static u8 *ExpandPlaceholder_Rival2Name(void)
+{
+    return gSaveBlock1Ptr->rivalName2;
+}
+
 static u8 *ExpandPlaceholder_Version(void)
 {
 #if defined(FIRERED)
@@ -511,6 +516,7 @@ const u8 *GetExpandedPlaceholder(u32 id)
         [PLACEHOLDER_ID_ARCHIE]       = ExpandPlaceholder_Archie,
         [PLACEHOLDER_ID_GROUDON]      = ExpandPlaceholder_Groudon,
         [PLACEHOLDER_ID_KYOGRE]       = ExpandPlaceholder_Kyogre,
+        [PLACEHOLDER_ID_RIVAL2]       = ExpandPlaceholder_Rival2Name,
     };
 
     if (id >= NELEMS(funcs))
