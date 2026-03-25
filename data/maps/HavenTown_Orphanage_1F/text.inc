@@ -8,7 +8,7 @@ HavenTown_Orphanage_1F_Text_LookingGreatTakeCare::
     .string "Take care now!$"
 
 HavenTown_Orphanage_1F_Text_VeraCommon::
-    .string "Everyone watches the cartoons.\p"
+    .string "Everyone watches the cartoons.\n"
     .string "I watch the news ticker underneath.$"
 
 HavenTown_Orphanage_1F_Text_VeraMid::
@@ -19,3 +19,12 @@ HavenTown_Orphanage_1F_Text_VeraMid::
 HavenTown_Orphanage_1F_Text_VeraRare::
     .string "If anything goes wrong here,\n"
     .string "I notice.\pSomebody has to.$"
+
+HavenTown_Orphanage_1F_Text_MarinaNeedEnvelopeDelivered::
+    .string "Mrs. Marina: There you are, {PLAYER}.\p"
+    .string "I need you to deliver this envelope\n"
+    .string "to the old man in town.\pPlease take it\n"
+    .string "to him right away.$"
+
+HavenTown_Orphanage_1F_Text_MarinaGaveEnvelope::
+    .string "Mrs. Marina handed you an ENVELOPE.$"

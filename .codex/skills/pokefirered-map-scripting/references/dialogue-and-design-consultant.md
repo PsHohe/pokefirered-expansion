@@ -65,4 +65,7 @@ Ask consultant to return:
 2. A short rationale (tone/pacing/player guidance).
 3. Optional alternatives for key lines.
 
-Then convert approved lines into map `text.inc` strings using `\n`, `\p`, and script flow as needed.
+Then convert approved lines into map `text.inc` strings using `\n`, `\l`, `\p`, and script flow as needed.
+`\n` Writes the next text in a new line, without erasing the first. Useful for continuing an idea or phrase.
+`\l` Scrolls down and makes the new line the first. Generally, use it only after one usage of `\n`, in case 3 lines are part of the same paragraph.
+`\p` Clears the dialog window and starts the new line. Useful for new paragraphs.

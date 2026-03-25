@@ -10,7 +10,7 @@ HavenTown_Orphanage_2F_Text_ThomasFact1::
     .string "with its feet!$"
 
 HavenTown_Orphanage_2F_Text_ThomasFact2::
-    .string "Did you know? VULPIX are born with\l"
+    .string "Did you know? VULPIX are born with\n"
     .string "one white tail.\pIt splits as they grow!$"
 
 HavenTown_Orphanage_2F_Text_ThomasFact3::
@@ -18,7 +18,7 @@ HavenTown_Orphanage_2F_Text_ThomasFact3::
     .string "in really dirty water.\pThat's amazing!$"
 
 HavenTown_Orphanage_2F_Text_ThomasFact4::
-    .string "Did you know? SLOWPOKE fish by\l"
+    .string "Did you know? SLOWPOKE fish by\n"
     .string "dangling their tails.\pSmart and lazy!$"
 
 HavenTown_Orphanage_2F_Text_ThomasFact5::
@@ -28,3 +28,11 @@ HavenTown_Orphanage_2F_Text_ThomasFact5::
 HavenTown_Orphanage_2F_Text_ThomasFact6::
     .string "Did you know? PIKACHU shock each\n"
     .string "other to greet friends.\pAt least, that's my theory!$"
+
+HavenTown_Orphanage_2F_Text_MarinaCallsPlayerDownstairs::
+    .string "Mrs. Marina: {PLAYER}!\n"
+    .string "Come downstairs right away, please!$"
+
+HavenTown_Orphanage_2F_Text_ThomasMarinaWaitingDownstairs::
+    .string "Mrs. Marina is waiting for you\n"
+    .string "downstairs.\pYou should go now.$"

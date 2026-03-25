@@ -600,7 +600,7 @@
 #define FLAG_GOT_TM28_FROM_ROCKET                        0x23F
 #define FLAG_GOT_OLD_ROD                                 0x240
 #define FLAG_GOT_BIKE_VOUCHER                            0x241
-#define FLAG_0x242                                       0x242
+#define FLAG_ORPHANAGE_MARINA_CALLED_PLAYER_DOWNSTAIRS   0x242
 #define FLAG_GOT_COIN_CASE                               0x243
 #define FLAG_GOT_GOOD_ROD                                0x244
 #define FLAG_GOT_TM29_FROM_MR_PSYCHIC                    0x245
@@ -624,7 +624,7 @@
 #define FLAG_DID_MARC_TRADE                              0x257
 #define FLAG_BEAT_RIVAL_IN_OAKS_LAB                      0x258
 #define FLAG_GOT_TM06_FROM_KOGA                          0x259
-#define FLAG_0x25A                                       0x25A
+#define FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED            0x25A
 #define FLAG_GOT_TM27                                    0x25B
 #define FLAG_0x25C                                       0x25C
 #define FLAG_0x25D                                       0x25D

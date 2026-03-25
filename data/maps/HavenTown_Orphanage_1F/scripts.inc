@@ -1,5 +1,47 @@
 HavenTown_Orphanage_1F_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, HavenTown_Orphanage_1F_OnTransition
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, HavenTown_Orphanage_1F_OnFrame
 	.byte 0
+
+HavenTown_Orphanage_1F_OnTransition::
+	setvar VAR_TEMP_0, 0
+	goto_if_set FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED, HavenTown_Orphanage_1F_OnTransition_SetMarinaNormal
+	goto_if_unset FLAG_ORPHANAGE_MARINA_CALLED_PLAYER_DOWNSTAIRS, HavenTown_Orphanage_1F_OnTransition_SetMarinaNormal
+	setobjectxyperm LOCALID_MARINA, 9, 2
+	setobjectmovementtype LOCALID_MARINA, MOVEMENT_TYPE_FACE_RIGHT
+	setvar VAR_TEMP_0, 1
+	end
+
+HavenTown_Orphanage_1F_OnTransition_SetMarinaNormal::
+	setobjectxyperm LOCALID_MARINA, 8, 5
+	setobjectmovementtype LOCALID_MARINA, MOVEMENT_TYPE_NONE
+	end
+
+HavenTown_Orphanage_1F_OnFrame::
+	map_script_2 VAR_TEMP_0, 1, HavenTown_Orphanage_1F_EventScript_MarinaStartsEnvelopeQuest
+	.2byte 0
+
+HavenTown_Orphanage_1F_EventScript_MarinaStartsEnvelopeQuest::
+	lockall
+	textcolor NPC_TEXT_COLOR_FEMALE
+	playse SE_PIN
+	applymovement LOCALID_MARINA, Common_Movement_ExclamationMark
+	waitmovement 0
+	applymovement LOCALID_MARINA, HavenTown_Orphanage_1F_Movement_MarinaApproachPlayer
+	waitmovement 0
+	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterLeft
+	waitmovement 0
+	msgbox HavenTown_Orphanage_1F_Text_MarinaNeedEnvelopeDelivered
+	giveitem_msg HavenTown_Orphanage_1F_Text_MarinaGaveEnvelope, ITEM_LETTER, 1, MUS_OBTAIN_KEY_ITEM
+	setflag FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED
+	setvar VAR_TEMP_0, 0
+	releaseall
+	end
+
+HavenTown_Orphanage_1F_Movement_MarinaApproachPlayer::
+	walk_right
+	walk_right
+	step_end
 
 HavenTown_Orphanage_1F_QuickRest::
 	msgbox HavenTown_Orphanage_1F_Text_YouShouldTakeQuickRest
