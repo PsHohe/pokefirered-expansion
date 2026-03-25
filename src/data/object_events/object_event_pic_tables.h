@@ -1930,6 +1930,10 @@ static const struct SpriteFrameImage sPicTable_SchoolKidM[] = {
     overworld_ascending_frames(gObjectEventPic_SchoolKidM, 2, 4),
 };
 
+static const struct SpriteFrameImage sPicTable_Preschooler[] = {
+    overworld_ascending_frames(gObjectEventPic_Preschooler, 2, 4),
+};
+
 static const struct SpriteFrameImage sPicTable_PokeBall[] = {
     overworld_frame(gObjectEventPic_PokeBall, 2, 4, 0),
     overworld_frame(gObjectEventPic_PokeBall, 2, 4, 1),

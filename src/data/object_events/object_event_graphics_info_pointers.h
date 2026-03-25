@@ -181,6 +181,7 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ReporterM;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RunningTriathleteF;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RunningTriathleteM;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SchoolKidM;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Preschooler;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Steven;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Scott;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Anabel;
@@ -381,6 +382,7 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_RUNNING_TRIATHLETE_F] =     &gObjectEventGraphicsInfo_RunningTriathleteF,
     [OBJ_EVENT_GFX_RUNNING_TRIATHLETE_M] =     &gObjectEventGraphicsInfo_RunningTriathleteM,
     [OBJ_EVENT_GFX_SCHOOL_KID_M] =             &gObjectEventGraphicsInfo_SchoolKidM,
+    [OBJ_EVENT_GFX_PRESCHOOLER] =              &gObjectEventGraphicsInfo_Preschooler,
     [OBJ_EVENT_GFX_STEVEN] =                   &gObjectEventGraphicsInfo_Steven,
     [OBJ_EVENT_GFX_SCOTT] =                    &gObjectEventGraphicsInfo_Scott,
     [OBJ_EVENT_GFX_ANABEL] =                   &gObjectEventGraphicsInfo_Anabel,
