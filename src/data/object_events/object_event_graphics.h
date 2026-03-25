@@ -133,8 +133,12 @@ const u32 gObjectEventPic_ReporterM[] = INCBIN_U32("graphics/object_events/pics/
 const u32 gObjectEventPic_RunningTriathleteF[] = INCBIN_U32("graphics/object_events/pics/people/running_triathlete_f.4bpp");
 const u32 gObjectEventPic_RunningTriathleteM[] = INCBIN_U32("graphics/object_events/pics/people/running_triathlete_m.4bpp");
 const u32 gObjectEventPic_SchoolKidM[] = INCBIN_U32("graphics/object_events/pics/people/school_kid_m.4bpp");
+const u32 gObjectEventPic_SchoolGirl[] = INCBIN_U32("graphics/object_events/pics/people/school-girl.4bpp");
+const u16 gObjectEventPal_SchoolGirl[] = INCBIN_U16("graphics/object_events/pics/people/school-girl.gbapal");
 const u32 gObjectEventPic_Preschooler[] = INCBIN_U32("graphics/object_events/pics/people/preschooler.4bpp");
 const u16 gObjectEventPal_Preschooler[] = INCBIN_U16("graphics/object_events/pics/people/preschooler.gbapal");
+const u32 gObjectEventPic_ProfMyrtle[] = INCBIN_U32("graphics/object_events/pics/people/prof-myrtle.4bpp");
+const u16 gObjectEventPal_ProfMyrtle[] = INCBIN_U16("graphics/object_events/pics/people/prof-myrtle.gbapal");
 
 const u16 gObjectEventPic_ItemBall[] = INCBIN_U16("graphics/object_events/pics/misc/item_ball.4bpp");
 const u16 gObjectEventPic_MrFuji[] = INCBIN_U16("graphics/object_events/pics/people/mr_fuji.4bpp");

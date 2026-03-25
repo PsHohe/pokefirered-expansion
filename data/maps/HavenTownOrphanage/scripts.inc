@@ -6,5 +6,5 @@ HavenTown_Orphanage_Mailbox::
 	end
 
 HavenTown_Orphanage_Zigzagoon::
-    msgbox HavenTown_Orphanage_Text_Zigzagoon, MSGBOX_NPC
+    msgbox HavenTown_Orphanage_Text_Zigzagoon
     end

@@ -198,8 +198,10 @@
 #define OBJ_EVENT_GFX_SPENSER               192
 #define OBJ_EVENT_GFX_TUCKER                193
 #define OBJ_EVENT_GFX_PRESCHOOLER           194
+#define OBJ_EVENT_GFX_SCHOOL_GIRL           195
+#define OBJ_EVENT_GFX_PROF_MYRTLE           196
 
-#define NUM_OBJ_EVENT_GFX                   195
+#define NUM_OBJ_EVENT_GFX                   197
 
 // FRLG equivalents:
 #define OBJ_EVENT_GFX_TWIN                  OBJ_EVENT_GFX_LITTLE_GIRL
@@ -331,6 +333,8 @@
 #define OBJ_EVENT_PAL_TAG_NPC_4                       0x111F // emerald
 #define OBJ_EVENT_PAL_TAG_DYNAMIC                     0x1120
 #define OBJ_EVENT_PAL_TAG_PRESCHOOLER                 0x1121
+#define OBJ_EVENT_PAL_TAG_SCHOOL_GIRL                 0x1122
+#define OBJ_EVENT_PAL_TAG_PROF_MYRTLE                 0x1123
 
 #if OW_FOLLOWERS_POKEBALLS
 // Vanilla

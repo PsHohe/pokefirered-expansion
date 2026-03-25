@@ -30,6 +30,7 @@
       "flag": "0"
     },
     {
+      "local_id": "LOCALID_VERA",
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_GIRL_2",
       "x": 3,
