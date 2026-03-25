@@ -1436,3 +1436,6 @@ Text_TestMsg::
 
 	.include "data/maps/TestingTilesets/scripts.inc"
 	.include "data/maps/TestingTilesets/text.inc"
+
+	.include "data/maps/OldManHouse/scripts.inc"
+	.include "data/maps/OldManHouse/text.inc"

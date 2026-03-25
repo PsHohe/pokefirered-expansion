@@ -631,7 +631,9 @@
     "OrphanageBedroom",
     "TestingTilesets"
   ],
-  "gMapGroup_IndoorHaven": [],
+  "gMapGroup_IndoorHaven": [
+    "OldManHouse"
+  ],
   "gMapGroup_MainOutdoors": [
     "HavenTownOrphanage",
     "Route001",

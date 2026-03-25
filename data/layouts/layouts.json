@@ -5124,6 +5124,18 @@
       "secondary_tileset": "gTileset_NewHaven",
       "border_filepath": "data/layouts/TestingTilesets/border.bin",
       "blockdata_filepath": "data/layouts/TestingTilesets/map.bin"
+    },
+    {
+      "id": "LAYOUT_OLD_MAN_HOUSE",
+      "name": "OldManHouse_Layout",
+      "width": 16,
+      "height": 10,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_GenericBuilding1",
+      "border_filepath": "data/layouts/OldManHouse/border.bin",
+      "blockdata_filepath": "data/layouts/OldManHouse/map.bin"
     }
   ]
 }
