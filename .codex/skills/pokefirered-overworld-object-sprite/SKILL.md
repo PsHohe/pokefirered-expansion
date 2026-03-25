@@ -1,3 +1,4 @@
+---
 name: pokefirered-overworld-object-sprite
 description: Add or update a non-Pokemon object-event overworld sprite in pokefirered-expansion. Use when a request involves adding an NPC/character sprite from a PNG, wiring a new OBJ_EVENT_GFX_* constant, registering object-event graphics/palette structs, updating sprite conversion rules in spritesheet_rules.mk, or fixing visual issues such as pink blocks, fragmented frames, or incorrect overworld colors.
 ---
