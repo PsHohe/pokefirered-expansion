@@ -390,6 +390,9 @@ $(OBJEVENTGFXDIR)/people/preschooler.4bpp: %.4bpp: %.png
 $(OBJEVENTGFXDIR)/people/prof-myrtle.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
+$(OBJEVENTGFXDIR)/people/mrs-marina.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 2 -mheight 4
+
 $(OBJEVENTGFXDIR)/people/steven.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 

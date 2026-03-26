@@ -200,8 +200,9 @@
 #define OBJ_EVENT_GFX_PRESCHOOLER           194
 #define OBJ_EVENT_GFX_SCHOOL_GIRL           195
 #define OBJ_EVENT_GFX_PROF_MYRTLE           196
+#define OBJ_EVENT_GFX_MRS_MARINA            197
 
-#define NUM_OBJ_EVENT_GFX                   197
+#define NUM_OBJ_EVENT_GFX                   198
 
 // FRLG equivalents:
 #define OBJ_EVENT_GFX_TWIN                  OBJ_EVENT_GFX_LITTLE_GIRL
@@ -336,6 +337,7 @@
 #define OBJ_EVENT_PAL_TAG_SCHOOL_GIRL                 0x1122
 #define OBJ_EVENT_PAL_TAG_PROF_MYRTLE                 0x1123
 #define OBJ_EVENT_PAL_TAG_PLAYER_OSCAR_NORMAL         0x1124
+#define OBJ_EVENT_PAL_TAG_MRS_MARINA                  0x1125
 
 #if OW_FOLLOWERS_POKEBALLS
 // Vanilla

@@ -140,6 +140,8 @@ const u32 gObjectEventPic_Preschooler[] = INCBIN_U32("graphics/object_events/pic
 const u16 gObjectEventPal_Preschooler[] = INCBIN_U16("graphics/object_events/pics/people/preschooler.gbapal");
 const u32 gObjectEventPic_ProfMyrtle[] = INCBIN_U32("graphics/object_events/pics/people/prof-myrtle.4bpp");
 const u16 gObjectEventPal_ProfMyrtle[] = INCBIN_U16("graphics/object_events/pics/people/prof-myrtle.gbapal");
+const u32 gObjectEventPic_MrsMarina[] = INCBIN_U32("graphics/object_events/pics/people/mrs-marina.4bpp");
+const u16 gObjectEventPal_MrsMarina[] = INCBIN_U16("graphics/object_events/pics/people/mrs-marina.gbapal");
 
 const u16 gObjectEventPic_ItemBall[] = INCBIN_U16("graphics/object_events/pics/misc/item_ball.4bpp");
 const u16 gObjectEventPic_MrFuji[] = INCBIN_U16("graphics/object_events/pics/people/mr_fuji.4bpp");
