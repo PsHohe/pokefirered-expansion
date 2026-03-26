@@ -335,6 +335,7 @@
 #define OBJ_EVENT_PAL_TAG_PRESCHOOLER                 0x1121
 #define OBJ_EVENT_PAL_TAG_SCHOOL_GIRL                 0x1122
 #define OBJ_EVENT_PAL_TAG_PROF_MYRTLE                 0x1123
+#define OBJ_EVENT_PAL_TAG_PLAYER_OSCAR_NORMAL         0x1124
 
 #if OW_FOLLOWERS_POKEBALLS
 // Vanilla

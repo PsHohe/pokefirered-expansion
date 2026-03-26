@@ -1,6 +1,6 @@
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RedNormal = {
     .tileTag = TAG_NONE,
-    .paletteTag = OBJ_EVENT_PAL_TAG_PLAYER_RED,
+    .paletteTag = OBJ_EVENT_PAL_TAG_PLAYER_OSCAR_NORMAL,
     .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION,
     .size = 512,
     .width = 16,

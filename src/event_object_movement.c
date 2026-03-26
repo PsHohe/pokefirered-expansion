@@ -497,6 +497,7 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_NpcGreenReflection,      OBJ_EVENT_PAL_TAG_NPC_GREEN_REFLECTION},
     {gObjectEventPal_NpcWhiteReflection,      OBJ_EVENT_PAL_TAG_NPC_WHITE_REFLECTION},
     {gObjectEventPal_Player,                  OBJ_EVENT_PAL_TAG_PLAYER_RED},
+    {gObjectEventPal_PlayerOscarNormal,       OBJ_EVENT_PAL_TAG_PLAYER_OSCAR_NORMAL},
     {gObjectEventPal_PlayerReflection,        OBJ_EVENT_PAL_TAG_PLAYER_RED_REFLECTION},
     {gObjectEventPal_BridgeReflection,        OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION},
     {gObjectEventPal_RSQuintyPlump,           OBJ_EVENT_PAL_TAG_RS_QUINTY_PLUMP},
@@ -574,6 +575,7 @@ static const u16 sPlayerUnderwaterReflectionPaletteTags[] = {
 
 static const struct PairedPalettes gPlayerReflectionPaletteSets[] = {
     {OBJ_EVENT_PAL_TAG_PLAYER_RED,           sPlayerReflectionPaletteTags},
+    {OBJ_EVENT_PAL_TAG_PLAYER_OSCAR_NORMAL,  sPlayerReflectionPaletteTags},
     {OBJ_EVENT_PAL_TAG_PLAYER_GREEN,         sPlayerReflectionPaletteTags},
     {OBJ_EVENT_PAL_TAG_RS_PLAYER_UNDERWATER, sPlayerUnderwaterReflectionPaletteTags},
     {OBJ_EVENT_PAL_TAG_NONE, NULL},
@@ -651,6 +653,7 @@ static const u16 sGreenNPCReflectionPaletteTags[] = {
 
 static const struct PairedPalettes gSpecialObjectReflectionPaletteSets[] = {
     {OBJ_EVENT_PAL_TAG_PLAYER_RED,          sPlayerReflectionPaletteTags},
+    {OBJ_EVENT_PAL_TAG_PLAYER_OSCAR_NORMAL, sPlayerReflectionPaletteTags},
     {OBJ_EVENT_PAL_TAG_PLAYER_GREEN,        sPlayerReflectionPaletteTags},
     {OBJ_EVENT_PAL_TAG_RS_QUINTY_PLUMP,     sRSQuintyPlumpReflectionPaletteTags},
     {OBJ_EVENT_PAL_TAG_RS_TRUCK,            sRSTruckReflectionPaletteTags},
@@ -3160,7 +3163,7 @@ u8 LoadPlayerObjectEventPalette(u8 gender)
     {
         default:
         case MALE:
-            paletteTag = OBJ_EVENT_PAL_TAG_PLAYER_RED;
+            paletteTag = OBJ_EVENT_PAL_TAG_PLAYER_OSCAR_NORMAL;
             break;
         case FEMALE:
             paletteTag = OBJ_EVENT_PAL_TAG_PLAYER_GREEN;

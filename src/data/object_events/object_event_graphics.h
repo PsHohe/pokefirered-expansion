@@ -1,5 +1,6 @@
 const u16 gObjectEventPal_Player[] = INCBIN_U16("graphics/object_events/palettes/player.gbapal");
 const u16 gObjectEventPal_PlayerUnused[] = INCBIN_U16("graphics/object_events/palettes/player_unused.gbapal"); // Identical except for the transparency
+const u16 gObjectEventPal_PlayerOscarNormal[] = INCBIN_U16("graphics/object_events/pics/people/oscar_normal.gbapal");
 const u16 gObjectEventPaletteNull1[16] = {};
 const u16 gObjectEventPaletteNull2[16] = {};
 const u16 gObjectEventPaletteNull3[16] = {};
@@ -14,7 +15,7 @@ const u16 gObjectEventPaletteNull11[16] = {};
 const u16 gObjectEventPaletteNull12[16] = {};
 const u16 gObjectEventPaletteNull13[16] = {};
 const u16 gObjectEventPaletteNull14[16] = {};
-const u16 gObjectEventPic_RedNormal[] = INCBIN_U16("graphics/object_events/pics/people/red_normal.4bpp");
+const u16 gObjectEventPic_RedNormal[] = INCBIN_U16("graphics/object_events/pics/people/oscar_normal.4bpp");
 const u16 gObjectEventPic_RedSurfRun[] = INCBIN_U16("graphics/object_events/pics/people/red_surf_run.4bpp");
 const u16 gObjectEventPic_GreenNormal[] = INCBIN_U16("graphics/object_events/pics/people/green_normal.4bpp");
 const u16 gObjectEventPic_GreenSurfRun[] = INCBIN_U16("graphics/object_events/pics/people/green_surf_run.4bpp");
