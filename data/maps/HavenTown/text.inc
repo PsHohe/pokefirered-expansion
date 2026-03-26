@@ -3,7 +3,7 @@ HavenTown_Text_TownSign::
     .string "A Place To Call Home$"
 
 HavenTown_Text_Rival2Mailbox::
-    .string "{RIVAL}'s house$"
+    .string "{RIVAL2}'s house$"
 
 HavenTown_Text_PressStartToOpenMenu::
 	.string "TRAINER TIPS\p"

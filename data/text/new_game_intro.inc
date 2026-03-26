@@ -283,8 +283,7 @@ gOakSpeech_Text_ConfirmRival2Name::
 gOakSpeech_Text_RememberRivalsName::
     .string "That's right! His name is {RIVAL}!\p"
     .string "Now then… There's that kid from town\n"
-    .string "who always tries to prove he's\n"
-    .string "better than you.\p$"
+    .string "who always bugs you\p$"
 
 gOakSpeech_Text_RememberRival2Name::
     .string "Right! That kid's name is {RIVAL2}!\p$"

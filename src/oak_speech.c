@@ -49,6 +49,7 @@ struct OakSpeechResources
 };
 
 static EWRAM_DATA struct OakSpeechResources *sOakSpeechResources = NULL;
+static EWRAM_DATA u16 sOakSpeechTrainerPicBuffer[0xC00];
 
 static void Task_NewGameScene(u8);
 
@@ -145,12 +146,16 @@ static const u16 sControlsGuide_Tilemap_Page2[] = INCBIN_U16("graphics/oak_speec
 static const u16 sControlsGuide_Tilemap_Page3[] = INCBIN_U16("graphics/oak_speech/controls_guide_page_3.bin");
 static const u16 sOakSpeech_Leaf_Pal[] = INCBIN_U16("graphics/oak_speech/leaf/pal.gbapal");
 static const u32 sOakSpeech_Leaf_Tiles[] = INCBIN_U32("graphics/oak_speech/leaf/pic.8bpp.smol");
-static const u16 sOakSpeech_Red_Pal[] = INCBIN_U16("graphics/oak_speech/red/pal.gbapal");
-static const u32 sOakSpeech_Red_Tiles[] = INCBIN_U32("graphics/oak_speech/red/pic.8bpp.smol");
+static const u16 sOakSpeech_Oscar_Pal[] = INCBIN_U16("graphics/oak_speech/oscar/oscar.gbapal");
+static const u32 sOakSpeech_Oscar_Tiles[] = INCBIN_U32("graphics/oak_speech/oscar/oscar.8bpp.smol");
 static const u16 sOakSpeech_Oak_Pal[] = INCBIN_U16("graphics/oak_speech/oak/pal.gbapal");
 static const u32 sOakSpeech_Oak_Tiles[] = INCBIN_U32("graphics/oak_speech/oak/pic.8bpp.smol");
 static const u16 sOakSpeech_Rival_Pal[] = INCBIN_U16("graphics/oak_speech/rival/pal.gbapal");
 static const u32 sOakSpeech_Rival_Tiles[] = INCBIN_U32("graphics/oak_speech/rival/pic.8bpp.smol");
+static const u16 sOakSpeech_Adrian_Pal[] = INCBIN_U16("graphics/oak_speech/adrian/adrian.gbapal");
+static const u32 sOakSpeech_Adrian_Tiles[] = INCBIN_U32("graphics/oak_speech/adrian/adrian.8bpp.smol");
+static const u16 sOakSpeech_Cedric_Pal[] = INCBIN_U16("graphics/oak_speech/cedric/cedric.gbapal");
+static const u32 sOakSpeech_Cedric_Tiles[] = INCBIN_U32("graphics/oak_speech/cedric/cedric.8bpp.smol");
 static const u16 sOakSpeech_Platform_Pal[] = INCBIN_U16("graphics/oak_speech/platform.gbapal");
 static const u16 sPikachuIntro_Pikachu_Pal[] = INCBIN_U16("graphics/oak_speech/pikachu_intro/pikachu.gbapal");
 static const u32 sOakSpeech_Platform_Gfx[] = INCBIN_U32("graphics/oak_speech/platform.4bpp.smol");
@@ -691,6 +696,8 @@ enum
     MALE_PLAYER_PIC,
     FEMALE_PLAYER_PIC,
     RIVAL_PIC,
+    ADRIAN_PIC,
+    CEDRIC_PIC,
     OAK_PIC
 };
 
@@ -1716,7 +1723,7 @@ static void Task_OakSpeech_SwapToSecondRivalPic(u8 taskId)
             gTasks[taskId].tTrainerPicPosX = 0;
             gSpriteCoordOffsetX = 0;
             ChangeBgX(2, 0, BG_COORD_SET);
-            LoadTrainerPic(RIVAL_PIC, 0);
+            LoadTrainerPic(CEDRIC_PIC, 0);
             CreateFadeOutTask(taskId, 2);
             gTasks[taskId].func = Task_OakSpeech_AskRivalsName;
         }
@@ -1753,7 +1760,7 @@ static void Task_OakSpeech_FadeInRivalPic(u8 taskId)
     gTasks[taskId].tTrainerPicPosX = 0;
     gSpriteCoordOffsetX = 0;
     sOakSpeechResources->rivalToName = RIVAL_NAME_1;
-    LoadTrainerPic(RIVAL_PIC, 0);
+    LoadTrainerPic(ADRIAN_PIC, 0);
     CreateFadeOutTask(taskId, 2);
     gTasks[taskId].func = Task_OakSpeech_AskRivalsName;
 }
@@ -2064,7 +2071,10 @@ static void CB2_ReturnFromNamingScreen(void)
         }
         else
         {
-            LoadTrainerPic(RIVAL_PIC, 0);
+            if (sOakSpeechResources->rivalToName == RIVAL_NAME_1)
+                LoadTrainerPic(ADRIAN_PIC, 0);
+            else
+                LoadTrainerPic(CEDRIC_PIC, 0);
         }
         gTasks[taskId].tTrainerPicPosX = -60;
         gSpriteCoordOffsetX += 60;
@@ -2174,12 +2184,30 @@ static void DestroyPikachuOrPlatformSprites(u8 taskId, u8 spriteType)
 static void LoadTrainerPic(u16 whichPic, u16 tileOffset)
 {
     u32 i;
+    u32 picSize;
+    u32 palSize;
+    u8 *trainerPicBuffer = (u8 *)sOakSpeechTrainerPicBuffer;
 
     switch (whichPic)
     {
     case MALE_PLAYER_PIC:
-        LoadPalette(sOakSpeech_Red_Pal, BG_PLTT_ID(4), sizeof(sOakSpeech_Red_Pal));
-        DecompressDataWithHeaderVram(sOakSpeech_Red_Tiles, (void *)VRAM + 0x600 + tileOffset);
+        // Oscar sources currently use low palette indices (0..15); remap to BG palette bank 4.
+        palSize = sizeof(sOakSpeech_Oscar_Pal);
+        if (palSize > (PLTT_SIZE - BG_PLTT_ID(4) * sizeof(u16)))
+            palSize = PLTT_SIZE - BG_PLTT_ID(4) * sizeof(u16);
+        LoadPalette(sOakSpeech_Oscar_Pal, BG_PLTT_ID(4), palSize);
+
+        picSize = GetDecompressedDataSize(sOakSpeech_Oscar_Tiles);
+        if (picSize > sizeof(sOakSpeechTrainerPicBuffer))
+            picSize = sizeof(sOakSpeechTrainerPicBuffer);
+        DecompressDataWithHeaderWram(sOakSpeech_Oscar_Tiles, sOakSpeechTrainerPicBuffer);
+        for (i = 0; i < picSize; i++)
+        {
+            if (trainerPicBuffer[i] != 0
+                && trainerPicBuffer[i] < BG_PLTT_ID(4))
+                trainerPicBuffer[i] += BG_PLTT_ID(4);
+        }
+        DmaCopy16(3, sOakSpeechTrainerPicBuffer, (void *)VRAM + 0x600 + tileOffset, picSize);
         break;
     case FEMALE_PLAYER_PIC:
         LoadPalette(sOakSpeech_Leaf_Pal, BG_PLTT_ID(4), sizeof(sOakSpeech_Leaf_Pal));
@@ -2188,6 +2216,44 @@ static void LoadTrainerPic(u16 whichPic, u16 tileOffset)
     case RIVAL_PIC:
         LoadPalette(sOakSpeech_Rival_Pal, BG_PLTT_ID(6), sizeof(sOakSpeech_Rival_Pal));
         DecompressDataWithHeaderVram(sOakSpeech_Rival_Tiles, (void *)VRAM + 0x600 + tileOffset);
+        break;
+    case ADRIAN_PIC:
+        // Adrian sources currently use low palette indices (0..15); remap to BG palette bank 6.
+        palSize = sizeof(sOakSpeech_Adrian_Pal);
+        if (palSize > (PLTT_SIZE - BG_PLTT_ID(6) * sizeof(u16)))
+            palSize = PLTT_SIZE - BG_PLTT_ID(6) * sizeof(u16);
+        LoadPalette(sOakSpeech_Adrian_Pal, BG_PLTT_ID(6), palSize);
+
+        picSize = GetDecompressedDataSize(sOakSpeech_Adrian_Tiles);
+        if (picSize > sizeof(sOakSpeechTrainerPicBuffer))
+            picSize = sizeof(sOakSpeechTrainerPicBuffer);
+        DecompressDataWithHeaderWram(sOakSpeech_Adrian_Tiles, sOakSpeechTrainerPicBuffer);
+        for (i = 0; i < picSize; i++)
+        {
+            if (trainerPicBuffer[i] != 0
+                && trainerPicBuffer[i] < BG_PLTT_ID(6))
+                trainerPicBuffer[i] += BG_PLTT_ID(6);
+        }
+        DmaCopy16(3, sOakSpeechTrainerPicBuffer, (void *)VRAM + 0x600 + tileOffset, picSize);
+        break;
+    case CEDRIC_PIC:
+        // Cedric sources currently use low palette indices (0..15); remap to BG palette bank 6.
+        palSize = sizeof(sOakSpeech_Cedric_Pal);
+        if (palSize > (PLTT_SIZE - BG_PLTT_ID(6) * sizeof(u16)))
+            palSize = PLTT_SIZE - BG_PLTT_ID(6) * sizeof(u16);
+        LoadPalette(sOakSpeech_Cedric_Pal, BG_PLTT_ID(6), palSize);
+
+        picSize = GetDecompressedDataSize(sOakSpeech_Cedric_Tiles);
+        if (picSize > sizeof(sOakSpeechTrainerPicBuffer))
+            picSize = sizeof(sOakSpeechTrainerPicBuffer);
+        DecompressDataWithHeaderWram(sOakSpeech_Cedric_Tiles, sOakSpeechTrainerPicBuffer);
+        for (i = 0; i < picSize; i++)
+        {
+            if (trainerPicBuffer[i] != 0
+                && trainerPicBuffer[i] < BG_PLTT_ID(6))
+                trainerPicBuffer[i] += BG_PLTT_ID(6);
+        }
+        DmaCopy16(3, sOakSpeechTrainerPicBuffer, (void *)VRAM + 0x600 + tileOffset, picSize);
         break;
     case OAK_PIC:
         LoadPalette(sOakSpeech_Oak_Pal, BG_PLTT_ID(6), sizeof(sOakSpeech_Oak_Pal));

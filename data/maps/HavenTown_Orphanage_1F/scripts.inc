@@ -26,6 +26,7 @@ HavenTown_Orphanage_1F_EventScript_MarinaStartsEnvelopeQuest::
 	textcolor NPC_TEXT_COLOR_FEMALE
 	playse SE_PIN
 	applymovement LOCALID_MARINA, Common_Movement_ExclamationMark
+	delay 40
 	waitmovement 0
 	applymovement LOCALID_MARINA, HavenTown_Orphanage_1F_Movement_MarinaApproachPlayer
 	waitmovement 0

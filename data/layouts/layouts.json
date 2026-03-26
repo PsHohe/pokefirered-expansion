@@ -5093,7 +5093,7 @@
       "id": "LAYOUT_HAVEN_TOWN",
       "name": "HavenTown_Layout",
       "width": 40,
-      "height": 25,
+      "height": 26,
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_General",
