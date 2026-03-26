@@ -669,7 +669,7 @@ static const struct PairedPalettes gSpecialObjectReflectionPaletteSets[] = {
 };
 
 static const u16 sObjectPaletteTags0[] = {
-    OBJ_EVENT_PAL_TAG_PLAYER_RED,
+    OBJ_EVENT_PAL_TAG_PLAYER_OSCAR_NORMAL,
     OBJ_EVENT_PAL_TAG_PLAYER_RED_REFLECTION,
     OBJ_EVENT_PAL_TAG_NPC_BLUE,
     OBJ_EVENT_PAL_TAG_NPC_PINK,
@@ -682,7 +682,7 @@ static const u16 sObjectPaletteTags0[] = {
 };
 
 static const u16 sObjectPaletteTags1[] = {
-    OBJ_EVENT_PAL_TAG_PLAYER_RED,
+    OBJ_EVENT_PAL_TAG_PLAYER_OSCAR_NORMAL,
     OBJ_EVENT_PAL_TAG_PLAYER_GREEN,
     OBJ_EVENT_PAL_TAG_NPC_BLUE,
     OBJ_EVENT_PAL_TAG_NPC_PINK,
@@ -695,7 +695,7 @@ static const u16 sObjectPaletteTags1[] = {
 };
 
 static const u16 sObjectPaletteTags2[] = {
-    OBJ_EVENT_PAL_TAG_PLAYER_RED,
+    OBJ_EVENT_PAL_TAG_PLAYER_OSCAR_NORMAL,
     OBJ_EVENT_PAL_TAG_PLAYER_RED_REFLECTION,
     OBJ_EVENT_PAL_TAG_NPC_BLUE,
     OBJ_EVENT_PAL_TAG_NPC_PINK,
@@ -708,7 +708,7 @@ static const u16 sObjectPaletteTags2[] = {
 };
 
 static const u16 sObjectPaletteTags3[] = {
-    OBJ_EVENT_PAL_TAG_PLAYER_RED,
+    OBJ_EVENT_PAL_TAG_PLAYER_OSCAR_NORMAL,
     OBJ_EVENT_PAL_TAG_PLAYER_RED_REFLECTION,
     OBJ_EVENT_PAL_TAG_NPC_BLUE,
     OBJ_EVENT_PAL_TAG_NPC_PINK,

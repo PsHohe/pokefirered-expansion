@@ -20,3 +20,8 @@ TestingGrounds_Text_FatManAlreadyGaveTM::
     .string "Train your POKéMON well.\p"
     .string "A strong CHARMANDER makes this TM\n"
     .string "shine.$"
+
+TestingGrounds_Text_DebugTraversalUnlocksGranted::
+    .string "Debug traversal unlocks enabled:\p"
+    .string "RUNNING SHOES, BICYCLE, OLD ROD,\n"
+    .string "BADGES, and HM01-HM08.$"
