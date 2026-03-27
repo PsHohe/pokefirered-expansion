@@ -91,8 +91,6 @@ script MyScript {
 }
 ```
 
-This mirrors the working repository sample from `TestingTilesets` and should be the default template for new multiselect flows.
-
 ## Functions signature
 
 ```
@@ -100,12 +98,10 @@ dynmultichoice(left, top, ignoreBPress, maxBeforeScroll, initialSelected, callba
 dynmultistack(left, top, ignoreBPress, maxBeforeScroll, shouldSort, initialSelected, callbacks)
 ```
 
-For callback, in most cases use DYN_MULTICHOICE_CB_NONE.
-
 left: The x offset of the menu (in tiles / units of 8 pixels)
 top (the y offset of the menu, in tiles / units of 8 pixels)
 ignoreBPress: Whether the menu should stay open if the user presses the B Button
 maxBeforeScroll: The maximum amount of items shown before the menu scrolls
 initialSelected: Variable or static value that determines the initially selected item
-callbacks: The event callbacks of the menu. For a simple menu supply DYN_MULTICHOICE_CB_NONE
+callbacks: The event callbacks of the menu. For a simple menu supply DYN_MULTICHOICE_CB_NONE (recommended in most cases)
 ...: Any number of menu options can follow after these arguments

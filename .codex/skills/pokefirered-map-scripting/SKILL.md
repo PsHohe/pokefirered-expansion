@@ -12,14 +12,15 @@ Implement map gameplay logic by editing source-of-truth files, preferring Porysc
 ## Workflow
 
 1. Decide scope before editing:
-- Existing map behavior change: if `data/maps/<MapName>/scripts.pory` exists, edit `scripts.pory`; otherwise edit `scripts.inc` (legacy path) unless intentionally migrating.
+- Existing map behavior change:
+  - If `data/maps/<MapName>/scripts.pory` exists, edit `scripts.pory`.
+  - If only `scripts.inc` exists, create `scripts.pory` first with `scripts/convert_map_script_to_pory.sh <map-dir|scripts.inc-path>`, then edit `scripts.pory`.
 - Event placement or trigger wiring change: Edit `map.json` (source of truth for object/warp/coord/bg events).
 - New map: Add map folder and JSON, create `scripts.pory`, and ensure `data/event_scripts.s` includes `data/maps/<MapName>/scripts.inc`.
 
 2. Edit only source-of-truth files:
 - Edit: `data/maps/<MapName>/map.json`
-- Edit (preferred): `data/maps/<MapName>/scripts.pory`
-- Edit (legacy fallback): `data/maps/<MapName>/scripts.inc`
+- Edit (required for script logic changes): `data/maps/<MapName>/scripts.pory`
 - Edit (legacy text only): `data/maps/<MapName>/text.inc`
 - Do not edit: `data/maps/<MapName>/events.inc`
 - Do not edit: `data/maps/<MapName>/header.inc`
@@ -96,9 +97,10 @@ Assume `VAR_RESULT` is overwritten by each selection command. Branch immediately
 ## Migration Guidance (Legacy `.inc` to `.pory`)
 
 1. Preserve existing script labels referenced by `map.json` events.
-2. Port one map at a time: create `scripts.pory`, then keep behavior-equivalent flow.
-3. Leave `text.inc` untouched unless intentionally moving dialogue into Poryscript `text` blocks.
-4. Compile with `make -j8` and fix syntax or label regressions before additional edits.
+2. Convert one map at a time with `scripts/convert_map_script_to_pory.sh <map-dir|scripts.inc-path>`.
+3. Keep the generated `raw`-wrapped baseline behavior-equivalent before refactoring into native Poryscript statements.
+4. Leave `text.inc` untouched unless intentionally moving dialogue into Poryscript `text` blocks.
+5. Compile with `make -j8` and fix syntax or label regressions before additional edits.
 
 ## Design Consultant Subagent
 
@@ -128,3 +130,4 @@ For map script timing details, read [map-script-lifecycle.md](references/map-scr
 - Read [poryscript-authoring.md](references/poryscript-authoring.md) for syntax, control flow, string, and migration-safe compile guidance.
 - Read [poryscript-multiselect.md](references/poryscript-multiselect.md) for dynamic multiselect patterns and `VAR_RESULT` branching rules.
 - Read [dialogue-and-design-consultant.md](references/dialogue-and-design-consultant.md) for dialogue constraints and consultant workflow.
+- Use [`scripts/convert_map_script_to_pory.sh`](scripts/convert_map_script_to_pory.sh) to create `scripts.pory` from legacy `scripts.inc` before editing script logic.

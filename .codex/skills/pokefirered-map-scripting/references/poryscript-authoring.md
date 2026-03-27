@@ -12,6 +12,14 @@ Use this reference when writing or reviewing `scripts.pory` files in this reposi
 - Use structured control flow (`if`, `switch`, `while`, `do ... while`) instead of label/goto by default.
 - End event scripts explicitly with `end` or `return`.
 
+## Mandatory Legacy Conversion Rule
+
+- Always write new map script changes in `scripts.pory`.
+- If a map has only `scripts.inc`, create `scripts.pory` first.
+- Use the bundled converter:
+  - `scripts/convert_map_script_to_pory.sh <map-dir|scripts.inc-path>`
+- The converter copies `scripts.inc` into a `raw` block in `scripts.pory` so behavior remains unchanged while enabling incremental Poryscript refactors.
+
 ## Conditions And Comparisons
 
 - Use left-side forms: `flag(...)`, `var(...)`, `defeated(...)`, or AutoVar command expressions.
@@ -44,7 +52,7 @@ mapscripts SomeMap_MapScripts {
 - Use `moves(...)` for short single-use movement sequences.
 - Use `movement` blocks for reusable movement paths.
 - Use `mart` blocks for Pokemart item lists.
-- Use `raw` only when Poryscript lacks needed output form.
+- Use `raw` for migration baselines or when Poryscript lacks needed output form.
 - Do not place comments inside `raw` blocks.
 
 ## AutoVar And Switch Patterns
@@ -63,13 +71,13 @@ if (checkitem(ITEM_POTION)) {
 ## Compile And Integration Rules
 
 - Keep `data/event_scripts.s` includes pointing to `scripts.inc`.
-- Treat `scripts.inc` as generated when `scripts.pory` exists.
+- Treat `scripts.inc` as generated after `scripts.pory` exists.
 - Validate with `make -j8` after script edits.
 
 ## Common Pitfalls
 
 1. Writing `else if` instead of `elif`.
-2. Mixing auto string layout with `format()` expectations.
-3. Forgetting script termination (`end`/`return`).
-4. Editing generated `scripts.inc` for a map that already has `scripts.pory`.
+2. Editing `scripts.inc` after creating `scripts.pory`.
+3. Mixing auto string layout with `format()` expectations.
+4. Forgetting script termination (`end`/`return`).
 5. Introducing labels/goto where structured flow is simpler.

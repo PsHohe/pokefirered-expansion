@@ -8,9 +8,9 @@
   - `coord_events`
   - `bg_events`
   - map header fields (music, weather, map type, allow flags, etc.)
-- Edit script sources with this priority:
-  - If `data/maps/<MapName>/scripts.pory` exists, edit `scripts.pory`.
-  - If no `scripts.pory` exists, consider migrating to `scripts.pory`, otherwise edit `scripts.inc` (legacy path).
+- Always use `scripts.pory` as the script source of truth.
+- If a map only has `scripts.inc`, create `scripts.pory` first with:
+  - `scripts/convert_map_script_to_pory.sh <map-dir|scripts.inc-path>`
 - Edit `data/maps/<MapName>/text.inc` only for legacy maps that still store dialogue outside Poryscript.
 
 ## Generated Files (Do Not Hand-Edit)
@@ -19,23 +19,23 @@
 - `data/maps/<MapName>/header.inc`
 - `data/maps/<MapName>/connections.inc`
 - `include/constants/map_event_ids.h`
-- `data/maps/<MapName>/scripts.inc` when sibling `scripts.pory` exists
+- `data/maps/<MapName>/scripts.inc` once `scripts.pory` exists for the map
 
 `events.inc`, `header.inc`, and `connections.inc` are generated from `map.json` via map tools. `scripts.inc` is generated from `scripts.pory` by the Make rule `data/%.inc: data/%.pory`.
 
 ## Existing-Map Change Checklist
 
-1. Choose script input:
-   - Edit `scripts.pory` when present.
-   - Otherwise edit `scripts.inc`.
-2. If event placements/triggers changed, edit `map.json` (not `events.inc`).
-3. Keep script labels referenced by `map.json` unchanged unless you also update those event pointers.
-4. Build with `make -j8`.
+1. Ensure `scripts.pory` exists:
+   - If missing, run `scripts/convert_map_script_to_pory.sh <map-dir|scripts.inc-path>`.
+2. Edit `scripts.pory`.
+3. If event placements/triggers changed, edit `map.json` (not `events.inc`).
+4. Keep script labels referenced by `map.json` unchanged unless you also update those event pointers.
+5. Build with `make -j8`.
 
 ## New Map Checklist
 
 1. Add map directory with `map.json`.
-2. Add `scripts.pory` (preferred) or `scripts.inc` (legacy fallback).
+2. Add `scripts.pory`.
 3. Add script include in `data/event_scripts.s`:
    - `\t.include "data/maps/<MapName>/scripts.inc"`
 4. Add text include in `data/event_scripts.s` only when using map-local `text.inc` labels:
@@ -54,7 +54,7 @@
 
 - Add sign text and script:
   - Add sign event in `map.json`.
-  - Add script body in `scripts.pory`/`scripts.inc`.
+  - Add script body in `scripts.pory`.
   - Keep or add `text.inc` only if that script references external text labels.
 
 - Add one-time cutscene on tile:
