@@ -97,8 +97,25 @@ HavenTown_Text_MyrtleAfterEscort::
 
 HavenTown_Text_RupertBadPeople::
     .string "Mr. Rupert: Those are bad people.\n"
-    .string "Stay sharp, child.$"
+    .string "Stay away from trouble, child.$"
 
 HavenTown_Text_MrRupertAfterQuest::
     .string "Mr. Rupert: You've done your part.\n"
     .string "Now keep moving.$"
+
+HavenTown_Text_GreetFromWoman::
+    .string "Oh, Hi {PLAYER}!.\n"
+    .string "How's Mrs. Marina doing?$"
+
+HavenTown_Text_GreetFromWomanChoice1::
+    .string "She's doing great!$"
+
+HavenTown_Text_GreetFromWomanChoice2::
+    .string "Not bad, I guess.$"
+
+HavenTown_Text_ResponseToGreetFromWomanChoice1::
+    .string "That's wonderful to hear!$"
+
+HavenTown_Text_ResponseToGreetFromWomanChoice2::
+    .string "You kids always causing trouble.\n"
+    .string "I hope you stay out of it.$"

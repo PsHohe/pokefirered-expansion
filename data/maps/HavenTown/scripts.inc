@@ -243,6 +243,29 @@ HavenTown_EventScript_StarterBattleAfterBattle::
 	release
 	end
 
+HavenTown_EventScript_GreetFromWoman::
+    lockall
+    msgbox HavenTown_Text_GreetFromWoman
+    waitmessage
+    dynmultipush HavenTown_Text_GreetFromWomanChoice1, 0
+    dynmultipush HavenTown_Text_GreetFromWomanChoice2, 1
+    dynmultistack 20, 8, FALSE, 4, 0, 0, DYN_MULTICHOICE_CB_NONE
+    switch VAR_RESULT
+    case 0, HavenTown_EventScript_ResponseToGreetChoice1
+    case 1, HavenTown_EventScript_ResponseToGreetChoice2
+    case MULTI_B_PRESSED, HavenTown_EventScript_ResponseToGreetChoice2
+    release
+    end
+
+HavenTown_EventScript_ResponseToGreetChoice1::
+    msgbox HavenTown_Text_ResponseToGreetFromWomanChoice1, MSGBOX_NPC
+    end
+
+HavenTown_EventScript_ResponseToGreetChoice2::
+    msgbox HavenTown_Text_ResponseToGreetFromWomanChoice2, MSGBOX_NPC
+    end
+
+
 HavenTown_EventScript_HideStarterBalls::
 	setflag FLAG_HIDE_HAVEN_TOWN_TREECKO_BALL
 	setflag FLAG_HIDE_HAVEN_TOWN_MUDKIP_BALL
