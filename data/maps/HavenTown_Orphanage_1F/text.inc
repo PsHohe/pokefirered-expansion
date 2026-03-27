@@ -28,3 +28,8 @@ HavenTown_Orphanage_1F_Text_MarinaNeedEnvelopeDelivered::
 
 HavenTown_Orphanage_1F_Text_MarinaGaveEnvelope::
     .string "Mrs. Marina handed you an ENVELOPE.$"
+
+HavenTown_Orphanage_1F_Text_MarinaEnvelopeReminder::
+    .string "Mrs. Marina: {PLAYER}, please don't\n"
+    .string "forget that envelope.\p"
+    .string "Mr. Rupert is waiting.$"

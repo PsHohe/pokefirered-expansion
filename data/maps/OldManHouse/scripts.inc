@@ -1,2 +1,21 @@
 OldManHouse_MapScripts::
 	.byte 0
+
+OldManHouse_MrRupert::
+	msgbox OldManHouse_Text_MrRupertBeforeQuest, MSGBOX_NPC
+	end
+
+OldManHouse_MrRupertWife::
+	goto_if_unset FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED, OldManHouse_MrRupertWife_NotStarted
+	goto_if_set FLAG_ORPHANAGE_ENVELOPE_QUEST_FINISHED, OldManHouse_MrRupertWife_AfterQuest
+	setflag FLAG_ORPHANAGE_ENVELOPE_WIFE_TALKED
+	msgbox OldManHouse_Text_MrRupertWife_ParkHint, MSGBOX_NPC
+	end
+
+OldManHouse_MrRupertWife_NotStarted::
+	msgbox OldManHouse_Text_MrRupertWife_NotStarted, MSGBOX_NPC
+	end
+
+OldManHouse_MrRupertWife_AfterQuest::
+	msgbox OldManHouse_Text_MrRupertWife_AfterQuest, MSGBOX_NPC
+	end
