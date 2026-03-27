@@ -1,0 +1,38 @@
+mapscripts TestingTilesets_MapScripts {
+}
+
+script MyScript {
+    # Show a dummy message
+    lock
+    faceplayer
+    msgbox("The first test is working!")
+    dynmultichoice(20, 8, FALSE, 4, 0, NULL, "Test 1", "Test 2", "Test 3", "Test 4")
+    switch (var(VAR_RESULT)) {
+        case 0:
+            msgbox("Pressed Test 1.", MSGBOX_NPC)
+        case 1:
+        case 2:
+            msgbox("Pressed Test 2 or 3.", MSGBOX_NPC)
+        default:
+            msgbox("Pressed Test 4.", MSGBOX_NPC)
+    }
+    msgbox(format("Now let's move to the multipush test, which involves multiple dynamic selections!"))
+    dynmultipush("First option", 0)
+    dynmultipush("Second option", 1)
+    if (flag(FLAG_SYS_GAME_CLEAR)) {
+        dynmultipush("Secret option", 2)
+    }
+    dynmultistack(20, 8, TRUE, 4, FALSE, 0, NULL)
+    switch (var(VAR_RESULT)) {
+        case 0:
+            msgbox("Pressed First option.", MSGBOX_NPC)
+        case 1:
+            msgbox("Pressed Second option.", MSGBOX_NPC)
+        case 2:
+            msgbox("Pressed Secret option.", MSGBOX_NPC)
+        default:
+            msgbox("Pressed nothing.", MSGBOX_NPC)
+    }
+    release
+    end
+}

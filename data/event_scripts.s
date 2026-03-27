@@ -1439,3 +1439,6 @@ Text_TestMsg::
 
 	.include "data/maps/OldManHouse/scripts.inc"
 	.include "data/maps/OldManHouse/text.inc"
+
+	.include "data/maps/TestingPoryscript/scripts.inc"
+	.include "data/maps/TestingPoryscript/text.inc"

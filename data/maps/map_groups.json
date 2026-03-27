@@ -629,7 +629,8 @@
   "gMapGroup_TestingGrounds": [
     "TestingGrounds",
     "OrphanageBedroom",
-    "TestingTilesets"
+    "TestingTilesets",
+    "TestingPoryscript"
   ],
   "gMapGroup_IndoorHaven": [
     "OldManHouse"

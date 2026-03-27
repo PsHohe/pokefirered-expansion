@@ -5136,6 +5136,18 @@
       "secondary_tileset": "gTileset_GenericBuilding1",
       "border_filepath": "data/layouts/OldManHouse/border.bin",
       "blockdata_filepath": "data/layouts/OldManHouse/map.bin"
+    },
+    {
+      "id": "LAYOUT_TESTING_PORYSCRIPT",
+      "name": "TestingPoryscript_Layout",
+      "width": 20,
+      "height": 20,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_PalletTown",
+      "border_filepath": "data/layouts/TestingPoryscript/border.bin",
+      "blockdata_filepath": "data/layouts/TestingPoryscript/map.bin"
     }
   ]
 }
