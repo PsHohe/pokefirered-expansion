@@ -47,7 +47,7 @@ HavenTown_Orphanage_1F_Movement_MarinaApproachPlayer::
 HavenTown_Orphanage_1F_QuickRest::
 	goto_if_unset FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED, HavenTown_Orphanage_1F_QuickRest_Heal
 	goto_if_set FLAG_ORPHANAGE_ENVELOPE_QUEST_FINISHED, HavenTown_Orphanage_1F_QuickRest_Heal
-	goto_if_set FLAG_SYS_POKEDEX_GET, HavenTown_Orphanage_1F_QuickRest_Heal
+	goto_if_set FLAG_SYS_POKEMON_GET, HavenTown_Orphanage_1F_QuickRest_Heal
 	msgbox HavenTown_Orphanage_1F_Text_MarinaEnvelopeReminder, MSGBOX_NPC
 	end
 

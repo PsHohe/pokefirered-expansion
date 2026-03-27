@@ -75,46 +75,91 @@
       "local_id": "LOCALID_PROF_MYRTLE",
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_PROF_MYRTLE",
-      "x": 40,
-      "y": 10,
+      "x": 30,
+      "y": 9,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_NONE",
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
-      "flag": "0"
+      "script": "HavenTown_ProfMyrtle",
+      "flag": "FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE"
     },
     {
       "local_id": "LOCALID_GRUNT_1",
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ROCKET_M",
-      "x": 40,
-      "y": 11,
+      "x": 30,
+      "y": 10,
       "elevation": 0,
-      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
-      "flag": "0"
+      "script": "HavenTown_Grunt1",
+      "flag": "FLAG_HIDE_HAVEN_TOWN_GRUNT_1"
     },
     {
       "local_id": "LOCALID_GRUNT_2",
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_ROCKET_F",
-      "x": 41,
+      "x": 31,
       "y": 10,
       "elevation": 0,
-      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
-      "flag": "0"
+      "script": "HavenTown_Grunt2",
+      "flag": "FLAG_HIDE_HAVEN_TOWN_GRUNT_2"
+    },
+    {
+      "local_id": "LOCALID_TREECKO_BALL",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 29,
+      "y": 4,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "HavenTown_TreeckoBall",
+      "flag": "FLAG_HIDE_HAVEN_TOWN_TREECKO_BALL"
+    },
+    {
+      "local_id": "LOCALID_MUDKIP_BALL",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 29,
+      "y": 5,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "HavenTown_MudkipBall",
+      "flag": "FLAG_HIDE_HAVEN_TOWN_MUDKIP_BALL"
+    },
+    {
+      "local_id": "LOCALID_HAVEN_CHARMANDER_BALL",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
+      "x": 29,
+      "y": 6,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "HavenTown_CharmanderBall",
+      "flag": "FLAG_HIDE_HAVEN_TOWN_CHARMANDER_BALL"
     }
   ],
   "warp_events": [
@@ -159,7 +204,7 @@
       "elevation": 0,
       "var": "VAR_TEMP_0",
       "var_value": "0",
-      "script": "NULL"
+      "script": "HavenTown_LeaveTownBlockedTrigger"
     },
     {
       "type": "trigger",
@@ -168,7 +213,7 @@
       "elevation": 0,
       "var": "VAR_TEMP_0",
       "var_value": "0",
-      "script": "NULL"
+      "script": "HavenTown_LeaveTownBlockedTrigger"
     },
     {
       "type": "trigger",
@@ -177,7 +222,7 @@
       "elevation": 0,
       "var": "VAR_TEMP_0",
       "var_value": "0",
-      "script": "NULL"
+      "script": "HavenTown_ParkBlockedByGruntsTrigger"
     },
     {
       "type": "trigger",
@@ -186,7 +231,7 @@
       "elevation": 0,
       "var": "VAR_TEMP_0",
       "var_value": "0",
-      "script": "NULL"
+      "script": "HavenTown_ParkBlockedByGruntsTrigger"
     }
   ],
   "bg_events": [

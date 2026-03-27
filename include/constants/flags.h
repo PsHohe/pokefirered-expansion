@@ -630,9 +630,9 @@
 #define FLAG_ORPHANAGE_ENVELOPE_QUEST_FINISHED           0x25D
 #define FLAG_GOT_OLD_AMBER                               0x25E
 #define FLAG_GOT_HAVENTOWN_POTION                        0x25F
-#define FLAG_0x260                                       0x260
-#define FLAG_0x261                                       0x261
-#define FLAG_0x262                                       0x262
+#define FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE                0x260
+#define FLAG_HIDE_HAVEN_TOWN_GRUNT_1                    0x261
+#define FLAG_HIDE_HAVEN_TOWN_GRUNT_2                    0x262
 #define FLAG_GOT_EEVEE                                   0x263
 #define FLAG_FOUND_BOTH_VERMILION_GYM_SWITCHES           0x264
 #define FLAG_CINNABAR_GYM_QUIZ_1                         0x265
@@ -653,9 +653,9 @@
 #define FLAG_DID_ESPHERE_TRADE                           0x274
 #define FLAG_DID_TANGENY_TRADE                           0x275
 #define FLAG_DID_SEELOR_TRADE                            0x276
-#define FLAG_0x277                                       0x277
+#define FLAG_HIDE_HAVEN_TOWN_TREECKO_BALL               0x277
 #define FLAG_GOT_HITMON_FROM_DOJO                        0x278
-#define FLAG_0x279                                       0x279
+#define FLAG_HIDE_HAVEN_TOWN_MUDKIP_BALL                0x279
 #define FLAG_SILPH_2F_DOOR_1                             0x27A
 #define FLAG_SILPH_2F_DOOR_2                             0x27B
 #define FLAG_SILPH_3F_DOOR_1                             0x27C
@@ -676,7 +676,7 @@
 #define FLAG_SILPH_9F_DOOR_4                             0x28B
 #define FLAG_SILPH_10F_DOOR                              0x28C
 #define FLAG_SILPH_11F_DOOR                              0x28D
-#define FLAG_0x28E                                       0x28E
+#define FLAG_HIDE_HAVEN_TOWN_CHARMANDER_BALL            0x28E
 #define FLAG_0x28F                                       0x28F
 #define FLAG_MET_STICKER_MAN                             0x290
 #define FLAG_PALLET_LADY_NOT_BLOCKING_SIGN               0x291

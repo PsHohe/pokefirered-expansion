@@ -23,7 +23,7 @@ HavenTown_Orphanage_1F_Text_VeraRare::
 HavenTown_Orphanage_1F_Text_MarinaNeedEnvelopeDelivered::
     .string "Mrs. Marina: There you are, {PLAYER}.\p"
     .string "I need you to deliver this envelope\n"
-    .string "to the old man in town.\pPlease take it\n"
+    .string "to Mr. Rupert in town.\pPlease take it\n"
     .string "to him right away.$"
 
 HavenTown_Orphanage_1F_Text_MarinaGaveEnvelope::

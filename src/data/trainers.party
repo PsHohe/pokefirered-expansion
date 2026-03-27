@@ -15506,3 +15506,16 @@ AI: Basic Trainer
 Beldum
 Level: 5
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+
+=== TRAINER_TEAM_ASHEN_GRUNT_HAVEN ===
+Name: ASHEN
+Class: Team Rocket
+Pic: Rocket Grunt M
+Gender: Male
+Music: Suspicious
+Double Battle: No
+AI: Check Bad Move
+
+Nickit
+Level: 4
+IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe

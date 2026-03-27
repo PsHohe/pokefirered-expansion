@@ -727,6 +727,12 @@ static const struct MenuAction sMultichoiceList_Exit[] = {
     { gOtherText_Exit }
 };
 
+static const struct MenuAction sMultichoiceList_YesMaybe[] =
+{
+    {COMPOUND_STRING("Yes")},
+    {COMPOUND_STRING("Maybe...")},
+};
+
 static const struct MultichoiceListStruct sMultichoiceLists[] = {
     [MULTI_YESNO]                                               = MULTICHOICE(sMultichoiceList_YesNo),
     [MULTICHOICE_EEVEELUTIONS]                                  = MULTICHOICE(sMultichoiceList_Eeveelutions),
@@ -814,6 +820,7 @@ static const struct MultichoiceListStruct sMultichoiceLists[] = {
     [MULTI_BATTLE_TOWER_FEELINGS]                               = MULTICHOICE(sMultichoiceList_BattleTowerFeelings),
     [MULTI_LINK_LEADER]                                         = MULTICHOICE(sMultichoiceList_LinkLeader),
     [MULTI_SATISFACTION]                                        = MULTICHOICE(sMultichoiceList_Satisfaction),
+    [MULTI_YESMAYBE]                                            = MULTICHOICE(sMultichoiceList_YesMaybe),
 };
 
 // From Cool to Berries goes unused
@@ -1930,4 +1937,3 @@ int ScriptMenu_AdjustLeftCoordFromWidth(int left, int width)
 
     return adjustedLeft;
 }
-

@@ -93,6 +93,7 @@
 #define MULTI_BATTLE_TOWER_FEELINGS                            83
 #define MULTI_LINK_LEADER                                      84
 #define MULTI_SATISFACTION                                     85
+#define MULTI_YESMAYBE                                         86
 
 
 #define MULTICHOICE_NONE                                      255
