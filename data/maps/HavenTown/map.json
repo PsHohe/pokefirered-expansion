@@ -2,7 +2,7 @@
   "id": "MAP_HAVEN_TOWN",
   "name": "HavenTown",
   "layout": "LAYOUT_HAVEN_TOWN",
-  "music": "MUS_ROUTE1",
+  "music": "MUS_PALLET",
   "region_map_section": "MAPSEC_HAVENTOWN",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -174,6 +174,36 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "HavenTown_EventScript_GreetFromWoman",
       "flag": "0"
+    },
+    {
+      "local_id": "LOCALID_PROF_MYRTLE_2",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_PROF_MYRTLE",
+      "x": 10,
+      "y": 16,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE"
+    },
+    {
+      "local_id": "LOCALID_CEDRIC_OUTSIDE",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_BLUE",
+      "x": 11,
+      "y": 13,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "0"
     }
   ],
   "warp_events": [
@@ -228,24 +258,6 @@
       "var": "VAR_TEMP_0",
       "var_value": "0",
       "script": "HavenTown_LeaveTownBlockedTrigger"
-    },
-    {
-      "type": "trigger",
-      "x": 30,
-      "y": 8,
-      "elevation": 0,
-      "var": "VAR_TEMP_0",
-      "var_value": "0",
-      "script": "HavenTown_ParkBlockedByGruntsTrigger"
-    },
-    {
-      "type": "trigger",
-      "x": 31,
-      "y": 8,
-      "elevation": 0,
-      "var": "VAR_TEMP_0",
-      "var_value": "0",
-      "script": "HavenTown_ParkBlockedByGruntsTrigger"
     }
   ],
   "bg_events": [

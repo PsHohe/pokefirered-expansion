@@ -1442,3 +1442,6 @@ Text_TestMsg::
 
 	.include "data/maps/TestingPoryscript/scripts.inc"
 	.include "data/maps/TestingPoryscript/text.inc"
+
+	.include "data/maps/CedricHouse/scripts.inc"
+	.include "data/maps/CedricHouse/text.inc"

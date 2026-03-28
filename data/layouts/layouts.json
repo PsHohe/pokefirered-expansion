@@ -5085,7 +5085,7 @@
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_PalletTown",
+      "secondary_tileset": "gTileset_NewHaven",
       "border_filepath": "data/layouts/Route001/border.bin",
       "blockdata_filepath": "data/layouts/Route001/map.bin"
     },
@@ -5148,6 +5148,18 @@
       "secondary_tileset": "gTileset_PalletTown",
       "border_filepath": "data/layouts/TestingPoryscript/border.bin",
       "blockdata_filepath": "data/layouts/TestingPoryscript/map.bin"
+    },
+    {
+      "id": "LAYOUT_CEDRIC_HOUSE",
+      "name": "CedricHouse_Layout",
+      "width": 24,
+      "height": 16,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_GenericBuilding1",
+      "border_filepath": "data/layouts/CedricHouse/border.bin",
+      "blockdata_filepath": "data/layouts/CedricHouse/map.bin"
     }
   ]
 }

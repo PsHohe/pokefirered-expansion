@@ -596,7 +596,7 @@
 #define FLAG_GOT_HM05                                    0x23B
 #define FLAG_RESCUED_MR_FUJI                             0x23C
 #define FLAG_GOT_POKE_FLUTE                              0x23D
-#define FLAG_GOT_TM35_FROM_PALLET_FAT_MAN               0x23E
+#define FLAG_GOT_TM35_FROM_PALLET_FAT_MAN                0x23E
 #define FLAG_GOT_TM28_FROM_ROCKET                        0x23F
 #define FLAG_GOT_OLD_ROD                                 0x240
 #define FLAG_GOT_BIKE_VOUCHER                            0x241
@@ -630,9 +630,9 @@
 #define FLAG_ORPHANAGE_ENVELOPE_QUEST_FINISHED           0x25D
 #define FLAG_GOT_OLD_AMBER                               0x25E
 #define FLAG_GOT_HAVENTOWN_POTION                        0x25F
-#define FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE                0x260
-#define FLAG_HIDE_HAVEN_TOWN_GRUNT_1                    0x261
-#define FLAG_HIDE_HAVEN_TOWN_GRUNT_2                    0x262
+#define FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE                 0x260
+#define FLAG_HIDE_HAVEN_TOWN_GRUNT_1                     0x261
+#define FLAG_HIDE_HAVEN_TOWN_GRUNT_2                     0x262
 #define FLAG_GOT_EEVEE                                   0x263
 #define FLAG_FOUND_BOTH_VERMILION_GYM_SWITCHES           0x264
 #define FLAG_CINNABAR_GYM_QUIZ_1                         0x265

@@ -633,7 +633,8 @@
     "TestingPoryscript"
   ],
   "gMapGroup_IndoorHaven": [
-    "OldManHouse"
+    "OldManHouse",
+    "CedricHouse"
   ],
   "gMapGroup_MainOutdoors": [
     "HavenTownOrphanage",

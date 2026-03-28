@@ -42,7 +42,8 @@ HavenTown_Text_GruntsAmbushMyrtle::
     .string "rare POKéMON, Professor!$"
 
 HavenTown_Text_MyrtleUseOnePokemon::
-    .string "The professor dropped some pokeballs!$"
+    .string "The professor dropped some pokeballs!\n"
+    .string "Use one to help her!$"
 
 HavenTown_Text_MyrtleRepeatInstruction::
     .string "Professor: Hurry!\n"
@@ -76,18 +77,19 @@ HavenTown_Text_GruntsRetreat::
 
 HavenTown_Text_MyrtleThanks::
     .string "Professor: Thank you, kid.\p"
-    .string "For that courage, the POKéMON is\n"
-    .string "yours to keep.$"
+    .string "Those Team Ashen grunts are trouble.\p"
+    .string "I'm glad you helped me.$"
 
 HavenTown_Text_MyrtlePresentation::
     .string "Professor: My name is Myrtle,\n"
     .string "pleased to meet you.\p"
     .string "I was supposed to give his first\n"
-    .string "POKéMON to a kid in Haven Town.\p"
-    .string "Do you know {RIVAL2}?$"
+    .string "POKéMON to a kid in Haven Town,\l"
+    .string "He's the son of a good friend\n"
+    .string "of mine.$"
 
 HavenTown_Text_MyrtleComeWithMe::
-    .string "Fantastic!\p"
+    .string "Oh, that's wonderful!\p"
     .string "Please, come with me and show\n"
     .string "the way.$"
 
