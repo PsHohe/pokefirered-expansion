@@ -218,6 +218,8 @@ FIX          := $(TOOLS_DIR)/gbafix/gbafix$(EXE)
 MAPJSON      := $(TOOLS_DIR)/mapjson/mapjson$(EXE)
 JSONPROC     := $(TOOLS_DIR)/jsonproc/jsonproc$(EXE)
 SCRIPT       := $(TOOLS_DIR)/poryscript/poryscript$(EXE)
+PORYSCRIPT_FONT_CONFIG ?= tools/poryscript_config/font_config.json
+PORYSCRIPT_COMMAND_CONFIG ?= tools/poryscript_config/command_config.json
 TRAINERPROC  := $(TOOLS_DIR)/trainerproc/trainerproc$(EXE)
 PATCHELF     := $(TOOLS_DIR)/patchelf/patchelf$(EXE)
 ifeq ($(shell uname),Darwin)
@@ -440,7 +442,7 @@ generated: $(AUTO_GEN_TARGETS)
 %.smol:     %      ; $(SMOL) -w $< $@
 %.rl:       %      ; $(GFX) $< $@
 
-data/%.inc: data/%.pory; $(SCRIPT) -i $< -o $@ -fc tools/poryscript/font_config.json -cc tools/poryscript/command_config.json
+data/%.inc: data/%.pory; $(SCRIPT) -i $< -o $@ -fc $(PORYSCRIPT_FONT_CONFIG) -cc $(PORYSCRIPT_COMMAND_CONFIG)
 
 clean-teachables_intermediates:
 	rm -f $(DATA_SRC_SUBDIR)/tutor_moves.h
