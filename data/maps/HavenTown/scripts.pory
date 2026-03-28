@@ -14,8 +14,6 @@ script HavenTown_OnTransition {
     setflag(FLAG_HIDE_HAVEN_TOWN_MUDKIP_BALL)
     setflag(FLAG_HIDE_HAVEN_TOWN_CHARMANDER_BALL)
 
-    removeobject(LOCALID_CEDRIC_START)
-
     if (var(VAR_MAP_SCENE_HAVEN_TOWN) == 1) {
         clearflag(FLAG_ORPHANAGE_ENVELOPE_HIDE_PARK_RUPERT)
         clearflag(FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE)
@@ -28,6 +26,13 @@ script HavenTown_OnTransition {
     } elif (var(VAR_MAP_SCENE_HAVEN_TOWN) == 2) {
         clearflag(FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE)
         end
+    } else {
+        setflag(FLAG_HIDE_CEDRIC_MOM_OUTSIDE_HAVEN)
+    }
+
+    if (var(VAR_MAP_SCENE_HAVEN_TOWN) != 3) {
+        setflag(FLAG_HIDE_CEDRIC_OUTSIDE_HAVEN)
+        removeobject(LOCALID_CEDRIC_OUTSIDE)
     }
 
     if (flag(FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED) && flag(FLAG_ORPHANAGE_ENVELOPE_WIFE_TALKED)) {
@@ -103,11 +108,17 @@ script HavenTown_MrRupertPark {
 
     msgbox(HavenTown_Text_MrRupertPark, MSGBOX_NPC)
     removeitem(ITEM_LETTER)
+    message("You gave the letter to Mr. Rupert.")
+    playfanfare(MUS_OBTAIN_KEY_ITEM)
+    waitfanfare
     setflag(FLAG_ORPHANAGE_ENVELOPE_QUEST_FINISHED)
+    closemessage
     goto(HavenTown_EventScript_StartMyrtleScene)
 }
 
 script HavenTown_EventScript_StartMyrtleScene {
+    lockall
+    delay(90)
     setvar(VAR_MAP_SCENE_HAVEN_TOWN, 1)
     clearflag(FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE)
     clearflag(FLAG_HIDE_HAVEN_TOWN_GRUNT_1)
@@ -117,11 +128,14 @@ script HavenTown_EventScript_StartMyrtleScene {
     addobject(LOCALID_GRUNT_2)
     applymovement(LOCALID_PROF_MYRTLE, HavenTown_Movement_MyrtleWalkNorth)
     waitmovement(0)
-    msgbox(HavenTown_Text_MyrtleAsksDirections, MSGBOX_NPC)
-    delay(60)
-    playse(SE_PIN)
+    msgbox("Professor: Oh! Excuse me.", MSGBOX_NPC)
+    applymovement(LOCALID_PLAYER, moves(face_down))
     waitmovement(0)
+    delay(30)
+    msgbox("Can you point me to Haven Town?", MSGBOX_NPC)
+    playse(SE_PIN)
     applymovement(LOCALID_PROF_MYRTLE, Common_Movement_ExclamationMark)
+    waitmovement(0)
     playbgm(MUS_ROCKET_HIDEOUT, TRUE)
     msgbox(HavenTown_Text_GruntsAmbushMyrtle, MSGBOX_NPC)
     applymovement(LOCALID_GRUNT_1, HavenTown_Movement_GruntsWalkNorth)
@@ -131,14 +145,24 @@ script HavenTown_EventScript_StartMyrtleScene {
     waitmovement(0)
     msgbox("Hey! Get off me!", MSGBOX_NPC)
     playse(SE_BALL_BOUNCE_3)
-    delay(20)
+    waitse
     addobject(LOCALID_TREECKO_BALL)
     addobject(LOCALID_MUDKIP_BALL)
     addobject(LOCALID_HAVEN_CHARMANDER_BALL)
     clearflag(FLAG_HIDE_HAVEN_TOWN_TREECKO_BALL)
     clearflag(FLAG_HIDE_HAVEN_TOWN_MUDKIP_BALL)
     clearflag(FLAG_HIDE_HAVEN_TOWN_CHARMANDER_BALL)
-    msgbox(HavenTown_Text_MyrtleUseOnePokemon, MSGBOX_NPC)
+    msgbox("The professor dropped some
+            pokeballs!", MSGBOX_NPC)
+    delay(30)
+    msgbox("Ashen Grunt: Now, now,
+            professor!
+
+            Just hand over your pokeballs
+            and nobody gets hurt.", MSGBOX_NPC)
+    delay(30)
+    msgbox("Use one of the pokeballs
+            to help her!", MSGBOX_NPC)
     release
     end
 }
@@ -211,7 +235,6 @@ script HavenTown_EventScript_StarterChosen {
 }
 
 script HavenTown_EventScript_StarterBattle {
-    msgbox(HavenTown_Text_GruntBattleStart, MSGBOX_NPC)
     trainerbattle_single(TRAINER_TEAM_ASHEN_GRUNT_HAVEN, HavenTown_Text_GruntBattleStart, HavenTown_Text_GruntBattleDefeat, HavenTown_EventScript_StarterBattleAfterBattle)
     end
 }
@@ -220,23 +243,29 @@ script HavenTown_EventScript_StarterBattleAfterBattle {
     call(HavenTown_EventScript_HideStarterBalls)
     msgbox(HavenTown_Text_GruntsRetreat, MSGBOX_NPC)
     closemessage
-    fadescreenswapbuffers(FADE_TO_BLACK)
+    applymovement(LOCALID_GRUNT_1, moves(walk_down*5))
+    applymovement(LOCALID_GRUNT_2, moves(walk_down*5))
+    fadeoutbgm(4)
+    waitmovement(0)
     removeobject(LOCALID_GRUNT_1)
     removeobject(LOCALID_GRUNT_2)
     setflag(FLAG_HIDE_HAVEN_TOWN_GRUNT_1)
     setflag(FLAG_HIDE_HAVEN_TOWN_GRUNT_2)
-    fadescreenswapbuffers(FADE_FROM_BLACK)
     playbgm(MUS_PALLET, TRUE)
+    fadeinbgm(0)
     msgbox(HavenTown_Text_MyrtleThanks, MSGBOX_NPC)
     msgbox(HavenTown_Text_MyrtlePresentation, MSGBOX_NPC)
     msgbox("Do you know a kid by the name
-        {RIVAL2}?$")
+            {RIVAL2}?$")
     waitmessage
     multichoicedefault(20, 8, MULTI_YESMAYBE, 1, TRUE)
     msgbox(HavenTown_Text_MyrtleComeWithMe, MSGBOX_NPC)
     bufferspeciesname(STR_VAR_1, PLAYER_STARTER_SPECIES)
-    msgbox(format("You don't need to give me {STR_VAR_1} back, it's your partner now.\p"
-        "I can see he already trusts you!"), MSGBOX_NPC)
+    msgbox("You don't need to give me
+            {STR_VAR_1} back,
+            it's your partner now.
+
+            I can see he already trusts you!", MSGBOX_NPC)
     message(HavenTown_Text_ReceivedStarter)
     waitmessage
     playfanfare(MUS_OBTAIN_KEY_ITEM)
@@ -246,55 +275,20 @@ script HavenTown_EventScript_StarterBattleAfterBattle {
         setvar(VAR_0x8004, 0)
         call(EventScript_ChangePokemonNickname)
     }
-    msgbox(format("Prof. Myrtle: Take good care of {STR_VAR_1}!\p"
-        "You can help your POKéMON grow stronger by battling with it."
-    ), MSGBOX_NPC)
-    fadescreen(FADE_TO_BLACK)
+    msgbox("Prof. Myrtle: Take good care of
+            {STR_VAR_1}!
+
+            You can help your POKéMON grow
+            stronger by battling with it."
+    , MSGBOX_NPC)
+    delay(30)
+    msgbox("Prof. Myrtle: Now, let's go
+            to your friend's house!", MSGBOX_NPC)
     setvar(VAR_MAP_SCENE_HAVEN_TOWN, 2)
     setflag(FLAG_ORPHANAGE_ENVELOPE_HIDE_PARK_RUPERT)
-    clearflag(FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE)
-    warp(MAP_HAVEN_TOWN, 11, 16)
-    delay(60)
-    setobjectmovementtype(LOCALID_PROF_MYRTLE_2, MOVEMENT_TYPE_FACE_RIGHT)
-    msgbox(format("Prof. Myrtle: So, is it here?"))
-    dynmultipush("Yes, it's here!", 0)
-    dynmultipush("Yeah, but...", 1)
-    dynmultipush("Yep. I should be going, though.", 2)
-    dynmultistack(20, 8, TRUE, 4, 0, 0, DYN_MULTICHOICE_CB_NONE)
-    switch (var(VAR_RESULT)) {
-        case 0:
-            msgbox(format("Prof. Myrtle: Good! Let's see your friend!"), MSGBOX_NPC)
-        case 1:
-            msgbox(format("Prof. Myrtle: Let's go!"), MSGBOX_NPC)
-        case 2:
-            msgbox(format("Prof. Myrtle: Nonsense!\nLet's go!"), MSGBOX_NPC)
-    }
-    applymovement(LOCALID_PROF_MYRTLE_2, moves(walk_up))
-    applymovement(LOCALID_PLAYER, moves(walk_up))
-    waitmovement(0)
-    delay(30)
-    applymovement(LOCALID_CEDRIC_MOM, Common_Movement_ExclamationMark)
-    waitmovement(0)
-    msgbox(format("{RIVAL2}'s Mom: {RIVAL2} dear!\nThe professor is here!"), MSGBOX_NPC)
-    applymovement(LOCALID_CEDRIC_MOM, moves(face_left, walk_left, face_down))
-    waitmovement(0)
-    playse(SE_DOOR)
-    waitse
-    addobject(LOCALID_CEDRIC_START)
-    delay(30)
-    applymovement(LOCALID_CEDRIC_START, Common_Movement_ExclamationMark)
-    waitmovement(0)
-    msgbox(format("{RIVAL2}: Oh, is this dad's friend?\nDoes she have my POKéMON?"), MSGBOX_NPC)
-    msgbox(format("Prof. Myrtle: Hello {RIVAL2}, I'm Professor Myrtle.\p"
-        "Your father, he... He's busy with his very important research, but he asked me to give you your first POKéMON.\p"
-        "Here, you can choose one of these three!\p"
-        "I mean two!"), MSGBOX_NPC)
-    applymovement(LOCALID_CEDRIC_START, Common_Movement_QuestionMark)
-    waitmovement(0)
-    msgbox(format("{RIVAL2}: Wait, where's the third one?"), MSGBOX_NPC)
-    msgbox(format("Prof. Myrtle: Well ..."), MSGBOX_NPC)
-    msgbox(format("{RIVAL2}: Why does {PLAYER} has a POKéMON?\pWhy did he get to choose first?!"), MSGBOX_NPC)
-    release
+    warp(MAP_CEDRIC_HOUSE, 5, 10)
+    waitstate
+    releaseall
     end
 }
 

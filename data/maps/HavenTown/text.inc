@@ -33,17 +33,9 @@ HavenTown_Text_LeaveTownBlocked::
     .string "I'm not authorized to leave town\n"
     .string "without Mrs. Marina's permission.$"
 
-HavenTown_Text_MyrtleAsksDirections::
-    .string "Professor: Oh! Excuse me.\p"
-    .string "Can you point me to Haven Town?$"
-
 HavenTown_Text_GruntsAmbushMyrtle::
     .string "Team Ashen Grunt: Hand over your\n"
     .string "rare POKéMON, Professor!$"
-
-HavenTown_Text_MyrtleUseOnePokemon::
-    .string "The professor dropped some pokeballs!\n"
-    .string "Use one to help her!$"
 
 HavenTown_Text_MyrtleRepeatInstruction::
     .string "Professor: Hurry!\n"

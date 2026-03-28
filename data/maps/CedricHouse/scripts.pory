@@ -1,1 +1,121 @@
-mapscripts CedricHouse_MapScripts {}
+mapscripts CedricHouse_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION: CedricHouse_OnTransition
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_TEMP_0, 1: CedricHouse_CedricStart
+    ]
+}
+
+script CedricHouse_OnTransition {
+    setvar(VAR_TEMP_0, 0)
+    setflag(FLAG_TEMP_A)
+    setflag(FLAG_TEMP_B)
+    setflag(FLAG_TEMP_C)
+    removeobject(LOCALID_POKEBALL_CEDRIC_1)
+    removeobject(LOCALID_POKEBALL_CEDRIC_2)
+    if (var(VAR_MAP_SCENE_HAVEN_TOWN) != 2) {
+        removeobject(LOCALID_CEDRIC_INSIDE)
+    } else {
+        setvar(VAR_TEMP_0, 1)
+    }
+    end
+}
+
+script CedricHouse_CedricStart {
+    lockall
+    setvar(VAR_TEMP_0, 0)
+    delay(60)
+    setflag(FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE)
+    msgbox(format("Prof. Myrtle: So, is it here?"))
+    dynmultipush("Yes, it's here!", 0)
+    dynmultipush("Yeah, but...", 1)
+    dynmultipush("Yep. I should be going, though.", 2)
+    dynmultistack(20, 6, TRUE, 4, 0, 0, DYN_MULTICHOICE_CB_NONE)
+    switch (var(VAR_RESULT)) {
+        case 0:
+            msgbox("Prof. Myrtle: Good!
+                    Let's see your friend!", MSGBOX_NPC)
+        case 1:
+            msgbox("Prof. Myrtle: Let's go!", MSGBOX_NPC)
+        case 2:
+            msgbox("Prof. Myrtle: Nonsense!
+                    Let's go!", MSGBOX_NPC)
+    }
+    applymovement(LOCALID_MYRTLE_INSIDE, moves(walk_right))
+    applymovement(LOCALID_PLAYER, moves(walk_right))
+    waitmovement(0)
+    playse(SE_PIN)
+    applymovement(LOCALID_CEDRIC_MOM_INSIDE, Common_Movement_ExclamationMark)
+    waitmovement(0)
+    delay(30)
+    msgbox("{RIVAL2}'s Mom: {RIVAL2} dear!
+            The professor is here!
+
+            Myrtle, so nice to see you!.", MSGBOX_NPC)
+    applymovement(LOCALID_MYRTLE_INSIDE, moves(walk_right*2, step_end))
+    applymovement(LOCALID_PLAYER, moves(walk_right*2))
+    applymovement(LOCALID_CEDRIC_MOM_INSIDE, moves(walk_down*3, face_left, step_end))
+    waitmovement(0)
+    playse(SE_DOOR)
+    waitse
+    addobject(LOCALID_CEDRIC_INSIDE)
+    clearflag(FLAG_TEMP_C)
+    delay(30)
+    applymovement(LOCALID_CEDRIC_INSIDE, moves(walk_left*7, walk_down*3, step_end))
+    waitmovement(0)
+    applymovement(LOCALID_MYRTLE_INSIDE, moves(face_up, step_end))
+    applymovement(LOCALID_PLAYER, moves(face_up, step_end))
+    waitmovement(0)
+    msgbox("{RIVAL2}: Is this dad's friend?
+            Does she have my POKéMON?", MSGBOX_NPC)
+    msgbox("Prof. Myrtle: Hello {RIVAL2},
+            I'm Professor Myrtle.
+
+            Your father... He's busy with
+            his very important research, 
+            but he asked me to give you 
+            your very first POKéMON!
+
+            Here, you can choose one of 
+            these three!", MSGBOX_NPC)
+    playse(SE_BALL_BOUNCE_2)
+    waitse
+    addobject(LOCALID_POKEBALL_CEDRIC_1)
+    addobject(LOCALID_POKEBALL_CEDRIC_2)
+    setflag(FLAG_TEMP_A)
+    setflag(FLAG_TEMP_B)
+    delay(30)
+    playse(SE_PIN)
+    applymovement(LOCALID_CEDRIC_INSIDE, Common_Movement_ExclamationMark)
+    waitmovement(0)
+    msgbox("{RIVAL2}: Wait...
+            where's the third one?", MSGBOX_NPC)
+    msgbox("Prof. Myrtle: I meant two!", MSGBOX_NPC)
+    msgbox("{RIVAL2}: Why does
+            {PLAYER} have a POKéMON?
+            
+            Why did he get to choose 
+            first?!", MSGBOX_NPC)
+    delay(30)
+    msgbox("It's not fair!", MSGBOX_NPC)
+    applymovement(LOCALID_CEDRIC_INSIDE, moves(walk_left, walk_right, walk_left, walk_right, face_down, step_end))
+    waitmovement(0)
+    msgbox("I'm going to get the strongest 
+            one!
+            
+            You'll see!", MSGBOX_NPC)
+    applymovement(LOCALID_CEDRIC_INSIDE, moves(face_right, step_end))
+    waitmovement(0)
+    setflag(FLAG_TEMP_A)
+    removeobject(LOCALID_POKEBALL_CEDRIC_1)
+    delay(30)
+    applymovement(LOCALID_CEDRIC_INSIDE, moves(walk_left, face_down, step_end))
+    waitmovement(0)
+    msgbox("Let's go outside, {PLAYER}!
+    
+    We'll see who's the better
+    trainer!", MSGBOX_NPC)
+    setvar(VAR_MAP_SCENE_HAVEN_TOWN, 3)
+    warp(MAP_HAVEN_TOWN, 10, 13)
+    releaseall
+    end
+}
