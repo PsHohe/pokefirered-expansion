@@ -3,9 +3,13 @@ const PLAYER_STARTER_SPECIES = VAR_TEMP_3
 
 mapscripts HavenTown_MapScripts {
     MAP_SCRIPT_ON_TRANSITION: HavenTown_OnTransition
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_MAP_SCENE_HAVEN_TOWN, 3: HavenTown_EventScript_CedricOutsideChallenge
+    ]
 }
 
 script HavenTown_OnTransition {
+    setvar(VAR_TEMP_0, 0)
     setflag(FLAG_ORPHANAGE_ENVELOPE_HIDE_PARK_RUPERT)
     setflag(FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE)
     setflag(FLAG_HIDE_HAVEN_TOWN_GRUNT_1)
@@ -33,10 +37,17 @@ script HavenTown_OnTransition {
     if (var(VAR_MAP_SCENE_HAVEN_TOWN) != 3) {
         setflag(FLAG_HIDE_CEDRIC_OUTSIDE_HAVEN)
         removeobject(LOCALID_CEDRIC_OUTSIDE)
+    } else {
+        clearflag(FLAG_HIDE_CEDRIC_OUTSIDE_HAVEN)
+        addobject(LOCALID_CEDRIC_OUTSIDE)
     }
 
     if (flag(FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED) && flag(FLAG_ORPHANAGE_ENVELOPE_WIFE_TALKED)) {
         clearflag(FLAG_ORPHANAGE_ENVELOPE_HIDE_PARK_RUPERT)
+    }
+
+    if (var(VAR_MAP_SCENE_HAVEN_TOWN) >= 5) {
+        setvar(VAR_TEMP_0, 1)
     }
     end
 }
@@ -85,7 +96,91 @@ script HavenTown_LeaveTownBlockedTrigger {
         applymovement(LOCALID_PLAYER, HavenTown_Movement_PlayerStepBackFromTownExit)
         waitmovement(0)
         msgbox(HavenTown_Text_LeaveTownBlocked, MSGBOX_NPC)
+    } elif (var(VAR_MAP_SCENE_HAVEN_TOWN) == 4) {
+        applymovement(LOCALID_PLAYER, HavenTown_Movement_PlayerStepBackFromTownExit)
+        waitmovement(0)
+        msgbox("Prof. Myrtle told you to let Mrs.\n"
+            "Marina know before leaving.\p"
+            "You should visit the orphanage first.", MSGBOX_NPC)
     }
+    releaseall
+    end
+}
+
+script HavenTown_EventScript_CedricOutsideChallenge {
+    lockall
+    setvar(VAR_MAP_SCENE_HAVEN_TOWN, 4)
+    applymovement(LOCALID_CEDRIC_OUTSIDE, HavenTown_Movement_CedricWalksOut)
+    applymovement(LOCALID_PLAYER, HavenTown_Movement_PlayerApproachesCedric)
+    waitmovement(0)
+    applymovement(LOCALID_CEDRIC_OUTSIDE, Common_Movement_ExclamationMark)
+    applymovement(LOCALID_PLAYER, moves(face_right))
+    waitmovement(0)
+    clearflag(FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE)
+    setobjectxyperm(LOCALID_PROF_MYRTLE, 10, 13)
+    setobjectmovementtype(LOCALID_PROF_MYRTLE, MOVEMENT_TYPE_FACE_RIGHT)
+    addobject(LOCALID_PROF_MYRTLE)
+    applymovement(LOCALID_PROF_MYRTLE, HavenTown_Movement_MyrtleStepsInBeforeBattle)
+    waitmovement(0)
+
+    playbgm(MUS_ENCOUNTER_RIVAL, FALSE)
+    msgbox("{RIVAL2}: Hah! You're finally here.
+            Let's see whose POKeMON is stronger!", MSGBOX_NPC)
+    msgbox("Prof. Myrtle: This battle won't
+            be easy, {PLAYER}.
+            
+            I'll observe it from here.
+            
+            Show me how you and your partner
+            handle a real challenge.", MSGBOX_NPC)
+
+    if (var(VAR_STARTER_MON) == 2) {
+        trainerbattle_earlyrival(TRAINER_TEAM_CEDRIC_HAVEN_SQUIRTLE, RIVAL_BATTLE_HEAL_AFTER, format("{RIVAL2}: What?!\nI lost?!"), format("{RIVAL2}: See? I won!"))
+    } elif (var(VAR_STARTER_MON) == 1) {
+        trainerbattle_earlyrival(TRAINER_TEAM_CEDRIC_HAVEN_BULBASAUR, RIVAL_BATTLE_HEAL_AFTER, format("{RIVAL2}: What?!\nI lost?!"), format("{RIVAL2}: See? I won!"))
+    } else {
+        trainerbattle_earlyrival(TRAINER_TEAM_CEDRIC_HAVEN_CHARMANDER, RIVAL_BATTLE_HEAL_AFTER, format("{RIVAL2}: What?!\nI lost?!"), format("{RIVAL2}: See? I won!"))
+    }
+
+    playbgm(MUS_RIVAL_EXIT, FALSE)
+    if (var(VAR_RESULT) == TRUE) {
+        msgbox("{RIVAL2}: Hah! That's what
+                I expected.
+                
+                Train harder if you want to
+                keep up with me!", MSGBOX_NPC)
+    } else {
+        msgbox("{RIVAL2}: This doesn't count!
+                Next time, I'll crush you for sure!", MSGBOX_NPC)
+    }
+    applymovement(LOCALID_CEDRIC_OUTSIDE, HavenTown_Movement_CedricStormsOff)
+    waitmovement(0)
+    setflag(FLAG_HIDE_CEDRIC_OUTSIDE_HAVEN)
+    removeobject(LOCALID_CEDRIC_OUTSIDE)
+
+    fadeoutbgm(0)
+    playbgm(MUS_PALLET, TRUE)
+    fadeinbgm(0)
+
+    applymovement(LOCALID_PLAYER, HavenTown_Movement_PlayerStepsToMyrtle)
+    waitmovement(0)
+    msgbox("Prof. Myrtle: Good battle,
+            {PLAYER}.
+
+            You stayed focused and adapted
+            well out there.
+
+            Meet me in Ridgepass Town.
+            I have something for you there.
+
+            Tell the orphanage if you're
+            starting your journey.
+            
+            They deserve to hear it from you.", MSGBOX_NPC)
+    applymovement(LOCALID_PROF_MYRTLE, HavenTown_Movement_MyrtleLeavesForRidgepass)
+    waitmovement(0)
+    setflag(FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE)
+    removeobject(LOCALID_PROF_MYRTLE)
     releaseall
     end
 }
@@ -281,6 +376,7 @@ script HavenTown_EventScript_StarterBattleAfterBattle {
             You can help your POKéMON grow
             stronger by battling with it."
     , MSGBOX_NPC)
+    special(HealPlayerParty)
     delay(30)
     msgbox("Prof. Myrtle: Now, let's go
             to your friend's house!", MSGBOX_NPC)
@@ -363,4 +459,37 @@ movement HavenTown_Movement_MyrtleGetsShoved {
 
 movement HavenTown_Movement_GruntsWalkNorth {
     walk_up * 3
+}
+
+movement HavenTown_Movement_CedricWalksOut {
+    walk_right * 8
+    face_left
+    step_end
+}
+
+movement HavenTown_Movement_PlayerApproachesCedric {
+    walk_right * 5
+    step_end
+}
+
+movement HavenTown_Movement_CedricStormsOff {
+    walk_left
+    walk_down
+    walk_left * 8
+    walk_down * 2
+    walk_left * 4
+}
+
+movement HavenTown_Movement_PlayerStepsToMyrtle {
+    walk_left * 4
+    step_end
+}
+
+movement HavenTown_Movement_MyrtleStepsInBeforeBattle {
+    walk_right * 2
+}
+
+movement HavenTown_Movement_MyrtleLeavesForRidgepass {
+    walk_down * 3
+    walk_right * 6
 }

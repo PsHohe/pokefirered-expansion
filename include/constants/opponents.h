@@ -756,12 +756,15 @@
 #define TRAINER_LUCY                             748
 #define TRAINER_BRANDON                          749
 #define TRAINER_TEAM_ASHEN_GRUNT_HAVEN           750
+#define TRAINER_TEAM_CEDRIC_HAVEN_SQUIRTLE       751
+#define TRAINER_TEAM_CEDRIC_HAVEN_BULBASAUR      752
+#define TRAINER_TEAM_CEDRIC_HAVEN_CHARMANDER     753
 
 // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is
 //       only space for 25 additional trainers before trainer flag space overflows.
 //       MAX_TRAINERS_COUNT can be increased but will take up additional saveblock space
 
-#define TRAINERS_COUNT                           751
+#define TRAINERS_COUNT                           754
 #define MAX_TRAINERS_COUNT                       768
 #define TRAINER_PARTNER(partner)           (MAX_TRAINERS_COUNT + partner)
 

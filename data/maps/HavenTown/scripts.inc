@@ -1,697 +1,1008 @@
 HavenTown_MapScripts::
 # 5 "data/maps/HavenTown/scripts.pory"
 	map_script MAP_SCRIPT_ON_TRANSITION, HavenTown_OnTransition
+# 6 "data/maps/HavenTown/scripts.pory"
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, HavenTown_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE
 	.byte 0
+
+HavenTown_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE:
+# 7 "data/maps/HavenTown/scripts.pory"
+	map_script_2 VAR_MAP_SCENE_HAVEN_TOWN, 3, HavenTown_EventScript_CedricOutsideChallenge
+	.2byte 0
 
 
 HavenTown_OnTransition::
-# 9 "data/maps/HavenTown/scripts.pory"
-	setflag FLAG_ORPHANAGE_ENVELOPE_HIDE_PARK_RUPERT
-# 10 "data/maps/HavenTown/scripts.pory"
-	setflag FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE
-# 11 "data/maps/HavenTown/scripts.pory"
-	setflag FLAG_HIDE_HAVEN_TOWN_GRUNT_1
 # 12 "data/maps/HavenTown/scripts.pory"
-	setflag FLAG_HIDE_HAVEN_TOWN_GRUNT_2
+	setvar VAR_TEMP_0, 0
 # 13 "data/maps/HavenTown/scripts.pory"
-	setflag FLAG_HIDE_HAVEN_TOWN_TREECKO_BALL
+	setflag FLAG_ORPHANAGE_ENVELOPE_HIDE_PARK_RUPERT
 # 14 "data/maps/HavenTown/scripts.pory"
-	setflag FLAG_HIDE_HAVEN_TOWN_MUDKIP_BALL
+	setflag FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE
 # 15 "data/maps/HavenTown/scripts.pory"
-	setflag FLAG_HIDE_HAVEN_TOWN_CHARMANDER_BALL
+	setflag FLAG_HIDE_HAVEN_TOWN_GRUNT_1
+# 16 "data/maps/HavenTown/scripts.pory"
+	setflag FLAG_HIDE_HAVEN_TOWN_GRUNT_2
 # 17 "data/maps/HavenTown/scripts.pory"
+	setflag FLAG_HIDE_HAVEN_TOWN_TREECKO_BALL
+# 18 "data/maps/HavenTown/scripts.pory"
+	setflag FLAG_HIDE_HAVEN_TOWN_MUDKIP_BALL
+# 19 "data/maps/HavenTown/scripts.pory"
+	setflag FLAG_HIDE_HAVEN_TOWN_CHARMANDER_BALL
+# 21 "data/maps/HavenTown/scripts.pory"
 	compare VAR_MAP_SCENE_HAVEN_TOWN, 1
 	goto_if_eq HavenTown_OnTransition_2
-# 26 "data/maps/HavenTown/scripts.pory"
+# 30 "data/maps/HavenTown/scripts.pory"
 	compare VAR_MAP_SCENE_HAVEN_TOWN, 2
 	goto_if_eq HavenTown_OnTransition_3
-# 30 "data/maps/HavenTown/scripts.pory"
+# 34 "data/maps/HavenTown/scripts.pory"
 	setflag FLAG_HIDE_CEDRIC_MOM_OUTSIDE_HAVEN
-# 33 "data/maps/HavenTown/scripts.pory"
+# 37 "data/maps/HavenTown/scripts.pory"
 	compare VAR_MAP_SCENE_HAVEN_TOWN, 3
 	goto_if_ne HavenTown_OnTransition_8
+# 41 "data/maps/HavenTown/scripts.pory"
+	clearflag FLAG_HIDE_CEDRIC_OUTSIDE_HAVEN
+# 42 "data/maps/HavenTown/scripts.pory"
+	addobject LOCALID_CEDRIC_OUTSIDE
 HavenTown_OnTransition_7:
-# 38 "data/maps/HavenTown/scripts.pory"
-	goto_if_set FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED, HavenTown_OnTransition_12
-HavenTown_OnTransition_10:
+# 45 "data/maps/HavenTown/scripts.pory"
+	goto_if_set FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED, HavenTown_OnTransition_13
+HavenTown_OnTransition_11:
+# 49 "data/maps/HavenTown/scripts.pory"
+	compare VAR_MAP_SCENE_HAVEN_TOWN, 5
+	goto_if_ge HavenTown_OnTransition_17
+HavenTown_OnTransition_16:
 	end
 
 HavenTown_OnTransition_2:
-# 18 "data/maps/HavenTown/scripts.pory"
-	clearflag FLAG_ORPHANAGE_ENVELOPE_HIDE_PARK_RUPERT
-# 19 "data/maps/HavenTown/scripts.pory"
-	clearflag FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE
-# 20 "data/maps/HavenTown/scripts.pory"
-	clearflag FLAG_HIDE_HAVEN_TOWN_GRUNT_1
-# 21 "data/maps/HavenTown/scripts.pory"
-	clearflag FLAG_HIDE_HAVEN_TOWN_GRUNT_2
 # 22 "data/maps/HavenTown/scripts.pory"
-	clearflag FLAG_HIDE_HAVEN_TOWN_TREECKO_BALL
+	clearflag FLAG_ORPHANAGE_ENVELOPE_HIDE_PARK_RUPERT
 # 23 "data/maps/HavenTown/scripts.pory"
-	clearflag FLAG_HIDE_HAVEN_TOWN_MUDKIP_BALL
+	clearflag FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE
 # 24 "data/maps/HavenTown/scripts.pory"
+	clearflag FLAG_HIDE_HAVEN_TOWN_GRUNT_1
+# 25 "data/maps/HavenTown/scripts.pory"
+	clearflag FLAG_HIDE_HAVEN_TOWN_GRUNT_2
+# 26 "data/maps/HavenTown/scripts.pory"
+	clearflag FLAG_HIDE_HAVEN_TOWN_TREECKO_BALL
+# 27 "data/maps/HavenTown/scripts.pory"
+	clearflag FLAG_HIDE_HAVEN_TOWN_MUDKIP_BALL
+# 28 "data/maps/HavenTown/scripts.pory"
 	clearflag FLAG_HIDE_HAVEN_TOWN_CHARMANDER_BALL
 	end
 
 HavenTown_OnTransition_3:
-# 27 "data/maps/HavenTown/scripts.pory"
+# 31 "data/maps/HavenTown/scripts.pory"
 	clearflag FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE
 	end
 
 HavenTown_OnTransition_8:
-# 34 "data/maps/HavenTown/scripts.pory"
+# 38 "data/maps/HavenTown/scripts.pory"
 	setflag FLAG_HIDE_CEDRIC_OUTSIDE_HAVEN
-# 35 "data/maps/HavenTown/scripts.pory"
+# 39 "data/maps/HavenTown/scripts.pory"
 	removeobject LOCALID_CEDRIC_OUTSIDE
 	goto HavenTown_OnTransition_7
 
-HavenTown_OnTransition_11:
-# 39 "data/maps/HavenTown/scripts.pory"
-	clearflag FLAG_ORPHANAGE_ENVELOPE_HIDE_PARK_RUPERT
-	goto HavenTown_OnTransition_10
-
 HavenTown_OnTransition_12:
-# 38 "data/maps/HavenTown/scripts.pory"
-	goto_if_set FLAG_ORPHANAGE_ENVELOPE_WIFE_TALKED, HavenTown_OnTransition_11
-	goto HavenTown_OnTransition_10
+# 46 "data/maps/HavenTown/scripts.pory"
+	clearflag FLAG_ORPHANAGE_ENVELOPE_HIDE_PARK_RUPERT
+	goto HavenTown_OnTransition_11
+
+HavenTown_OnTransition_13:
+# 45 "data/maps/HavenTown/scripts.pory"
+	goto_if_set FLAG_ORPHANAGE_ENVELOPE_WIFE_TALKED, HavenTown_OnTransition_12
+	goto HavenTown_OnTransition_11
+
+HavenTown_OnTransition_17:
+# 50 "data/maps/HavenTown/scripts.pory"
+	setvar VAR_TEMP_0, 1
+	goto HavenTown_OnTransition_16
 
 
 HavenTown_TownSign::
-# 45 "data/maps/HavenTown/scripts.pory"
+# 56 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_TownSign, MSGBOX_SIGN
 	end
 
 
 HavenTown_Rival2Mailbox::
-# 50 "data/maps/HavenTown/scripts.pory"
+# 61 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_Rival2Mailbox, MSGBOX_SIGN
 	end
 
 
 HavenTown_TrainerTips::
-# 55 "data/maps/HavenTown/scripts.pory"
+# 66 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_PressStartToOpenMenu, MSGBOX_SIGN
 	end
 
 
 HavenTown_ParkSign::
-# 60 "data/maps/HavenTown/scripts.pory"
+# 71 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_ParkSign, MSGBOX_SIGN
 	end
 
 
 HavenTown_CedricsMom::
-# 65 "data/maps/HavenTown/scripts.pory"
+# 76 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_CedricsMom, MSGBOX_NPC
 	end
 
 
 HavenTown_ParkGateStopTrigger::
-# 70 "data/maps/HavenTown/scripts.pory"
+# 81 "data/maps/HavenTown/scripts.pory"
 	lockall
-# 71 "data/maps/HavenTown/scripts.pory"
+# 82 "data/maps/HavenTown/scripts.pory"
 	goto_if_set FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED, HavenTown_ParkGateStopTrigger_4
 HavenTown_ParkGateStopTrigger_1:
-# 78 "data/maps/HavenTown/scripts.pory"
+# 89 "data/maps/HavenTown/scripts.pory"
 	releaseall
 	end
 
 HavenTown_ParkGateStopTrigger_2:
-# 74 "data/maps/HavenTown/scripts.pory"
+# 85 "data/maps/HavenTown/scripts.pory"
 	applymovement LOCALID_PLAYER, HavenTown_Movement_PlayerStepBackFromPark
-# 75 "data/maps/HavenTown/scripts.pory"
+# 86 "data/maps/HavenTown/scripts.pory"
 	waitmovement 0
-# 76 "data/maps/HavenTown/scripts.pory"
+# 87 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_ParkGateStop, MSGBOX_NPC
 	goto HavenTown_ParkGateStopTrigger_1
 
 HavenTown_ParkGateStopTrigger_3:
-# 73 "data/maps/HavenTown/scripts.pory"
+# 84 "data/maps/HavenTown/scripts.pory"
 	goto_if_unset FLAG_ORPHANAGE_ENVELOPE_WIFE_TALKED, HavenTown_ParkGateStopTrigger_2
 	goto HavenTown_ParkGateStopTrigger_1
 
 HavenTown_ParkGateStopTrigger_4:
-# 72 "data/maps/HavenTown/scripts.pory"
+# 83 "data/maps/HavenTown/scripts.pory"
 	goto_if_unset FLAG_ORPHANAGE_ENVELOPE_QUEST_FINISHED, HavenTown_ParkGateStopTrigger_3
 	goto HavenTown_ParkGateStopTrigger_1
 
 
 HavenTown_LeaveTownBlockedTrigger::
-# 83 "data/maps/HavenTown/scripts.pory"
+# 94 "data/maps/HavenTown/scripts.pory"
 	lockall
-# 84 "data/maps/HavenTown/scripts.pory"
+# 95 "data/maps/HavenTown/scripts.pory"
 	goto_if_unset FLAG_SYS_POKEMON_GET, HavenTown_LeaveTownBlockedTrigger_2
+# 99 "data/maps/HavenTown/scripts.pory"
+	compare VAR_MAP_SCENE_HAVEN_TOWN, 4
+	goto_if_eq HavenTown_LeaveTownBlockedTrigger_3
 HavenTown_LeaveTownBlockedTrigger_1:
-# 89 "data/maps/HavenTown/scripts.pory"
+# 106 "data/maps/HavenTown/scripts.pory"
 	releaseall
 	end
 
 HavenTown_LeaveTownBlockedTrigger_2:
-# 85 "data/maps/HavenTown/scripts.pory"
+# 96 "data/maps/HavenTown/scripts.pory"
 	applymovement LOCALID_PLAYER, HavenTown_Movement_PlayerStepBackFromTownExit
-# 86 "data/maps/HavenTown/scripts.pory"
+# 97 "data/maps/HavenTown/scripts.pory"
 	waitmovement 0
-# 87 "data/maps/HavenTown/scripts.pory"
+# 98 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_LeaveTownBlocked, MSGBOX_NPC
 	goto HavenTown_LeaveTownBlockedTrigger_1
 
+HavenTown_LeaveTownBlockedTrigger_3:
+# 100 "data/maps/HavenTown/scripts.pory"
+	applymovement LOCALID_PLAYER, HavenTown_Movement_PlayerStepBackFromTownExit
+# 101 "data/maps/HavenTown/scripts.pory"
+	waitmovement 0
+# 102 "data/maps/HavenTown/scripts.pory"
+	msgbox HavenTown_LeaveTownBlockedTrigger_Text_0, MSGBOX_NPC
+	goto HavenTown_LeaveTownBlockedTrigger_1
+
+
+HavenTown_EventScript_CedricOutsideChallenge::
+# 111 "data/maps/HavenTown/scripts.pory"
+	lockall
+# 112 "data/maps/HavenTown/scripts.pory"
+	setvar VAR_MAP_SCENE_HAVEN_TOWN, 4
+# 113 "data/maps/HavenTown/scripts.pory"
+	applymovement LOCALID_CEDRIC_OUTSIDE, HavenTown_Movement_CedricWalksOut
+# 114 "data/maps/HavenTown/scripts.pory"
+	applymovement LOCALID_PLAYER, HavenTown_Movement_PlayerApproachesCedric
+# 115 "data/maps/HavenTown/scripts.pory"
+	waitmovement 0
+# 116 "data/maps/HavenTown/scripts.pory"
+	applymovement LOCALID_CEDRIC_OUTSIDE, Common_Movement_ExclamationMark
+# 117 "data/maps/HavenTown/scripts.pory"
+	applymovement LOCALID_PLAYER, HavenTown_EventScript_CedricOutsideChallenge_Movement_0
+# 118 "data/maps/HavenTown/scripts.pory"
+	waitmovement 0
+# 119 "data/maps/HavenTown/scripts.pory"
+	clearflag FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE
+# 120 "data/maps/HavenTown/scripts.pory"
+	setobjectxyperm LOCALID_PROF_MYRTLE, 10, 13
+# 121 "data/maps/HavenTown/scripts.pory"
+	setobjectmovementtype LOCALID_PROF_MYRTLE, MOVEMENT_TYPE_FACE_RIGHT
+# 122 "data/maps/HavenTown/scripts.pory"
+	addobject LOCALID_PROF_MYRTLE
+# 123 "data/maps/HavenTown/scripts.pory"
+	applymovement LOCALID_PROF_MYRTLE, HavenTown_Movement_MyrtleStepsInBeforeBattle
+# 124 "data/maps/HavenTown/scripts.pory"
+	waitmovement 0
+# 126 "data/maps/HavenTown/scripts.pory"
+	playbgm MUS_ENCOUNTER_RIVAL, FALSE
+# 127 "data/maps/HavenTown/scripts.pory"
+	msgbox HavenTown_EventScript_CedricOutsideChallenge_Text_0, MSGBOX_NPC
+# 129 "data/maps/HavenTown/scripts.pory"
+	msgbox HavenTown_EventScript_CedricOutsideChallenge_Text_1, MSGBOX_NPC
+# 137 "data/maps/HavenTown/scripts.pory"
+	compare VAR_STARTER_MON, 2
+	goto_if_eq HavenTown_EventScript_CedricOutsideChallenge_2
+# 139 "data/maps/HavenTown/scripts.pory"
+	compare VAR_STARTER_MON, 1
+	goto_if_eq HavenTown_EventScript_CedricOutsideChallenge_3
+# 142 "data/maps/HavenTown/scripts.pory"
+	trainerbattle_earlyrival TRAINER_TEAM_CEDRIC_HAVEN_CHARMANDER, RIVAL_BATTLE_HEAL_AFTER, HavenTown_EventScript_CedricOutsideChallenge_Text_2, HavenTown_EventScript_CedricOutsideChallenge_Text_3
+HavenTown_EventScript_CedricOutsideChallenge_1:
+# 145 "data/maps/HavenTown/scripts.pory"
+	playbgm MUS_RIVAL_EXIT, FALSE
+# 146 "data/maps/HavenTown/scripts.pory"
+	compare VAR_RESULT, TRUE
+	goto_if_eq HavenTown_EventScript_CedricOutsideChallenge_8
+# 153 "data/maps/HavenTown/scripts.pory"
+	msgbox HavenTown_EventScript_CedricOutsideChallenge_Text_5, MSGBOX_NPC
+HavenTown_EventScript_CedricOutsideChallenge_7:
+# 156 "data/maps/HavenTown/scripts.pory"
+	applymovement LOCALID_CEDRIC_OUTSIDE, HavenTown_Movement_CedricStormsOff
+# 157 "data/maps/HavenTown/scripts.pory"
+	waitmovement 0
+# 158 "data/maps/HavenTown/scripts.pory"
+	setflag FLAG_HIDE_CEDRIC_OUTSIDE_HAVEN
+# 159 "data/maps/HavenTown/scripts.pory"
+	removeobject LOCALID_CEDRIC_OUTSIDE
+# 161 "data/maps/HavenTown/scripts.pory"
+	fadeoutbgm 0
+# 162 "data/maps/HavenTown/scripts.pory"
+	playbgm MUS_PALLET, TRUE
+# 163 "data/maps/HavenTown/scripts.pory"
+	fadeinbgm 0
+# 165 "data/maps/HavenTown/scripts.pory"
+	applymovement LOCALID_PLAYER, HavenTown_Movement_PlayerStepsToMyrtle
+# 166 "data/maps/HavenTown/scripts.pory"
+	waitmovement 0
+# 167 "data/maps/HavenTown/scripts.pory"
+	msgbox HavenTown_EventScript_CedricOutsideChallenge_Text_6, MSGBOX_NPC
+# 180 "data/maps/HavenTown/scripts.pory"
+	applymovement LOCALID_PROF_MYRTLE, HavenTown_Movement_MyrtleLeavesForRidgepass
+# 181 "data/maps/HavenTown/scripts.pory"
+	waitmovement 0
+# 182 "data/maps/HavenTown/scripts.pory"
+	setflag FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE
+# 183 "data/maps/HavenTown/scripts.pory"
+	removeobject LOCALID_PROF_MYRTLE
+# 184 "data/maps/HavenTown/scripts.pory"
+	releaseall
+	end
+
+HavenTown_EventScript_CedricOutsideChallenge_2:
+# 138 "data/maps/HavenTown/scripts.pory"
+	trainerbattle_earlyrival TRAINER_TEAM_CEDRIC_HAVEN_SQUIRTLE, RIVAL_BATTLE_HEAL_AFTER, HavenTown_EventScript_CedricOutsideChallenge_Text_2, HavenTown_EventScript_CedricOutsideChallenge_Text_3
+	goto HavenTown_EventScript_CedricOutsideChallenge_1
+
+HavenTown_EventScript_CedricOutsideChallenge_3:
+# 140 "data/maps/HavenTown/scripts.pory"
+	trainerbattle_earlyrival TRAINER_TEAM_CEDRIC_HAVEN_BULBASAUR, RIVAL_BATTLE_HEAL_AFTER, HavenTown_EventScript_CedricOutsideChallenge_Text_2, HavenTown_EventScript_CedricOutsideChallenge_Text_3
+	goto HavenTown_EventScript_CedricOutsideChallenge_1
+
+HavenTown_EventScript_CedricOutsideChallenge_8:
+# 147 "data/maps/HavenTown/scripts.pory"
+	msgbox HavenTown_EventScript_CedricOutsideChallenge_Text_4, MSGBOX_NPC
+	goto HavenTown_EventScript_CedricOutsideChallenge_7
+
 
 HavenTown_MrRupertPark::
-# 94 "data/maps/HavenTown/scripts.pory"
+# 189 "data/maps/HavenTown/scripts.pory"
 	lock
-# 95 "data/maps/HavenTown/scripts.pory"
+# 190 "data/maps/HavenTown/scripts.pory"
 	faceplayer
-# 97 "data/maps/HavenTown/scripts.pory"
+# 192 "data/maps/HavenTown/scripts.pory"
 	compare VAR_MAP_SCENE_HAVEN_TOWN, 1
 	goto_if_eq HavenTown_MrRupertPark_2
-# 103 "data/maps/HavenTown/scripts.pory"
+# 198 "data/maps/HavenTown/scripts.pory"
 	goto_if_set FLAG_ORPHANAGE_ENVELOPE_QUEST_FINISHED, HavenTown_MrRupertPark_5
-# 109 "data/maps/HavenTown/scripts.pory"
+# 204 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_MrRupertPark, MSGBOX_NPC
-# 110 "data/maps/HavenTown/scripts.pory"
+# 205 "data/maps/HavenTown/scripts.pory"
 	removeitem ITEM_LETTER
-# 111 "data/maps/HavenTown/scripts.pory"
+# 206 "data/maps/HavenTown/scripts.pory"
 	message HavenTown_MrRupertPark_Text_0
-# 112 "data/maps/HavenTown/scripts.pory"
+# 207 "data/maps/HavenTown/scripts.pory"
 	playfanfare MUS_OBTAIN_KEY_ITEM
-# 113 "data/maps/HavenTown/scripts.pory"
+# 208 "data/maps/HavenTown/scripts.pory"
 	waitfanfare
-# 114 "data/maps/HavenTown/scripts.pory"
+# 209 "data/maps/HavenTown/scripts.pory"
 	setflag FLAG_ORPHANAGE_ENVELOPE_QUEST_FINISHED
-# 115 "data/maps/HavenTown/scripts.pory"
+# 210 "data/maps/HavenTown/scripts.pory"
 	closemessage
-# 116 "data/maps/HavenTown/scripts.pory"
+# 211 "data/maps/HavenTown/scripts.pory"
 	goto HavenTown_EventScript_StartMyrtleScene
 	return
 
 HavenTown_MrRupertPark_2:
-# 98 "data/maps/HavenTown/scripts.pory"
+# 193 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_RupertBadPeople, MSGBOX_NPC
-# 99 "data/maps/HavenTown/scripts.pory"
+# 194 "data/maps/HavenTown/scripts.pory"
 	release
 	end
 
 HavenTown_MrRupertPark_5:
-# 104 "data/maps/HavenTown/scripts.pory"
+# 199 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_MrRupertAfterQuest, MSGBOX_NPC
-# 105 "data/maps/HavenTown/scripts.pory"
+# 200 "data/maps/HavenTown/scripts.pory"
 	release
 	end
 
 
 HavenTown_EventScript_StartMyrtleScene::
-# 120 "data/maps/HavenTown/scripts.pory"
+# 215 "data/maps/HavenTown/scripts.pory"
 	lockall
-# 121 "data/maps/HavenTown/scripts.pory"
+# 216 "data/maps/HavenTown/scripts.pory"
 	delay 90
-# 122 "data/maps/HavenTown/scripts.pory"
+# 217 "data/maps/HavenTown/scripts.pory"
 	setvar VAR_MAP_SCENE_HAVEN_TOWN, 1
-# 123 "data/maps/HavenTown/scripts.pory"
+# 218 "data/maps/HavenTown/scripts.pory"
 	clearflag FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE
-# 124 "data/maps/HavenTown/scripts.pory"
+# 219 "data/maps/HavenTown/scripts.pory"
 	clearflag FLAG_HIDE_HAVEN_TOWN_GRUNT_1
-# 125 "data/maps/HavenTown/scripts.pory"
+# 220 "data/maps/HavenTown/scripts.pory"
 	clearflag FLAG_HIDE_HAVEN_TOWN_GRUNT_2
-# 126 "data/maps/HavenTown/scripts.pory"
+# 221 "data/maps/HavenTown/scripts.pory"
 	addobject LOCALID_PROF_MYRTLE
-# 127 "data/maps/HavenTown/scripts.pory"
+# 222 "data/maps/HavenTown/scripts.pory"
 	addobject LOCALID_GRUNT_1
-# 128 "data/maps/HavenTown/scripts.pory"
+# 223 "data/maps/HavenTown/scripts.pory"
 	addobject LOCALID_GRUNT_2
-# 129 "data/maps/HavenTown/scripts.pory"
+# 224 "data/maps/HavenTown/scripts.pory"
 	applymovement LOCALID_PROF_MYRTLE, HavenTown_Movement_MyrtleWalkNorth
-# 130 "data/maps/HavenTown/scripts.pory"
+# 225 "data/maps/HavenTown/scripts.pory"
 	waitmovement 0
-# 131 "data/maps/HavenTown/scripts.pory"
+# 226 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_EventScript_StartMyrtleScene_Text_0, MSGBOX_NPC
-# 132 "data/maps/HavenTown/scripts.pory"
+# 227 "data/maps/HavenTown/scripts.pory"
 	applymovement LOCALID_PLAYER, HavenTown_EventScript_StartMyrtleScene_Movement_0
-# 133 "data/maps/HavenTown/scripts.pory"
+# 228 "data/maps/HavenTown/scripts.pory"
 	waitmovement 0
-# 134 "data/maps/HavenTown/scripts.pory"
+# 229 "data/maps/HavenTown/scripts.pory"
 	delay 30
-# 135 "data/maps/HavenTown/scripts.pory"
+# 230 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_EventScript_StartMyrtleScene_Text_1, MSGBOX_NPC
-# 136 "data/maps/HavenTown/scripts.pory"
+# 231 "data/maps/HavenTown/scripts.pory"
 	playse SE_PIN
-# 137 "data/maps/HavenTown/scripts.pory"
+# 232 "data/maps/HavenTown/scripts.pory"
 	applymovement LOCALID_PROF_MYRTLE, Common_Movement_ExclamationMark
-# 138 "data/maps/HavenTown/scripts.pory"
+# 233 "data/maps/HavenTown/scripts.pory"
 	waitmovement 0
-# 139 "data/maps/HavenTown/scripts.pory"
+# 234 "data/maps/HavenTown/scripts.pory"
 	playbgm MUS_ROCKET_HIDEOUT, TRUE
-# 140 "data/maps/HavenTown/scripts.pory"
+# 235 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_GruntsAmbushMyrtle, MSGBOX_NPC
-# 141 "data/maps/HavenTown/scripts.pory"
+# 236 "data/maps/HavenTown/scripts.pory"
 	applymovement LOCALID_GRUNT_1, HavenTown_Movement_GruntsWalkNorth
-# 142 "data/maps/HavenTown/scripts.pory"
+# 237 "data/maps/HavenTown/scripts.pory"
 	applymovement LOCALID_GRUNT_2, HavenTown_Movement_GruntsWalkNorth
-# 143 "data/maps/HavenTown/scripts.pory"
+# 238 "data/maps/HavenTown/scripts.pory"
 	waitmovement 0
-# 144 "data/maps/HavenTown/scripts.pory"
+# 239 "data/maps/HavenTown/scripts.pory"
 	applymovement LOCALID_PROF_MYRTLE, HavenTown_Movement_MyrtleGetsShoved
-# 145 "data/maps/HavenTown/scripts.pory"
+# 240 "data/maps/HavenTown/scripts.pory"
 	waitmovement 0
-# 146 "data/maps/HavenTown/scripts.pory"
+# 241 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_EventScript_StartMyrtleScene_Text_2, MSGBOX_NPC
-# 147 "data/maps/HavenTown/scripts.pory"
+# 242 "data/maps/HavenTown/scripts.pory"
 	playse SE_BALL_BOUNCE_3
-# 148 "data/maps/HavenTown/scripts.pory"
+# 243 "data/maps/HavenTown/scripts.pory"
 	waitse
-# 149 "data/maps/HavenTown/scripts.pory"
+# 244 "data/maps/HavenTown/scripts.pory"
 	addobject LOCALID_TREECKO_BALL
-# 150 "data/maps/HavenTown/scripts.pory"
+# 245 "data/maps/HavenTown/scripts.pory"
 	addobject LOCALID_MUDKIP_BALL
-# 151 "data/maps/HavenTown/scripts.pory"
+# 246 "data/maps/HavenTown/scripts.pory"
 	addobject LOCALID_HAVEN_CHARMANDER_BALL
-# 152 "data/maps/HavenTown/scripts.pory"
+# 247 "data/maps/HavenTown/scripts.pory"
 	clearflag FLAG_HIDE_HAVEN_TOWN_TREECKO_BALL
-# 153 "data/maps/HavenTown/scripts.pory"
+# 248 "data/maps/HavenTown/scripts.pory"
 	clearflag FLAG_HIDE_HAVEN_TOWN_MUDKIP_BALL
-# 154 "data/maps/HavenTown/scripts.pory"
+# 249 "data/maps/HavenTown/scripts.pory"
 	clearflag FLAG_HIDE_HAVEN_TOWN_CHARMANDER_BALL
-# 155 "data/maps/HavenTown/scripts.pory"
+# 250 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_EventScript_StartMyrtleScene_Text_3, MSGBOX_NPC
-# 157 "data/maps/HavenTown/scripts.pory"
+# 252 "data/maps/HavenTown/scripts.pory"
 	delay 30
-# 158 "data/maps/HavenTown/scripts.pory"
+# 253 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_EventScript_StartMyrtleScene_Text_4, MSGBOX_NPC
-# 163 "data/maps/HavenTown/scripts.pory"
+# 258 "data/maps/HavenTown/scripts.pory"
 	delay 30
-# 164 "data/maps/HavenTown/scripts.pory"
+# 259 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_EventScript_StartMyrtleScene_Text_5, MSGBOX_NPC
-# 166 "data/maps/HavenTown/scripts.pory"
+# 261 "data/maps/HavenTown/scripts.pory"
 	release
 	end
 
 
 HavenTown_ProfMyrtle::
-# 171 "data/maps/HavenTown/scripts.pory"
+# 266 "data/maps/HavenTown/scripts.pory"
 	compare VAR_MAP_SCENE_HAVEN_TOWN, 1
 	goto_if_eq HavenTown_ProfMyrtle_2
-# 174 "data/maps/HavenTown/scripts.pory"
+# 269 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_MyrtleAfterEscort, MSGBOX_NPC
 HavenTown_ProfMyrtle_1:
 	end
 
 HavenTown_ProfMyrtle_2:
-# 172 "data/maps/HavenTown/scripts.pory"
+# 267 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_MyrtleRepeatInstruction, MSGBOX_NPC
 	goto HavenTown_ProfMyrtle_1
 
 
 HavenTown_Grunt1::
-# 180 "data/maps/HavenTown/scripts.pory"
+# 275 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_GruntGoAway, MSGBOX_NPC
 	end
 
 
 HavenTown_Grunt2::
-# 185 "data/maps/HavenTown/scripts.pory"
+# 280 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_GruntGoAway, MSGBOX_NPC
 	end
 
 
 HavenTown_TreeckoBall::
-# 190 "data/maps/HavenTown/scripts.pory"
+# 285 "data/maps/HavenTown/scripts.pory"
 	lock
-# 191 "data/maps/HavenTown/scripts.pory"
+# 286 "data/maps/HavenTown/scripts.pory"
 	setvar VAR_TEMP_2, 0
-# 192 "data/maps/HavenTown/scripts.pory"
+# 287 "data/maps/HavenTown/scripts.pory"
 	setvar VAR_TEMP_3, SPECIES_TREECKO
-# 193 "data/maps/HavenTown/scripts.pory"
+# 288 "data/maps/HavenTown/scripts.pory"
 	goto HavenTown_EventScript_ConfirmStarterChoice
 	return
 
 
 HavenTown_MudkipBall::
-# 197 "data/maps/HavenTown/scripts.pory"
+# 292 "data/maps/HavenTown/scripts.pory"
 	lock
-# 198 "data/maps/HavenTown/scripts.pory"
+# 293 "data/maps/HavenTown/scripts.pory"
 	setvar VAR_TEMP_2, 1
-# 199 "data/maps/HavenTown/scripts.pory"
+# 294 "data/maps/HavenTown/scripts.pory"
 	setvar VAR_TEMP_3, SPECIES_MUDKIP
-# 200 "data/maps/HavenTown/scripts.pory"
+# 295 "data/maps/HavenTown/scripts.pory"
 	goto HavenTown_EventScript_ConfirmStarterChoice
 	return
 
 
 HavenTown_CharmanderBall::
-# 204 "data/maps/HavenTown/scripts.pory"
+# 299 "data/maps/HavenTown/scripts.pory"
 	lock
-# 205 "data/maps/HavenTown/scripts.pory"
+# 300 "data/maps/HavenTown/scripts.pory"
 	setvar VAR_TEMP_2, 2
-# 206 "data/maps/HavenTown/scripts.pory"
+# 301 "data/maps/HavenTown/scripts.pory"
 	setvar VAR_TEMP_3, SPECIES_CHARMANDER
-# 207 "data/maps/HavenTown/scripts.pory"
+# 302 "data/maps/HavenTown/scripts.pory"
 	goto HavenTown_EventScript_ConfirmStarterChoice
 	return
 
 
 HavenTown_EventScript_ConfirmStarterChoice::
-# 211 "data/maps/HavenTown/scripts.pory"
+# 306 "data/maps/HavenTown/scripts.pory"
 	compare VAR_MAP_SCENE_HAVEN_TOWN, 1
 	goto_if_ne HavenTown_EventScript_ConfirmStarterChoice_2
-# 216 "data/maps/HavenTown/scripts.pory"
+# 311 "data/maps/HavenTown/scripts.pory"
 	showmonpic VAR_TEMP_3, 10, 3
-# 217 "data/maps/HavenTown/scripts.pory"
+# 312 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_ChooseStarterConfirm, MSGBOX_YESNO
-# 218 "data/maps/HavenTown/scripts.pory"
+# 313 "data/maps/HavenTown/scripts.pory"
 	compare VAR_RESULT, YES
 	goto_if_eq HavenTown_EventScript_ConfirmStarterChoice_5
 HavenTown_EventScript_ConfirmStarterChoice_4:
-# 222 "data/maps/HavenTown/scripts.pory"
+# 317 "data/maps/HavenTown/scripts.pory"
 	hidemonpic
-# 223 "data/maps/HavenTown/scripts.pory"
+# 318 "data/maps/HavenTown/scripts.pory"
 	release
 	end
 
 HavenTown_EventScript_ConfirmStarterChoice_2:
-# 212 "data/maps/HavenTown/scripts.pory"
+# 307 "data/maps/HavenTown/scripts.pory"
 	release
 	end
 
 HavenTown_EventScript_ConfirmStarterChoice_5:
-# 219 "data/maps/HavenTown/scripts.pory"
+# 314 "data/maps/HavenTown/scripts.pory"
 	goto HavenTown_EventScript_StarterChosen
 	goto HavenTown_EventScript_ConfirmStarterChoice_4
 
 
 HavenTown_EventScript_StarterChosen::
-# 228 "data/maps/HavenTown/scripts.pory"
+# 323 "data/maps/HavenTown/scripts.pory"
 	hidemonpic
-# 229 "data/maps/HavenTown/scripts.pory"
+# 324 "data/maps/HavenTown/scripts.pory"
 	setflag FLAG_SYS_POKEMON_GET
-# 230 "data/maps/HavenTown/scripts.pory"
+# 325 "data/maps/HavenTown/scripts.pory"
 	givemon VAR_TEMP_3, 5
-# 231 "data/maps/HavenTown/scripts.pory"
+# 326 "data/maps/HavenTown/scripts.pory"
 	copyvar VAR_STARTER_MON, VAR_TEMP_2
-# 232 "data/maps/HavenTown/scripts.pory"
+# 327 "data/maps/HavenTown/scripts.pory"
 	bufferspeciesname STR_VAR_1, VAR_TEMP_3
-# 233 "data/maps/HavenTown/scripts.pory"
+# 328 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_EventScript_StarterChosen_Text_0, MSGBOX_NPC
-# 234 "data/maps/HavenTown/scripts.pory"
+# 329 "data/maps/HavenTown/scripts.pory"
 	goto HavenTown_EventScript_StarterBattle
 	return
 
 
 HavenTown_EventScript_StarterBattle::
-# 238 "data/maps/HavenTown/scripts.pory"
+# 333 "data/maps/HavenTown/scripts.pory"
 	trainerbattle_single TRAINER_TEAM_ASHEN_GRUNT_HAVEN, HavenTown_Text_GruntBattleStart, HavenTown_Text_GruntBattleDefeat, HavenTown_EventScript_StarterBattleAfterBattle
 	end
 
 
 HavenTown_EventScript_StarterBattleAfterBattle::
-# 243 "data/maps/HavenTown/scripts.pory"
+# 338 "data/maps/HavenTown/scripts.pory"
 	call HavenTown_EventScript_HideStarterBalls
-# 244 "data/maps/HavenTown/scripts.pory"
+# 339 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_GruntsRetreat, MSGBOX_NPC
-# 245 "data/maps/HavenTown/scripts.pory"
+# 340 "data/maps/HavenTown/scripts.pory"
 	closemessage
-# 246 "data/maps/HavenTown/scripts.pory"
+# 341 "data/maps/HavenTown/scripts.pory"
 	applymovement LOCALID_GRUNT_1, HavenTown_EventScript_StarterBattleAfterBattle_Movement_0
-# 247 "data/maps/HavenTown/scripts.pory"
+# 342 "data/maps/HavenTown/scripts.pory"
 	applymovement LOCALID_GRUNT_2, HavenTown_EventScript_StarterBattleAfterBattle_Movement_0
-# 248 "data/maps/HavenTown/scripts.pory"
+# 343 "data/maps/HavenTown/scripts.pory"
 	fadeoutbgm 4
-# 249 "data/maps/HavenTown/scripts.pory"
+# 344 "data/maps/HavenTown/scripts.pory"
 	waitmovement 0
-# 250 "data/maps/HavenTown/scripts.pory"
+# 345 "data/maps/HavenTown/scripts.pory"
 	removeobject LOCALID_GRUNT_1
-# 251 "data/maps/HavenTown/scripts.pory"
+# 346 "data/maps/HavenTown/scripts.pory"
 	removeobject LOCALID_GRUNT_2
-# 252 "data/maps/HavenTown/scripts.pory"
+# 347 "data/maps/HavenTown/scripts.pory"
 	setflag FLAG_HIDE_HAVEN_TOWN_GRUNT_1
-# 253 "data/maps/HavenTown/scripts.pory"
+# 348 "data/maps/HavenTown/scripts.pory"
 	setflag FLAG_HIDE_HAVEN_TOWN_GRUNT_2
-# 254 "data/maps/HavenTown/scripts.pory"
+# 349 "data/maps/HavenTown/scripts.pory"
 	playbgm MUS_PALLET, TRUE
-# 255 "data/maps/HavenTown/scripts.pory"
+# 350 "data/maps/HavenTown/scripts.pory"
 	fadeinbgm 0
-# 256 "data/maps/HavenTown/scripts.pory"
+# 351 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_MyrtleThanks, MSGBOX_NPC
-# 257 "data/maps/HavenTown/scripts.pory"
+# 352 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_MyrtlePresentation, MSGBOX_NPC
-# 258 "data/maps/HavenTown/scripts.pory"
+# 353 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_EventScript_StarterBattleAfterBattle_Text_0
-# 260 "data/maps/HavenTown/scripts.pory"
+# 355 "data/maps/HavenTown/scripts.pory"
 	waitmessage
-# 261 "data/maps/HavenTown/scripts.pory"
+# 356 "data/maps/HavenTown/scripts.pory"
 	multichoicedefault 20, 8, MULTI_YESMAYBE, 1, TRUE
-# 262 "data/maps/HavenTown/scripts.pory"
+# 357 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_MyrtleComeWithMe, MSGBOX_NPC
-# 263 "data/maps/HavenTown/scripts.pory"
+# 358 "data/maps/HavenTown/scripts.pory"
 	bufferspeciesname STR_VAR_1, VAR_TEMP_3
-# 264 "data/maps/HavenTown/scripts.pory"
+# 359 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_EventScript_StarterBattleAfterBattle_Text_1, MSGBOX_NPC
-# 269 "data/maps/HavenTown/scripts.pory"
+# 364 "data/maps/HavenTown/scripts.pory"
 	message HavenTown_Text_ReceivedStarter
-# 270 "data/maps/HavenTown/scripts.pory"
+# 365 "data/maps/HavenTown/scripts.pory"
 	waitmessage
-# 271 "data/maps/HavenTown/scripts.pory"
+# 366 "data/maps/HavenTown/scripts.pory"
 	playfanfare MUS_OBTAIN_KEY_ITEM
-# 272 "data/maps/HavenTown/scripts.pory"
+# 367 "data/maps/HavenTown/scripts.pory"
 	waitfanfare
-# 273 "data/maps/HavenTown/scripts.pory"
+# 368 "data/maps/HavenTown/scripts.pory"
 	msgbox Text_GiveNicknameToThisMon, MSGBOX_YESNO
-# 274 "data/maps/HavenTown/scripts.pory"
+# 369 "data/maps/HavenTown/scripts.pory"
 	compare VAR_RESULT, YES
 	goto_if_eq HavenTown_EventScript_StarterBattleAfterBattle_2
 HavenTown_EventScript_StarterBattleAfterBattle_1:
-# 278 "data/maps/HavenTown/scripts.pory"
+# 373 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_EventScript_StarterBattleAfterBattle_Text_2, MSGBOX_NPC
-# 284 "data/maps/HavenTown/scripts.pory"
+# 379 "data/maps/HavenTown/scripts.pory"
+	special HealPlayerParty
+# 380 "data/maps/HavenTown/scripts.pory"
 	delay 30
-# 285 "data/maps/HavenTown/scripts.pory"
+# 381 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_EventScript_StarterBattleAfterBattle_Text_3, MSGBOX_NPC
-# 287 "data/maps/HavenTown/scripts.pory"
+# 383 "data/maps/HavenTown/scripts.pory"
 	setvar VAR_MAP_SCENE_HAVEN_TOWN, 2
-# 288 "data/maps/HavenTown/scripts.pory"
+# 384 "data/maps/HavenTown/scripts.pory"
 	setflag FLAG_ORPHANAGE_ENVELOPE_HIDE_PARK_RUPERT
-# 289 "data/maps/HavenTown/scripts.pory"
+# 385 "data/maps/HavenTown/scripts.pory"
 	warp MAP_CEDRIC_HOUSE, 5, 10
-# 290 "data/maps/HavenTown/scripts.pory"
+# 386 "data/maps/HavenTown/scripts.pory"
 	waitstate
-# 291 "data/maps/HavenTown/scripts.pory"
+# 387 "data/maps/HavenTown/scripts.pory"
 	releaseall
 	end
 
 HavenTown_EventScript_StarterBattleAfterBattle_2:
-# 275 "data/maps/HavenTown/scripts.pory"
+# 370 "data/maps/HavenTown/scripts.pory"
 	setvar VAR_0x8004, 0
-# 276 "data/maps/HavenTown/scripts.pory"
+# 371 "data/maps/HavenTown/scripts.pory"
 	call EventScript_ChangePokemonNickname
 	goto HavenTown_EventScript_StarterBattleAfterBattle_1
 
 
 HavenTown_EventScript_GreetFromWoman::
-# 296 "data/maps/HavenTown/scripts.pory"
+# 392 "data/maps/HavenTown/scripts.pory"
 	lockall
-# 297 "data/maps/HavenTown/scripts.pory"
+# 393 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_GreetFromWoman
-# 298 "data/maps/HavenTown/scripts.pory"
+# 394 "data/maps/HavenTown/scripts.pory"
 	waitmessage
-# 299 "data/maps/HavenTown/scripts.pory"
+# 395 "data/maps/HavenTown/scripts.pory"
 	dynmultipush HavenTown_Text_GreetFromWomanChoice1, 0
-# 300 "data/maps/HavenTown/scripts.pory"
+# 396 "data/maps/HavenTown/scripts.pory"
 	dynmultipush HavenTown_Text_GreetFromWomanChoice2, 1
-# 301 "data/maps/HavenTown/scripts.pory"
+# 397 "data/maps/HavenTown/scripts.pory"
 	dynmultistack 20, 8, FALSE, 4, 0, 0, DYN_MULTICHOICE_CB_NONE
-# 302 "data/maps/HavenTown/scripts.pory"
+# 398 "data/maps/HavenTown/scripts.pory"
 	switch VAR_RESULT
-# 303 "data/maps/HavenTown/scripts.pory"
+# 399 "data/maps/HavenTown/scripts.pory"
 	case 0, HavenTown_EventScript_GreetFromWoman_3
-# 305 "data/maps/HavenTown/scripts.pory"
+# 401 "data/maps/HavenTown/scripts.pory"
 	case 1, HavenTown_EventScript_GreetFromWoman_4
-# 306 "data/maps/HavenTown/scripts.pory"
+# 402 "data/maps/HavenTown/scripts.pory"
 	case MULTI_B_PRESSED, HavenTown_EventScript_GreetFromWoman_4
 HavenTown_EventScript_GreetFromWoman_1:
-# 309 "data/maps/HavenTown/scripts.pory"
+# 405 "data/maps/HavenTown/scripts.pory"
 	releaseall
 	end
 
 HavenTown_EventScript_GreetFromWoman_3:
-# 304 "data/maps/HavenTown/scripts.pory"
+# 400 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_ResponseToGreetFromWomanChoice1, MSGBOX_NPC
 	goto HavenTown_EventScript_GreetFromWoman_1
 
 HavenTown_EventScript_GreetFromWoman_4:
-# 307 "data/maps/HavenTown/scripts.pory"
+# 403 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_ResponseToGreetFromWomanChoice2, MSGBOX_NPC
 	goto HavenTown_EventScript_GreetFromWoman_1
 
 
 HavenTown_EventScript_HideStarterBalls::
-# 314 "data/maps/HavenTown/scripts.pory"
+# 410 "data/maps/HavenTown/scripts.pory"
 	setflag FLAG_HIDE_HAVEN_TOWN_TREECKO_BALL
-# 315 "data/maps/HavenTown/scripts.pory"
+# 411 "data/maps/HavenTown/scripts.pory"
 	setflag FLAG_HIDE_HAVEN_TOWN_MUDKIP_BALL
-# 316 "data/maps/HavenTown/scripts.pory"
+# 412 "data/maps/HavenTown/scripts.pory"
 	setflag FLAG_HIDE_HAVEN_TOWN_CHARMANDER_BALL
-# 317 "data/maps/HavenTown/scripts.pory"
+# 413 "data/maps/HavenTown/scripts.pory"
 	removeobject LOCALID_TREECKO_BALL
-# 318 "data/maps/HavenTown/scripts.pory"
+# 414 "data/maps/HavenTown/scripts.pory"
 	removeobject LOCALID_MUDKIP_BALL
-# 319 "data/maps/HavenTown/scripts.pory"
+# 415 "data/maps/HavenTown/scripts.pory"
 	removeobject LOCALID_HAVEN_CHARMANDER_BALL
 	return
 
 
 HavenTown_PotionItem::
-# 324 "data/maps/HavenTown/scripts.pory"
+# 420 "data/maps/HavenTown/scripts.pory"
 	lock
-# 325 "data/maps/HavenTown/scripts.pory"
+# 421 "data/maps/HavenTown/scripts.pory"
 	goto_if_set FLAG_GOT_HAVENTOWN_POTION, HavenTown_PotionItem_2
-# 331 "data/maps/HavenTown/scripts.pory"
+# 427 "data/maps/HavenTown/scripts.pory"
 	finditem ITEM_POTION
-# 332 "data/maps/HavenTown/scripts.pory"
+# 428 "data/maps/HavenTown/scripts.pory"
 	compare VAR_RESULT, FALSE
 	goto_if_eq HavenTown_PotionItem_5
-# 337 "data/maps/HavenTown/scripts.pory"
+# 433 "data/maps/HavenTown/scripts.pory"
 	setflag FLAG_GOT_HAVENTOWN_POTION
-# 338 "data/maps/HavenTown/scripts.pory"
+# 434 "data/maps/HavenTown/scripts.pory"
 	release
 	end
 
 HavenTown_PotionItem_2:
-# 326 "data/maps/HavenTown/scripts.pory"
+# 422 "data/maps/HavenTown/scripts.pory"
 	msgbox HavenTown_Text_PotionItemGone, MSGBOX_NPC
-# 327 "data/maps/HavenTown/scripts.pory"
+# 423 "data/maps/HavenTown/scripts.pory"
 	release
 	end
 
 HavenTown_PotionItem_5:
-# 333 "data/maps/HavenTown/scripts.pory"
+# 429 "data/maps/HavenTown/scripts.pory"
 	release
 	end
 
 
-# 342 "data/maps/HavenTown/scripts.pory"
+# 438 "data/maps/HavenTown/scripts.pory"
 HavenTown_Movement_PlayerStepBackFromPark:
-# 343 "data/maps/HavenTown/scripts.pory"
+# 439 "data/maps/HavenTown/scripts.pory"
 	walk_left
 	step_end
 
-# 346 "data/maps/HavenTown/scripts.pory"
+# 442 "data/maps/HavenTown/scripts.pory"
 HavenTown_Movement_PlayerStepBackFromTownExit:
-# 347 "data/maps/HavenTown/scripts.pory"
+# 443 "data/maps/HavenTown/scripts.pory"
 	walk_left
 	step_end
 
-# 350 "data/maps/HavenTown/scripts.pory"
+# 446 "data/maps/HavenTown/scripts.pory"
 HavenTown_Movement_PlayerStepBackFromGrunts:
-# 351 "data/maps/HavenTown/scripts.pory"
+# 447 "data/maps/HavenTown/scripts.pory"
 	walk_down
 	step_end
 
-# 354 "data/maps/HavenTown/scripts.pory"
+# 450 "data/maps/HavenTown/scripts.pory"
 HavenTown_Movement_MyrtleWalkNorth:
-# 355 "data/maps/HavenTown/scripts.pory"
+# 451 "data/maps/HavenTown/scripts.pory"
 	walk_up
-# 355 "data/maps/HavenTown/scripts.pory"
+# 451 "data/maps/HavenTown/scripts.pory"
 	walk_up
-# 355 "data/maps/HavenTown/scripts.pory"
+# 451 "data/maps/HavenTown/scripts.pory"
 	walk_up
 	step_end
 
-# 358 "data/maps/HavenTown/scripts.pory"
+# 454 "data/maps/HavenTown/scripts.pory"
 HavenTown_Movement_MyrtleGetsShoved:
-# 359 "data/maps/HavenTown/scripts.pory"
+# 455 "data/maps/HavenTown/scripts.pory"
 	walk_up
-# 360 "data/maps/HavenTown/scripts.pory"
+# 456 "data/maps/HavenTown/scripts.pory"
 	face_down
-# 361 "data/maps/HavenTown/scripts.pory"
+# 457 "data/maps/HavenTown/scripts.pory"
 	walk_in_place_faster_down
 	step_end
 
-# 364 "data/maps/HavenTown/scripts.pory"
+# 460 "data/maps/HavenTown/scripts.pory"
 HavenTown_Movement_GruntsWalkNorth:
-# 365 "data/maps/HavenTown/scripts.pory"
+# 461 "data/maps/HavenTown/scripts.pory"
 	walk_up
-# 365 "data/maps/HavenTown/scripts.pory"
+# 461 "data/maps/HavenTown/scripts.pory"
 	walk_up
-# 365 "data/maps/HavenTown/scripts.pory"
+# 461 "data/maps/HavenTown/scripts.pory"
 	walk_up
 	step_end
 
-# 132 "data/maps/HavenTown/scripts.pory"
+# 464 "data/maps/HavenTown/scripts.pory"
+HavenTown_Movement_CedricWalksOut:
+# 465 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 465 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 465 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 465 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 465 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 465 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 465 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 465 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 466 "data/maps/HavenTown/scripts.pory"
+	face_left
+# 467 "data/maps/HavenTown/scripts.pory"
+	step_end
+
+# 470 "data/maps/HavenTown/scripts.pory"
+HavenTown_Movement_PlayerApproachesCedric:
+# 471 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 471 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 471 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 471 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 471 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 472 "data/maps/HavenTown/scripts.pory"
+	step_end
+
+# 475 "data/maps/HavenTown/scripts.pory"
+HavenTown_Movement_CedricStormsOff:
+# 476 "data/maps/HavenTown/scripts.pory"
+	walk_left
+# 477 "data/maps/HavenTown/scripts.pory"
+	walk_down
+# 478 "data/maps/HavenTown/scripts.pory"
+	walk_left
+# 478 "data/maps/HavenTown/scripts.pory"
+	walk_left
+# 478 "data/maps/HavenTown/scripts.pory"
+	walk_left
+# 478 "data/maps/HavenTown/scripts.pory"
+	walk_left
+# 478 "data/maps/HavenTown/scripts.pory"
+	walk_left
+# 478 "data/maps/HavenTown/scripts.pory"
+	walk_left
+# 478 "data/maps/HavenTown/scripts.pory"
+	walk_left
+# 478 "data/maps/HavenTown/scripts.pory"
+	walk_left
+# 479 "data/maps/HavenTown/scripts.pory"
+	walk_down
+# 479 "data/maps/HavenTown/scripts.pory"
+	walk_down
+# 480 "data/maps/HavenTown/scripts.pory"
+	walk_left
+# 480 "data/maps/HavenTown/scripts.pory"
+	walk_left
+# 480 "data/maps/HavenTown/scripts.pory"
+	walk_left
+# 480 "data/maps/HavenTown/scripts.pory"
+	walk_left
+	step_end
+
+# 483 "data/maps/HavenTown/scripts.pory"
+HavenTown_Movement_PlayerStepsToMyrtle:
+# 484 "data/maps/HavenTown/scripts.pory"
+	walk_left
+# 484 "data/maps/HavenTown/scripts.pory"
+	walk_left
+# 484 "data/maps/HavenTown/scripts.pory"
+	walk_left
+# 484 "data/maps/HavenTown/scripts.pory"
+	walk_left
+# 485 "data/maps/HavenTown/scripts.pory"
+	step_end
+
+# 488 "data/maps/HavenTown/scripts.pory"
+HavenTown_Movement_MyrtleStepsInBeforeBattle:
+# 489 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 489 "data/maps/HavenTown/scripts.pory"
+	walk_right
+	step_end
+
+# 492 "data/maps/HavenTown/scripts.pory"
+HavenTown_Movement_MyrtleLeavesForRidgepass:
+# 493 "data/maps/HavenTown/scripts.pory"
+	walk_down
+# 493 "data/maps/HavenTown/scripts.pory"
+	walk_down
+# 493 "data/maps/HavenTown/scripts.pory"
+	walk_down
+# 494 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 494 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 494 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 494 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 494 "data/maps/HavenTown/scripts.pory"
+	walk_right
+# 494 "data/maps/HavenTown/scripts.pory"
+	walk_right
+	step_end
+
+# 117 "data/maps/HavenTown/scripts.pory"
+HavenTown_EventScript_CedricOutsideChallenge_Movement_0:
+# 117 "data/maps/HavenTown/scripts.pory"
+	face_right
+	step_end
+
+# 227 "data/maps/HavenTown/scripts.pory"
 HavenTown_EventScript_StartMyrtleScene_Movement_0:
-# 132 "data/maps/HavenTown/scripts.pory"
+# 227 "data/maps/HavenTown/scripts.pory"
 	face_down
 	step_end
 
-# 246 "data/maps/HavenTown/scripts.pory"
+# 341 "data/maps/HavenTown/scripts.pory"
 HavenTown_EventScript_StarterBattleAfterBattle_Movement_0:
-# 246 "data/maps/HavenTown/scripts.pory"
+# 341 "data/maps/HavenTown/scripts.pory"
 	walk_down
-# 246 "data/maps/HavenTown/scripts.pory"
+# 341 "data/maps/HavenTown/scripts.pory"
 	walk_down
-# 246 "data/maps/HavenTown/scripts.pory"
+# 341 "data/maps/HavenTown/scripts.pory"
 	walk_down
-# 246 "data/maps/HavenTown/scripts.pory"
+# 341 "data/maps/HavenTown/scripts.pory"
 	walk_down
-# 246 "data/maps/HavenTown/scripts.pory"
+# 341 "data/maps/HavenTown/scripts.pory"
 	walk_down
 	step_end
 
+HavenTown_LeaveTownBlockedTrigger_Text_0:
+# 102 "data/maps/HavenTown/scripts.pory"
+	.string "Prof. Myrtle told you to let Mrs.\n"
+	.string "Marina know before leaving.\p"
+	.string "You should visit the orphanage first.$"
+
+HavenTown_EventScript_CedricOutsideChallenge_Text_0:
+# 127 "data/maps/HavenTown/scripts.pory"
+	.string "{RIVAL2}: Hah! You're finally here.\n"
+	.string "Let's see whose POKeMON is stronger!$"
+
+HavenTown_EventScript_CedricOutsideChallenge_Text_1:
+# 129 "data/maps/HavenTown/scripts.pory"
+	.string "Prof. Myrtle: This battle won't\n"
+	.string "be easy, {PLAYER}.\p"
+	.string "I'll observe it from here.\p"
+	.string "Show me how you and your partner\n"
+	.string "handle a real challenge.$"
+
+HavenTown_EventScript_CedricOutsideChallenge_Text_2:
+# 138 "data/maps/HavenTown/scripts.pory"
+	.string "{RIVAL2}: What?!\n"
+	.string "I lost?!$"
+
+HavenTown_EventScript_CedricOutsideChallenge_Text_3:
+# 138 "data/maps/HavenTown/scripts.pory"
+	.string "{RIVAL2}: See? I won!$"
+
+HavenTown_EventScript_CedricOutsideChallenge_Text_4:
+# 147 "data/maps/HavenTown/scripts.pory"
+	.string "{RIVAL2}: Hah! That's what\n"
+	.string "I expected.\p"
+	.string "Train harder if you want to\n"
+	.string "keep up with me!$"
+
+HavenTown_EventScript_CedricOutsideChallenge_Text_5:
+# 153 "data/maps/HavenTown/scripts.pory"
+	.string "{RIVAL2}: This doesn't count!\n"
+	.string "Next time, I'll crush you for sure!$"
+
+HavenTown_EventScript_CedricOutsideChallenge_Text_6:
+# 167 "data/maps/HavenTown/scripts.pory"
+	.string "Prof. Myrtle: Good battle,\n"
+	.string "{PLAYER}.\p"
+	.string "You stayed focused and adapted\n"
+	.string "well out there.\p"
+	.string "Meet me in Ridgepass Town.\n"
+	.string "I have something for you there.\p"
+	.string "Tell the orphanage if you're\n"
+	.string "starting your journey.\p"
+	.string "They deserve to hear it from you.$"
+
 HavenTown_MrRupertPark_Text_0:
-# 111 "data/maps/HavenTown/scripts.pory"
+# 206 "data/maps/HavenTown/scripts.pory"
 	.string "You gave the letter to Mr. Rupert.$"
 
 HavenTown_EventScript_StartMyrtleScene_Text_0:
-# 131 "data/maps/HavenTown/scripts.pory"
+# 226 "data/maps/HavenTown/scripts.pory"
 	.string "Professor: Oh! Excuse me.$"
 
 HavenTown_EventScript_StartMyrtleScene_Text_1:
-# 135 "data/maps/HavenTown/scripts.pory"
+# 230 "data/maps/HavenTown/scripts.pory"
 	.string "Can you point me to Haven Town?$"
 
 HavenTown_EventScript_StartMyrtleScene_Text_2:
-# 146 "data/maps/HavenTown/scripts.pory"
+# 241 "data/maps/HavenTown/scripts.pory"
 	.string "Hey! Get off me!$"
 
 HavenTown_EventScript_StartMyrtleScene_Text_3:
-# 155 "data/maps/HavenTown/scripts.pory"
+# 250 "data/maps/HavenTown/scripts.pory"
 	.string "The professor dropped some\n"
 	.string "pokeballs!$"
 
 HavenTown_EventScript_StartMyrtleScene_Text_4:
-# 158 "data/maps/HavenTown/scripts.pory"
+# 253 "data/maps/HavenTown/scripts.pory"
 	.string "Ashen Grunt: Now, now,\n"
 	.string "professor!\p"
 	.string "Just hand over your pokeballs\n"
 	.string "and nobody gets hurt.$"
 
 HavenTown_EventScript_StartMyrtleScene_Text_5:
-# 164 "data/maps/HavenTown/scripts.pory"
+# 259 "data/maps/HavenTown/scripts.pory"
 	.string "Use one of the pokeballs\n"
 	.string "to help her!$"
 
 HavenTown_EventScript_StarterChosen_Text_0:
-# 233 "data/maps/HavenTown/scripts.pory"
+# 328 "data/maps/HavenTown/scripts.pory"
 	.string "You pick up {STR_VAR_1}'s\n"
 	.string "pokeball!$"
 
 HavenTown_EventScript_StarterBattleAfterBattle_Text_0:
-# 258 "data/maps/HavenTown/scripts.pory"
+# 353 "data/maps/HavenTown/scripts.pory"
 	.string "Do you know a kid by the name\n"
 	.string "{RIVAL2}?$"
 
 HavenTown_EventScript_StarterBattleAfterBattle_Text_1:
-# 264 "data/maps/HavenTown/scripts.pory"
+# 359 "data/maps/HavenTown/scripts.pory"
 	.string "You don't need to give me\n"
 	.string "{STR_VAR_1} back,\l"
 	.string "it's your partner now.\p"
 	.string "I can see he already trusts you!$"
 
 HavenTown_EventScript_StarterBattleAfterBattle_Text_2:
-# 278 "data/maps/HavenTown/scripts.pory"
+# 373 "data/maps/HavenTown/scripts.pory"
 	.string "Prof. Myrtle: Take good care of\n"
 	.string "{STR_VAR_1}!\p"
 	.string "You can help your POKéMON grow\n"
 	.string "stronger by battling with it.$"
 
 HavenTown_EventScript_StarterBattleAfterBattle_Text_3:
-# 285 "data/maps/HavenTown/scripts.pory"
+# 381 "data/maps/HavenTown/scripts.pory"
 	.string "Prof. Myrtle: Now, let's go\n"
 	.string "to your friend's house!$"

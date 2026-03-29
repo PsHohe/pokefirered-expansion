@@ -1,0 +1,86 @@
+mapscripts HavenTown_Orphanage_2F_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION: HavenTown_Orphanage_2F_OnTransition
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_TEMP_0, 1: HavenTown_Orphanage_2F_EventScript_MarinaCallsPlayerDownstairs
+    ]
+}
+
+script HavenTown_Orphanage_2F_OnTransition {
+    setvar(VAR_TEMP_0, 0)
+
+    if (!flag(FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED)
+        && !flag(FLAG_ORPHANAGE_MARINA_CALLED_PLAYER_DOWNSTAIRS)
+        && !flag(FLAG_SYS_POKEDEX_GET)) {
+        setvar(VAR_TEMP_0, 1)
+    }
+
+    end
+}
+
+script HavenTown_Orphanage_2F_EventScript_MarinaCallsPlayerDownstairs {
+    lockall
+    textcolor(NPC_TEXT_COLOR_FEMALE)
+    playse(SE_PIN)
+    applymovement(LOCALID_PLAYER, Common_Movement_ExclamationMark)
+    waitmovement(0)
+    msgbox("Mrs. Marina: {PLAYER}!
+            Come downstairs right away, please!",
+    MSGBOX_NPC)
+    setflag(FLAG_ORPHANAGE_MARINA_CALLED_PLAYER_DOWNSTAIRS)
+    setvar(VAR_TEMP_0, 0)
+    releaseall
+    end
+}
+
+script HavenTown_Orphanage_2F_Kangaskhan {
+    lock
+    faceplayer
+    waitse
+    playmoncry(SPECIES_KANGASKHAN, CRY_MODE_NORMAL)
+    msgbox("Khaaaaaa!", MSGBOX_NPC)
+    waitmoncry
+    release
+    end
+}
+
+script HavenTown_Orphanage_2F_ChoresSign {
+    msgbox("It's a list of chores for the week
+            Every kid has one.",
+    MSGBOX_SIGN)
+    end
+}
+
+script HavenTown_Orphanage_2F_Thomas {
+    lock
+    faceplayer
+
+    if (!flag(FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED)
+        && flag(FLAG_ORPHANAGE_MARINA_CALLED_PLAYER_DOWNSTAIRS)) {
+        msgbox("Mrs. Marina is waiting for you
+                downstairs.
+                
+                You should go now.",
+        MSGBOX_NPC)
+        release
+        end
+    }
+
+    random(6)
+    switch (var(VAR_RESULT)) {
+        case 0:
+            msgbox(HavenTown_Orphanage_2F_Text_ThomasFact1, MSGBOX_NPC)
+        case 1:
+            msgbox(HavenTown_Orphanage_2F_Text_ThomasFact2, MSGBOX_NPC)
+        case 2:
+            msgbox(HavenTown_Orphanage_2F_Text_ThomasFact3, MSGBOX_NPC)
+        case 3:
+            msgbox(HavenTown_Orphanage_2F_Text_ThomasFact4, MSGBOX_NPC)
+        case 4:
+            msgbox(HavenTown_Orphanage_2F_Text_ThomasFact5, MSGBOX_NPC)
+        case 5:
+            msgbox(HavenTown_Orphanage_2F_Text_ThomasFact6, MSGBOX_NPC)
+    }
+
+    release
+    end
+}

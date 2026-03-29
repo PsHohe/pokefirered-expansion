@@ -171,6 +171,8 @@ CedricHouse_CedricStart_1:
 # 118 "data/maps/CedricHouse/scripts.pory"
 	warp MAP_HAVEN_TOWN, 10, 13
 # 119 "data/maps/CedricHouse/scripts.pory"
+	waitstate
+# 120 "data/maps/CedricHouse/scripts.pory"
 	releaseall
 	end
 
@@ -188,6 +190,27 @@ CedricHouse_CedricStart_5:
 # 40 "data/maps/CedricHouse/scripts.pory"
 	msgbox CedricHouse_CedricStart_Text_6, MSGBOX_NPC
 	goto CedricHouse_CedricStart_1
+
+
+CedricHouse_CedricsMomAfterBattle::
+# 125 "data/maps/CedricHouse/scripts.pory"
+	lock
+# 126 "data/maps/CedricHouse/scripts.pory"
+	faceplayer
+# 127 "data/maps/CedricHouse/scripts.pory"
+	compare VAR_MAP_SCENE_HAVEN_TOWN, 4
+	goto_if_ge CedricHouse_CedricsMomAfterBattle_2
+# 133 "data/maps/CedricHouse/scripts.pory"
+	msgbox CedricHouse_CedricsMomAfterBattle_Text_1, MSGBOX_NPC
+CedricHouse_CedricsMomAfterBattle_1:
+# 136 "data/maps/CedricHouse/scripts.pory"
+	release
+	end
+
+CedricHouse_CedricsMomAfterBattle_2:
+# 128 "data/maps/CedricHouse/scripts.pory"
+	msgbox CedricHouse_CedricsMomAfterBattle_Text_0, MSGBOX_NPC
+	goto CedricHouse_CedricsMomAfterBattle_1
 
 
 # 43 "data/maps/CedricHouse/scripts.pory"
@@ -372,3 +395,15 @@ CedricHouse_CedricStart_Text_15:
 	.string "Let's go outside, {PLAYER}!\p"
 	.string "We'll see who's the better\n"
 	.string "trainer!$"
+
+CedricHouse_CedricsMomAfterBattle_Text_0:
+# 128 "data/maps/CedricHouse/scripts.pory"
+	.string "{RIVAL2}'s Mom: You have quite\l"
+	.string "a talent for stirring trouble.\p"
+	.string "If you're done upsetting my son,\l"
+	.string "please leave him be.$"
+
+CedricHouse_CedricsMomAfterBattle_Text_1:
+# 133 "data/maps/CedricHouse/scripts.pory"
+	.string "{RIVAL2}'s Mom: The professor and\n"
+	.string "{RIVAL2} are talking right now.$"

@@ -1,0 +1,115 @@
+mapscripts HavenTown_Orphanage_1F_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION: HavenTown_Orphanage_1F_OnTransition
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_TEMP_1, 1: HavenTown_Orphanage_1F_EventScript_MarinaJourneySendoff
+        VAR_TEMP_0, 1: HavenTown_Orphanage_1F_EventScript_MarinaStartsEnvelopeQuest
+    ]
+}
+
+script HavenTown_Orphanage_1F_OnTransition {
+    setvar(VAR_TEMP_0, 0)
+    setvar(VAR_TEMP_1, 0)
+
+    if (var(VAR_MAP_SCENE_HAVEN_TOWN) == 4) {
+        setobjectxyperm(LOCALID_MARINA, 8, 5)
+        setobjectmovementtype(LOCALID_MARINA, MOVEMENT_TYPE_NONE)
+        setvar(VAR_TEMP_1, 1)
+        end
+    }
+
+    if (flag(FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED) || !flag(FLAG_ORPHANAGE_MARINA_CALLED_PLAYER_DOWNSTAIRS)) {
+        setobjectxyperm(LOCALID_MARINA, 8, 5)
+        setobjectmovementtype(LOCALID_MARINA, MOVEMENT_TYPE_NONE)
+        end
+    }
+
+    setobjectxyperm(LOCALID_MARINA, 9, 2)
+    setobjectmovementtype(LOCALID_MARINA, MOVEMENT_TYPE_FACE_RIGHT)
+    setvar(VAR_TEMP_0, 1)
+    end
+}
+
+script HavenTown_Orphanage_1F_EventScript_MarinaJourneySendoff {
+    lockall
+    textcolor(NPC_TEXT_COLOR_FEMALE)
+    playse(SE_PIN)
+    applymovement(LOCALID_MARINA, Common_Movement_ExclamationMark)
+    waitmovement(0)
+    msgbox("Mrs. Marina: {PLAYER}, look at\l"
+        "you... You've grown so much.\p"
+        "{RIVAL2} started training before you,\l"
+        "and now it's your turn.\p"
+        "No matter where you go,\l"
+        "you'll always have a home here.\p"
+        "The others will want to hear\l"
+        "all about your adventures.", MSGBOX_NPC)
+
+    giveitem(ITEM_POKE_BALL, 5)
+    if (var(VAR_RESULT) == TRUE) {
+        message("Mrs. Marina gave you\n"
+            "5 POKE BALLS.")
+        waitmessage
+        playfanfare(MUS_OBTAIN_ITEM)
+        waitfanfare
+    }
+
+    setvar(VAR_MAP_SCENE_HAVEN_TOWN, 5)
+    setvar(VAR_TEMP_1, 0)
+    releaseall
+    end
+}
+
+script HavenTown_Orphanage_1F_EventScript_MarinaStartsEnvelopeQuest {
+    lockall
+    textcolor(NPC_TEXT_COLOR_FEMALE)
+    playse(SE_PIN)
+    applymovement(LOCALID_MARINA, Common_Movement_ExclamationMark)
+    delay(40)
+    waitmovement(0)
+    applymovement(LOCALID_MARINA, HavenTown_Orphanage_1F_Movement_MarinaApproachPlayer)
+    waitmovement(0)
+    applymovement(LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterLeft)
+    waitmovement(0)
+    msgbox(HavenTown_Orphanage_1F_Text_MarinaNeedEnvelopeDelivered)
+    giveitem_msg(HavenTown_Orphanage_1F_Text_MarinaGaveEnvelope, ITEM_LETTER, 1, MUS_OBTAIN_KEY_ITEM)
+    setflag(FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED)
+    setvar(VAR_TEMP_0, 0)
+    releaseall
+    end
+}
+
+movement HavenTown_Orphanage_1F_Movement_MarinaApproachPlayer {
+    walk_right
+    walk_right
+}
+
+script HavenTown_Orphanage_1F_QuickRest {
+    if (!flag(FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED)) {
+        goto(HavenTown_Orphanage_1F_QuickRest_Heal)
+    }
+
+    if (flag(FLAG_ORPHANAGE_ENVELOPE_QUEST_FINISHED)) {
+        goto(HavenTown_Orphanage_1F_QuickRest_Heal)
+    }
+
+    if (flag(FLAG_SYS_POKEMON_GET)) {
+        goto(HavenTown_Orphanage_1F_QuickRest_Heal)
+    }
+
+    msgbox(HavenTown_Orphanage_1F_Text_MarinaEnvelopeReminder, MSGBOX_NPC)
+    end
+}
+
+script HavenTown_Orphanage_1F_QuickRest_Heal {
+    msgbox(HavenTown_Orphanage_1F_Text_YouShouldTakeQuickRest)
+    closemessage
+    call(EventScript_OutOfCenterPartyHeal)
+    msgbox(HavenTown_Orphanage_1F_Text_LookingGreatTakeCare)
+    release
+    end
+}
+
+script HavenTown_Orphanage_1F_Vera {
+    weightedmsgbox(MSGBOX_NPC, HavenTown_Orphanage_1F_Text_VeraCommon, HavenTown_Orphanage_1F_Text_VeraMid, HavenTown_Orphanage_1F_Text_VeraRare)
+    end
+}

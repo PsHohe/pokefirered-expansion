@@ -25,7 +25,7 @@ script CedricHouse_CedricStart {
     setvar(VAR_TEMP_0, 0)
     delay(60)
     setflag(FLAG_HIDE_HAVEN_TOWN_PROF_MYRTLE)
-    msgbox(format("Prof. Myrtle: So, is it here?"))
+    msgbox("Prof. Myrtle: So, is it here?")
     dynmultipush("Yes, it's here!", 0)
     dynmultipush("Yeah, but...", 1)
     dynmultipush("Yep. I should be going, though.", 2)
@@ -116,6 +116,23 @@ script CedricHouse_CedricStart {
     trainer!", MSGBOX_NPC)
     setvar(VAR_MAP_SCENE_HAVEN_TOWN, 3)
     warp(MAP_HAVEN_TOWN, 10, 13)
+    waitstate
     releaseall
+    end
+}
+
+script CedricHouse_CedricsMomAfterBattle {
+    lock
+    faceplayer
+    if (var(VAR_MAP_SCENE_HAVEN_TOWN) >= 4) {
+        msgbox("{RIVAL2}'s Mom: You have quite\l"
+            "a talent for stirring trouble.\p"
+            "If you're done upsetting my son,\l"
+            "please leave him be.", MSGBOX_NPC)
+    } else {
+        msgbox("{RIVAL2}'s Mom: The professor and\n"
+            "{RIVAL2} are talking right now.", MSGBOX_NPC)
+    }
+    release
     end
 }

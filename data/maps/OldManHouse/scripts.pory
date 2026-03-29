@@ -1,0 +1,51 @@
+mapscripts OldManHouse_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION: OldManHouse_Orphanage_1F_OnTransition
+}
+
+script OldManHouse_Orphanage_1F_OnTransition {
+    if (var(VAR_MAP_SCENE_HAVEN_TOWN) >= 4) {
+        setflag(FLAG_TEMP_D)
+        addobject(LOCALID_MR_RUPERT)
+        end
+    } else {
+        clearflag(FLAG_TEMP_D)
+        removeobject(LOCALID_MR_RUPERT)
+        end
+    }
+    end
+}
+
+script OldManHouse_MrRupert {
+    msgbox("Mr. Rupert: I love the park,
+            but sometimes my knees hurt.",
+    MSGBOX_NPC)
+    end
+}
+
+script OldManHouse_MrRupertWife {
+    if (!flag(FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED)) {
+        msgbox("My husband takes little walks
+                to clear his head.",
+        MSGBOX_NPC)
+        end
+    }
+
+    if (flag(FLAG_ORPHANAGE_ENVELOPE_QUEST_FINISHED)) {
+        msgbox("Rupert mentioned meeting you in
+                the park.
+                
+                He seemed thoughtful", 
+        MSGBOX_NPC)
+        end
+    }
+
+    setflag(FLAG_ORPHANAGE_ENVELOPE_WIFE_TALKED)
+    msgbox("Oh, you're looking for my
+            husband?
+
+            He went for a walk in the PARK
+            to the east.",
+    MSGBOX_NPC)
+    end
+}
+

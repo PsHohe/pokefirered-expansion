@@ -1,0 +1,37 @@
+mapscripts HavenTownOrphanage_MapScripts {
+}
+
+script HavenTown_Orphanage_Mailbox {
+    msgbox("HAVEN TOWN'S ORPHANAGE
+            Run by Mrs. Marina",
+    MSGBOX_SIGN)
+    end
+}
+
+script HavenTown_Orphanage_Zigzagoon {
+    lock
+    faceplayer
+    waitse
+    playmoncry(SPECIES_ZIGZAGOON, CRY_MODE_NORMAL)
+    msgbox("Kee-kiiiiii!", MSGBOX_NPC)
+    waitmoncry
+    release
+    end
+}
+
+script HavenTown_Orphanage_Iris {
+	weightedmsgbox(MSGBOX_NPC,
+        HavenTown_Orphanage_Text_IrisCommon,
+        HavenTown_Orphanage_Text_IrisMid,
+        HavenTown_Orphanage_Text_IrisRare)
+	end
+}
+
+script HavenTown_Orphanage_Teo {
+	weightedmsgbox(MSGBOX_NPC,
+        HavenTown_Orphanage_Text_TeoCommon,
+        HavenTown_Orphanage_Text_TeoMid,
+        HavenTown_Orphanage_Text_TeoRare)
+	end
+}
+

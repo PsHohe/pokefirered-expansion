@@ -65,8 +65,15 @@ Ask consultant to return:
 2. A short rationale (tone/pacing/player guidance).
 3. Optional alternatives for key lines.
 
-Then convert approved lines into map `text.inc` strings using `\n`, `\l`, `\p`, and script flow as needed.
-`\n` moves to the next line.
-`\l` is only used after the initial use of `\n`, scrolling down to display the next line.
-`\p` will display the following line of text without scrolling, good for new sentences.
-$ indicates the end of the text.
+Use Poryscript to write the dialog, preferring this format:
+
+```
+msgbox("First line
+        Second line same paragraph.
+        
+        New paragraph after empty line.",
+MSGBOX_NPC)
+```
+All lines in the same string, tabulated for easier reading at a glance.
+
+Poryscript automatically adds \n, \l, \p and $.
