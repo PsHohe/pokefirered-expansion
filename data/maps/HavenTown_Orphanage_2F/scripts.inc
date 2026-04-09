@@ -89,31 +89,31 @@ HavenTown_Orphanage_2F_Thomas::
 # 57 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
 	goto_if_unset FLAG_ORPHANAGE_ENVELOPE_QUEST_STARTED, HavenTown_Orphanage_2F_Thomas_3
 HavenTown_Orphanage_2F_Thomas_1:
-# 64 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
-	random 6
-# 65 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
-	switch VAR_RESULT
-# 66 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
-	case 0, HavenTown_Orphanage_2F_Thomas_8
 # 68 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
-	case 1, HavenTown_Orphanage_2F_Thomas_9
+	random 6
+# 69 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
+	switch VAR_RESULT
 # 70 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
-	case 2, HavenTown_Orphanage_2F_Thomas_10
+	case 0, HavenTown_Orphanage_2F_Thomas_8
 # 72 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
-	case 3, HavenTown_Orphanage_2F_Thomas_11
+	case 1, HavenTown_Orphanage_2F_Thomas_9
 # 74 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
-	case 4, HavenTown_Orphanage_2F_Thomas_12
+	case 2, HavenTown_Orphanage_2F_Thomas_10
 # 76 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
+	case 3, HavenTown_Orphanage_2F_Thomas_11
+# 78 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
+	case 4, HavenTown_Orphanage_2F_Thomas_12
+# 80 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
 	case 5, HavenTown_Orphanage_2F_Thomas_13
 HavenTown_Orphanage_2F_Thomas_6:
-# 80 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
+# 84 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
 	release
 	end
 
 HavenTown_Orphanage_2F_Thomas_2:
 # 59 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
-	msgbox HavenTown_Orphanage_2F_Text_ThomasMarinaWaitingDownstairs, MSGBOX_NPC
-# 60 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
+	msgbox HavenTown_Orphanage_2F_Thomas_Text_0, MSGBOX_NPC
+# 64 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
 	release
 	end
 
@@ -123,32 +123,32 @@ HavenTown_Orphanage_2F_Thomas_3:
 	goto HavenTown_Orphanage_2F_Thomas_1
 
 HavenTown_Orphanage_2F_Thomas_8:
-# 67 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
+# 71 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
 	msgbox HavenTown_Orphanage_2F_Text_ThomasFact1, MSGBOX_NPC
 	goto HavenTown_Orphanage_2F_Thomas_6
 
 HavenTown_Orphanage_2F_Thomas_9:
-# 69 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
+# 73 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
 	msgbox HavenTown_Orphanage_2F_Text_ThomasFact2, MSGBOX_NPC
 	goto HavenTown_Orphanage_2F_Thomas_6
 
 HavenTown_Orphanage_2F_Thomas_10:
-# 71 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
+# 75 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
 	msgbox HavenTown_Orphanage_2F_Text_ThomasFact3, MSGBOX_NPC
 	goto HavenTown_Orphanage_2F_Thomas_6
 
 HavenTown_Orphanage_2F_Thomas_11:
-# 73 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
+# 77 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
 	msgbox HavenTown_Orphanage_2F_Text_ThomasFact4, MSGBOX_NPC
 	goto HavenTown_Orphanage_2F_Thomas_6
 
 HavenTown_Orphanage_2F_Thomas_12:
-# 75 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
+# 79 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
 	msgbox HavenTown_Orphanage_2F_Text_ThomasFact5, MSGBOX_NPC
 	goto HavenTown_Orphanage_2F_Thomas_6
 
 HavenTown_Orphanage_2F_Thomas_13:
-# 77 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
+# 81 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
 	msgbox HavenTown_Orphanage_2F_Text_ThomasFact6, MSGBOX_NPC
 	goto HavenTown_Orphanage_2F_Thomas_6
 
@@ -166,3 +166,9 @@ HavenTown_Orphanage_2F_ChoresSign_Text_0:
 # 47 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
 	.string "It's a list of chores for the week\n"
 	.string "Every kid has one.$"
+
+HavenTown_Orphanage_2F_Thomas_Text_0:
+# 59 "data/maps/HavenTown_Orphanage_2F/scripts.pory"
+	.string "Mrs. Marina is waiting for you\n"
+	.string "downstairs.\p"
+	.string "You should go now.$"

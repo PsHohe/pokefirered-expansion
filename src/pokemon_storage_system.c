@@ -61,6 +61,26 @@ enum
 
 enum
 {
+    PC_MENU_WITHDRAW,
+    PC_MENU_DEPOSIT,
+    PC_MENU_MOVE_MONS,
+    PC_MENU_MOVE_ITEMS,
+    PC_MENU_PARTY_PRESETS,
+    PC_MENU_EXIT,
+    PC_MENU_OPTIONS_COUNT
+};
+
+enum
+{
+    PARTY_PRESET_ACTION_SAVE,
+    PARTY_PRESET_ACTION_ACTIVATE,
+    PARTY_PRESET_ACTION_OVERWRITE,
+    PARTY_PRESET_ACTION_CLEAR,
+    PARTY_PRESET_ACTION_CANCEL,
+};
+
+enum
+{
     MSG_EXIT_BOX,
     MSG_WHAT_YOU_DO,
     MSG_PICK_A_THEME,
@@ -360,6 +380,14 @@ struct StorageMessage
     u8 format;
 };
 
+struct PartyPresetLocation
+{
+    bool8 found;
+    bool8 inParty;
+    u8 boxId;
+    u8 pos;
+};
+
 struct ChooseBoxMenu
 {
     struct Sprite *menuSprite;
@@ -589,7 +617,27 @@ static void Task_HandleMovingMonFromParty(u8 taskId);
 static u8 HandleInput(void);
 
 // Choose box menu
+static void Task_PCMainMenu(u8 taskId);
 static void CreatePCMainMenu(u8 whichMenu, s16 *windowIdPtr);
+static void Task_ShowPartyPresetSlots(u8 taskId);
+static void Task_HandlePartyPresetSlots(u8 taskId);
+static void Task_ShowPartyPresetActions(u8 taskId);
+static void Task_HandlePartyPresetActions(u8 taskId);
+static void Task_WaitForPartyPresetMessage(u8 taskId);
+static void CreatePartyPresetMenu(s16 *windowIdPtr, const void *menuTexts, u8 menuCount, u8 selectedOption);
+static void RebuildPartyPresetMenu(s16 *windowIdPtr, const void *menuTexts, u8 menuCount, u8 selectedOption);
+static void PrintPartyPresetDescription(const u8 *description);
+static const u8 *GetPartyPresetSlotDescription(u8 slotId);
+static const u8 *GetPartyPresetActionDescription(u8 slotId, u8 action);
+static void ShowPartyPresetMessage(u8 taskId, const u8 *message);
+static bool32 IsPartyPresetSlotEmpty(u8 slotId);
+static void ClearPartyPresetSlot(u8 slotId);
+static void SavePartyPresetSlot(u8 slotId);
+static bool32 ActivatePartyPresetSlot(u8 slotId, const u8 **errorMessage);
+static bool32 PartyPresetMemberMatchesMon(const struct PartyPresetMember *member, struct Pokemon *mon);
+static bool32 PartyPresetMemberMatchesBoxMon(const struct PartyPresetMember *member, u8 boxId, u8 boxPos);
+static u16 CountFreeStorageSpots(void);
+static bool32 ResolvePartyPresetLocations(u8 slotId, struct PartyPresetLocation *locations, bool8 *usedParty, bool8 usedBox[TOTAL_BOXES_COUNT][IN_BOX_COUNT]);
 static void ChooseBoxMenu_CreateSprites(u8 curBox);
 static void ChooseBoxMenu_DestroySprites(void);
 static void ChooseBoxMenu_MoveRight(void);
@@ -693,6 +741,7 @@ static struct Sprite *CreateMonIconSprite(u16 species, u32 personality, s16 x, s
 
 // Pokémon data
 static bool8 TryStorePartyMonInBox(u8 boxId);
+static bool32 WithdrawBoxMonToFirstFreePartySlot(u8 boxId, u8 boxPos);
 static void ResetSelectionAfterDeposit(void);
 static void InitReleaseMon(void);
 static bool8 TryHideReleaseMon(void);
@@ -859,20 +908,61 @@ static void TilemapUtil_Draw(u8 tilemapId);
 struct {
     const u8 *text;
     const u8 *desc;
-} static const sMainMenuTexts[OPTIONS_COUNT] = {
-    [OPTION_WITHDRAW]   = {COMPOUND_STRING("WITHDRAW POKéMON"), COMPOUND_STRING("You can withdraw a POKéMON if you\nhave any in a BOX.")},
-    [OPTION_DEPOSIT]    = {COMPOUND_STRING("DEPOSIT POKéMON"),  COMPOUND_STRING("You can deposit your party\nPOKéMON in any BOX.")},
-    [OPTION_MOVE_MONS]  = {COMPOUND_STRING("MOVE POKéMON"),     COMPOUND_STRING("You can move POKéMON that are\nstored in any BOX.")},
-    [OPTION_MOVE_ITEMS] = {COMPOUND_STRING("MOVE ITEMS"),       COMPOUND_STRING("You can move items held by any\nPOKéMON in a BOX or your party.")},
-    [OPTION_EXIT]       = {COMPOUND_STRING("SEE YA!"),          COMPOUND_STRING("See you later!")}
+} static const sMainMenuTexts[PC_MENU_OPTIONS_COUNT] = {
+    [PC_MENU_WITHDRAW]      = {COMPOUND_STRING("WITHDRAW POKéMON"), COMPOUND_STRING("You can withdraw a POKéMON if you\nhave any in a BOX.")},
+    [PC_MENU_DEPOSIT]       = {COMPOUND_STRING("DEPOSIT POKéMON"),  COMPOUND_STRING("You can deposit your party\nPOKéMON in any BOX.")},
+    [PC_MENU_MOVE_MONS]     = {COMPOUND_STRING("MOVE POKéMON"),     COMPOUND_STRING("You can move POKéMON that are\nstored in any BOX.")},
+    [PC_MENU_MOVE_ITEMS]    = {COMPOUND_STRING("MOVE ITEMS"),       COMPOUND_STRING("You can move items held by any\nPOKéMON in a BOX or your party.")},
+    [PC_MENU_PARTY_PRESETS] = {COMPOUND_STRING("PARTY PRESETS"),    COMPOUND_STRING("Save a party and swap to it later\nwith one command.")},
+    [PC_MENU_EXIT]          = {COMPOUND_STRING("SEE YA!"),          COMPOUND_STRING("See you later!")}
 };
+
+static const struct
+{
+    const u8 *text;
+    const u8 *desc;
+} sPartyPresetSlotMenuTexts[PARTY_PRESET_SLOTS_COUNT + 1] = {
+    {COMPOUND_STRING("SLOT 1"), NULL},
+    {COMPOUND_STRING("SLOT 2"), NULL},
+    {COMPOUND_STRING("SLOT 3"), NULL},
+    {COMPOUND_STRING("CANCEL"), COMPOUND_STRING("Return to the storage PC menu.")}
+};
+
+static const struct
+{
+    const u8 *text;
+    const u8 *desc;
+} sPartyPresetEmptyActionTexts[] = {
+    {COMPOUND_STRING("SAVE PARTY"), COMPOUND_STRING("Save your current party into\nthis slot.")},
+    {COMPOUND_STRING("CANCEL"),     COMPOUND_STRING("Go back to the slot list.")}
+};
+
+static const struct
+{
+    const u8 *text;
+    const u8 *desc;
+} sPartyPresetFilledActionTexts[] = {
+    {COMPOUND_STRING("ACTIVATE"), COMPOUND_STRING("Swap your current party to match\nthis saved slot.")},
+    {COMPOUND_STRING("OVERWRITE"), COMPOUND_STRING("Replace this slot with your\ncurrent party.")},
+    {COMPOUND_STRING("CLEAR"),     COMPOUND_STRING("Erase the saved party from\nthis slot.")},
+    {COMPOUND_STRING("CANCEL"),    COMPOUND_STRING("Go back to the slot list.")}
+};
+
+static const u8 sText_PartyPresetEmptySlotDesc[] = _("This slot is empty.\nSave your current party here.");
+static const u8 sText_PartyPresetFilledSlotDesc[] = _("This slot has a saved party.\nChoose what to do with it.");
+static const u8 sText_PartyPresetSaved[] = _("The party was saved to the slot.");
+static const u8 sText_PartyPresetCleared[] = _("The saved party was cleared.");
+static const u8 sText_PartyPresetActivated[] = _("The saved party is now active.");
+static const u8 sText_PartyPresetMissingMon[] = _("A saved POKéMON can't be found.\nThe swap was canceled.");
+static const u8 sText_PartyPresetMailBlocked[] = _("Remove MAIL from party POKéMON\nbefore using this slot.");
+static const u8 sText_PartyPresetNoStorageSpace[] = _("There isn't enough room in the\nPC to swap this party.");
 
 static const struct WindowTemplate sWindowTemplate_MainMenu = {
     .bg = 0,
     .tilemapLeft = 1,
     .tilemapTop = 1,
-    .width = 17,
-    .height = 10,
+    .width = 20,
+    .height = 12,
     .paletteNum = 15,
     .baseBlock = 0x001
 };
@@ -1422,6 +1512,217 @@ u8 CountPartyMons(void)
     return count;
 }
 
+static u16 CountFreeStorageSpots(void)
+{
+    u16 boxId;
+    u16 freeSpots = 0;
+
+    for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
+        freeSpots += IN_BOX_COUNT - CountMonsInBox(boxId);
+
+    return freeSpots;
+}
+
+static bool32 PartyPresetMemberMatchesMon(const struct PartyPresetMember *member, struct Pokemon *mon)
+{
+    return member->occupied
+        && GetMonData(mon, MON_DATA_SPECIES) == member->species
+        && GetMonData(mon, MON_DATA_PERSONALITY) == member->personality
+        && GetMonData(mon, MON_DATA_OT_ID) == member->otId;
+}
+
+static bool32 PartyPresetMemberMatchesBoxMon(const struct PartyPresetMember *member, u8 boxId, u8 boxPos)
+{
+    return member->occupied
+        && GetBoxMonDataAt(boxId, boxPos, MON_DATA_SPECIES) == member->species
+        && GetBoxMonDataAt(boxId, boxPos, MON_DATA_PERSONALITY) == member->personality
+        && GetBoxMonDataAt(boxId, boxPos, MON_DATA_OT_ID) == member->otId;
+}
+
+static bool32 IsPartyPresetSlotEmpty(u8 slotId)
+{
+    u8 i;
+
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (gPokemonStoragePtr->partyPresets[slotId].members[i].occupied)
+            return FALSE;
+    }
+
+    return TRUE;
+}
+
+static void ClearPartyPresetSlot(u8 slotId)
+{
+    CpuFill32(0, &gPokemonStoragePtr->partyPresets[slotId], sizeof(gPokemonStoragePtr->partyPresets[slotId]));
+}
+
+static void SavePartyPresetSlot(u8 slotId)
+{
+    u8 i;
+    u8 presetIndex = 0;
+    struct PartyPreset *preset = &gPokemonStoragePtr->partyPresets[slotId];
+
+    ClearPartyPresetSlot(slotId);
+
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_NONE)
+            continue;
+
+        preset->members[presetIndex].species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES);
+        preset->members[presetIndex].personality = GetMonData(&gPlayerParty[i], MON_DATA_PERSONALITY);
+        preset->members[presetIndex].otId = GetMonData(&gPlayerParty[i], MON_DATA_OT_ID);
+        preset->members[presetIndex].occupied = TRUE;
+        presetIndex++;
+    }
+}
+
+static bool32 ResolvePartyPresetLocations(u8 slotId, struct PartyPresetLocation *locations, bool8 *usedParty, bool8 usedBox[TOTAL_BOXES_COUNT][IN_BOX_COUNT])
+{
+    u8 i;
+    u8 j;
+    u8 boxId;
+    u8 boxPos;
+    struct PartyPreset *preset = &gPokemonStoragePtr->partyPresets[slotId];
+
+    memset(locations, 0, sizeof(*locations) * PARTY_SIZE);
+    memset(usedParty, FALSE, sizeof(bool8) * PARTY_SIZE);
+    memset(usedBox, FALSE, sizeof(bool8) * TOTAL_BOXES_COUNT * IN_BOX_COUNT);
+
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (!preset->members[i].occupied)
+            continue;
+
+        for (j = 0; j < PARTY_SIZE; j++)
+        {
+            if (usedParty[j])
+                continue;
+            if (PartyPresetMemberMatchesMon(&preset->members[i], &gPlayerParty[j]))
+            {
+                usedParty[j] = TRUE;
+                locations[i].found = TRUE;
+                locations[i].inParty = TRUE;
+                locations[i].pos = j;
+                break;
+            }
+        }
+
+        if (locations[i].found)
+            continue;
+
+        for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
+        {
+            for (boxPos = 0; boxPos < IN_BOX_COUNT; boxPos++)
+            {
+                if (usedBox[boxId][boxPos])
+                    continue;
+                if (PartyPresetMemberMatchesBoxMon(&preset->members[i], boxId, boxPos))
+                {
+                    usedBox[boxId][boxPos] = TRUE;
+                    locations[i].found = TRUE;
+                    locations[i].inParty = FALSE;
+                    locations[i].boxId = boxId;
+                    locations[i].pos = boxPos;
+                    break;
+                }
+            }
+
+            if (locations[i].found)
+                break;
+        }
+
+        if (!locations[i].found)
+            return FALSE;
+    }
+
+    return TRUE;
+}
+
+static bool32 WithdrawBoxMonToFirstFreePartySlot(u8 boxId, u8 boxPos)
+{
+    u8 i;
+    struct Pokemon mon;
+
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_NONE)
+        {
+            BoxMonAtToMon(boxId, boxPos, &mon);
+            gPlayerParty[i] = mon;
+            ZeroBoxMonAt(boxId, boxPos);
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+static bool32 ActivatePartyPresetSlot(u8 slotId, const u8 **errorMessage)
+{
+    u8 i;
+    u8 outgoingCount = 0;
+    u8 outgoingParty[PARTY_SIZE];
+    bool8 usedParty[PARTY_SIZE];
+    bool8 usedBox[TOTAL_BOXES_COUNT][IN_BOX_COUNT];
+    struct PartyPresetLocation locations[PARTY_SIZE];
+
+    *errorMessage = NULL;
+
+    if (!ResolvePartyPresetLocations(slotId, locations, usedParty, usedBox))
+    {
+        *errorMessage = sText_PartyPresetMissingMon;
+        return FALSE;
+    }
+
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_NONE)
+            continue;
+        if (!usedParty[i])
+        {
+            if (MonHasMail(&gPlayerParty[i]))
+            {
+                *errorMessage = sText_PartyPresetMailBlocked;
+                return FALSE;
+            }
+
+            outgoingParty[outgoingCount++] = i;
+        }
+    }
+
+    if (CountFreeStorageSpots() < outgoingCount)
+    {
+        *errorMessage = sText_PartyPresetNoStorageSpace;
+        return FALSE;
+    }
+
+    for (i = 0; i < outgoingCount; i++)
+    {
+        CopyMonToPC(&gPlayerParty[outgoingParty[i]]);
+        ZeroMonData(&gPlayerParty[outgoingParty[i]]);
+    }
+
+    CompactPartySlots();
+
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (!locations[i].found || locations[i].inParty)
+            continue;
+
+        if (!WithdrawBoxMonToFirstFreePartySlot(locations[i].boxId, locations[i].pos))
+        {
+            *errorMessage = sText_PartyPresetNoStorageSpace;
+            return FALSE;
+        }
+    }
+
+    CompactPartySlots();
+    gPlayerPartyCount = CalculatePlayerPartyCount();
+    return TRUE;
+}
+
 enum {
     STATE_LOAD,
     STATE_FADE_IN,
@@ -1434,7 +1735,207 @@ enum {
 #define tSelectedOption data[1]
 #define tInput          data[2]
 #define tNextOption     data[3]
+#define tPresetSlot     data[4]
+#define tPresetAction   data[5]
 #define tWindowId       data[15]
+
+static u8 GetStorageOptionFromPcMenu(u8 menuOption)
+{
+    switch (menuOption)
+    {
+    case PC_MENU_WITHDRAW:
+        return OPTION_WITHDRAW;
+    case PC_MENU_DEPOSIT:
+        return OPTION_DEPOSIT;
+    case PC_MENU_MOVE_MONS:
+        return OPTION_MOVE_MONS;
+    case PC_MENU_MOVE_ITEMS:
+    default:
+        return OPTION_MOVE_ITEMS;
+    }
+}
+
+static u8 GetPcMenuOptionFromStorageOption(u8 storageOption)
+{
+    switch (storageOption)
+    {
+    case OPTION_WITHDRAW:
+        return PC_MENU_WITHDRAW;
+    case OPTION_DEPOSIT:
+        return PC_MENU_DEPOSIT;
+    case OPTION_MOVE_MONS:
+        return PC_MENU_MOVE_MONS;
+    case OPTION_MOVE_ITEMS:
+    default:
+        return PC_MENU_MOVE_ITEMS;
+    }
+}
+
+static void PrintPartyPresetDescription(const u8 *description)
+{
+    FillWindowPixelBuffer(0, PIXEL_FILL(1));
+    AddTextPrinterParameterized2(0, FONT_NORMAL, description, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+    CopyWindowToVram(0, COPYWIN_FULL);
+}
+
+static void CreatePartyPresetMenu(s16 *windowIdPtr, const void *menuTexts, u8 menuCount, u8 selectedOption)
+{
+    s16 windowId = AddWindow(&sWindowTemplate_MainMenu);
+
+    DrawStdWindowFrame(windowId, FALSE);
+    PrintMenuActionTextsAtPos(windowId, FONT_NORMAL, GetMenuCursorDimensionByFont(FONT_NORMAL, 0), 2, 16, menuCount, menuTexts);
+    InitMenuNormal(windowId, FONT_NORMAL, 0, 2, 16, menuCount, selectedOption);
+    CopyWindowToVram(windowId, COPYWIN_FULL);
+    *windowIdPtr = windowId;
+}
+
+static void RebuildPartyPresetMenu(s16 *windowIdPtr, const void *menuTexts, u8 menuCount, u8 selectedOption)
+{
+    ClearStdWindowAndFrame(*windowIdPtr, FALSE);
+    ClearWindowTilemap(*windowIdPtr);
+    RemoveWindow(*windowIdPtr);
+    CreatePartyPresetMenu(windowIdPtr, menuTexts, menuCount, selectedOption);
+    ScheduleBgCopyTilemapToVram(0);
+}
+
+static const u8 *GetPartyPresetSlotDescription(u8 slotId)
+{
+    if (slotId >= PARTY_PRESET_SLOTS_COUNT)
+        return sPartyPresetSlotMenuTexts[PARTY_PRESET_SLOTS_COUNT].desc;
+
+    return IsPartyPresetSlotEmpty(slotId) ? sText_PartyPresetEmptySlotDesc : sText_PartyPresetFilledSlotDesc;
+}
+
+static const u8 *GetPartyPresetActionDescription(u8 slotId, u8 action)
+{
+    if (IsPartyPresetSlotEmpty(slotId))
+        return sPartyPresetEmptyActionTexts[action].desc;
+
+    return sPartyPresetFilledActionTexts[action].desc;
+}
+
+static void ShowPartyPresetMessage(u8 taskId, const u8 *message)
+{
+    PrintPartyPresetDescription(message);
+    gTasks[taskId].func = Task_WaitForPartyPresetMessage;
+}
+
+static void Task_ShowPartyPresetSlots(u8 taskId)
+{
+    struct Task *task = &gTasks[taskId];
+
+    RebuildPartyPresetMenu(&task->tWindowId, sPartyPresetSlotMenuTexts, ARRAY_COUNT(sPartyPresetSlotMenuTexts), task->tPresetSlot);
+    PrintPartyPresetDescription(GetPartyPresetSlotDescription(task->tPresetSlot));
+    task->func = Task_HandlePartyPresetSlots;
+}
+
+static void Task_HandlePartyPresetSlots(u8 taskId)
+{
+    struct Task *task = &gTasks[taskId];
+    s8 input = Menu_ProcessInput();
+
+    switch (input)
+    {
+    case MENU_NOTHING_CHOSEN:
+        if (task->tPresetSlot != Menu_GetCursorPos())
+        {
+            task->tPresetSlot = Menu_GetCursorPos();
+            PrintPartyPresetDescription(GetPartyPresetSlotDescription(task->tPresetSlot));
+        }
+        break;
+    case MENU_B_PRESSED:
+    case PARTY_PRESET_SLOTS_COUNT:
+        task->tState = STATE_HANDLE_INPUT;
+        RebuildPartyPresetMenu(&task->tWindowId, sMainMenuTexts, ARRAY_COUNT(sMainMenuTexts), task->tSelectedOption);
+        PrintPartyPresetDescription(sMainMenuTexts[task->tSelectedOption].desc);
+        task->func = Task_PCMainMenu;
+        break;
+    default:
+        task->tPresetSlot = input;
+        task->tPresetAction = 0;
+        Task_ShowPartyPresetActions(taskId);
+        break;
+    }
+}
+
+static void Task_ShowPartyPresetActions(u8 taskId)
+{
+    struct Task *task = &gTasks[taskId];
+    bool32 isEmpty = IsPartyPresetSlotEmpty(task->tPresetSlot);
+
+    RebuildPartyPresetMenu(&task->tWindowId,
+                           isEmpty ? (const void *)sPartyPresetEmptyActionTexts : (const void *)sPartyPresetFilledActionTexts,
+                           isEmpty ? ARRAY_COUNT(sPartyPresetEmptyActionTexts) : ARRAY_COUNT(sPartyPresetFilledActionTexts),
+                           task->tPresetAction);
+    PrintPartyPresetDescription(GetPartyPresetActionDescription(task->tPresetSlot, task->tPresetAction));
+    task->func = Task_HandlePartyPresetActions;
+}
+
+static void Task_HandlePartyPresetActions(u8 taskId)
+{
+    struct Task *task = &gTasks[taskId];
+    bool32 isEmpty = IsPartyPresetSlotEmpty(task->tPresetSlot);
+    u8 cancelIndex = isEmpty ? ARRAY_COUNT(sPartyPresetEmptyActionTexts) - 1 : ARRAY_COUNT(sPartyPresetFilledActionTexts) - 1;
+    s8 input = Menu_ProcessInput();
+
+    switch (input)
+    {
+    case MENU_NOTHING_CHOSEN:
+        if (task->tPresetAction != Menu_GetCursorPos())
+        {
+            task->tPresetAction = Menu_GetCursorPos();
+            PrintPartyPresetDescription(GetPartyPresetActionDescription(task->tPresetSlot, task->tPresetAction));
+        }
+        break;
+    case MENU_B_PRESSED:
+        task->tPresetAction = 0;
+        Task_ShowPartyPresetSlots(taskId);
+        break;
+    default:
+        if (input == cancelIndex)
+        {
+            task->tPresetAction = 0;
+            Task_ShowPartyPresetSlots(taskId);
+            break;
+        }
+
+        if (isEmpty)
+        {
+            SavePartyPresetSlot(task->tPresetSlot);
+            ShowPartyPresetMessage(taskId, sText_PartyPresetSaved);
+            break;
+        }
+
+        switch (input)
+        {
+        case 0:
+        {
+            const u8 *errorMessage;
+
+            if (ActivatePartyPresetSlot(task->tPresetSlot, &errorMessage))
+                ShowPartyPresetMessage(taskId, sText_PartyPresetActivated);
+            else
+                ShowPartyPresetMessage(taskId, errorMessage);
+            break;
+        }
+        case 1:
+            SavePartyPresetSlot(task->tPresetSlot);
+            ShowPartyPresetMessage(taskId, sText_PartyPresetSaved);
+            break;
+        case 2:
+            ClearPartyPresetSlot(task->tPresetSlot);
+            ShowPartyPresetMessage(taskId, sText_PartyPresetCleared);
+            break;
+        }
+        break;
+    }
+}
+
+static void Task_WaitForPartyPresetMessage(u8 taskId)
+{
+    if (JOY_NEW(A_BUTTON | B_BUTTON | DPAD_ANY))
+        Task_ShowPartyPresetSlots(taskId);
+}
 
 static void Task_PCMainMenu(u8 taskId)
 {
@@ -1446,10 +1947,7 @@ static void Task_PCMainMenu(u8 taskId)
         CreatePCMainMenu(task->tSelectedOption, &task->tWindowId);
         LoadMessageBoxAndBorderGfx();
         DrawDialogueFrame(0, FALSE);
-        FillWindowPixelBuffer(0, PIXEL_FILL(1));
-        AddTextPrinterParameterized2(0, FONT_NORMAL, sMainMenuTexts[task->tSelectedOption].desc, TEXT_SKIP_DRAW, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
-        CopyWindowToVram(0, COPYWIN_FULL);
-        CopyWindowToVram(task->tWindowId, COPYWIN_FULL);
+        PrintPartyPresetDescription(sMainMenuTexts[task->tSelectedOption].desc);
         task->tState++;
         break;
     case STATE_FADE_IN:
@@ -1464,19 +1962,18 @@ static void Task_PCMainMenu(u8 taskId)
         case MENU_NOTHING_CHOSEN:
             task->tNextOption = task->tSelectedOption;
             if (JOY_NEW(DPAD_UP) && --task->tNextOption < 0)
-                task->tNextOption = OPTIONS_COUNT - 1;
-            if (JOY_NEW(DPAD_DOWN) && ++task->tNextOption > OPTIONS_COUNT - 1)
+                task->tNextOption = PC_MENU_OPTIONS_COUNT - 1;
+            if (JOY_NEW(DPAD_DOWN) && ++task->tNextOption > PC_MENU_OPTIONS_COUNT - 1)
                 task->tNextOption = 0;
 
             if (task->tSelectedOption != task->tNextOption)
             {
                 task->tSelectedOption = task->tNextOption;
-                FillWindowPixelBuffer(0, PIXEL_FILL(1));
-                AddTextPrinterParameterized2(0, FONT_NORMAL, sMainMenuTexts[task->tSelectedOption].desc, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+                PrintPartyPresetDescription(sMainMenuTexts[task->tSelectedOption].desc);
             }
             break;
         case MENU_B_PRESSED:
-        case OPTION_EXIT:
+        case PC_MENU_EXIT:
             ClearStdWindowAndFrame(0, TRUE);
             ClearStdWindowAndFrame(task->tWindowId, TRUE);
             UnlockPlayerFieldControls();
@@ -1484,18 +1981,22 @@ static void Task_PCMainMenu(u8 taskId)
             DestroyTask(taskId);
             break;
         default:
-            if (task->tInput == OPTION_WITHDRAW && CountPartyMons() == PARTY_SIZE)
+            if (task->tInput == PC_MENU_PARTY_PRESETS)
+            {
+                task->tPresetSlot = 0;
+                task->tPresetAction = 0;
+                Task_ShowPartyPresetSlots(taskId);
+            }
+            else if (task->tInput == PC_MENU_WITHDRAW && CountPartyMons() == PARTY_SIZE)
             {
                 // Can't withdraw
-                FillWindowPixelBuffer(0, PIXEL_FILL(1));
-                AddTextPrinterParameterized2(0, FONT_NORMAL, gText_PartyFull, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+                PrintPartyPresetDescription(gText_PartyFull);
                 task->tState = STATE_ERROR_MSG;
             }
-            else if (task->tInput == OPTION_DEPOSIT && CountPartyMons() == 1)
+            else if (task->tInput == PC_MENU_DEPOSIT && CountPartyMons() == 1)
             {
                 // Can't deposit
-                FillWindowPixelBuffer(0, PIXEL_FILL(1));
-                AddTextPrinterParameterized2(0, FONT_NORMAL, gText_JustOnePkmn, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+                PrintPartyPresetDescription(gText_JustOnePkmn);
                 task->tState = STATE_ERROR_MSG;
             }
             else
@@ -1512,28 +2013,25 @@ static void Task_PCMainMenu(u8 taskId)
         // Wait for new input after message
         if (JOY_NEW(A_BUTTON | B_BUTTON))
         {
-            FillWindowPixelBuffer(0, PIXEL_FILL(1));
-            AddTextPrinterParameterized2(0, FONT_NORMAL, sMainMenuTexts[task->tSelectedOption].desc, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+            PrintPartyPresetDescription(sMainMenuTexts[task->tSelectedOption].desc);
             task->tState = STATE_HANDLE_INPUT;
         }
         else if (JOY_NEW(DPAD_UP))
         {
             if (--task->tSelectedOption < 0)
-                task->tSelectedOption = 4;
+                task->tSelectedOption = PC_MENU_OPTIONS_COUNT - 1;
             Menu_MoveCursor(-1);
             task->tSelectedOption = Menu_GetCursorPos();
-            FillWindowPixelBuffer(0, PIXEL_FILL(1));
-            AddTextPrinterParameterized2(0, FONT_NORMAL, sMainMenuTexts[task->tSelectedOption].desc, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+            PrintPartyPresetDescription(sMainMenuTexts[task->tSelectedOption].desc);
             task->tState = STATE_HANDLE_INPUT;
         }
         else if (JOY_NEW(DPAD_DOWN))
         {
-            if (++task->tSelectedOption > 3)
+            if (++task->tSelectedOption > PC_MENU_OPTIONS_COUNT - 2)
                 task->tSelectedOption = 0;
             Menu_MoveCursor(1);
             task->tSelectedOption = Menu_GetCursorPos();
-            FillWindowPixelBuffer(0, PIXEL_FILL(1));
-            AddTextPrinterParameterized2(0, FONT_NORMAL, sMainMenuTexts[task->tSelectedOption].desc, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+            PrintPartyPresetDescription(sMainMenuTexts[task->tSelectedOption].desc);
             task->tState = STATE_HANDLE_INPUT;
         }
         break;
@@ -1541,7 +2039,7 @@ static void Task_PCMainMenu(u8 taskId)
         if (!gPaletteFade.active)
         {
             CleanupOverworldWindowsAndTilemaps();
-            EnterPokeStorage(task->tInput);
+            EnterPokeStorage(GetStorageOptionFromPcMenu(task->tInput));
             DestroyTask(taskId);
         }
         break;
@@ -1564,7 +2062,7 @@ static void FieldTask_ReturnToPcMenu(void)
     SetVBlankCallback(NULL);
     taskId = CreateTask(Task_PCMainMenu, 80);
     gTasks[taskId].tState = STATE_LOAD;
-    gTasks[taskId].tSelectedOption = sPreviousBoxOption;
+    gTasks[taskId].tSelectedOption = GetPcMenuOptionFromStorageOption(sPreviousBoxOption);
     Task_PCMainMenu(taskId);
     SetVBlankCallback(vblankCb);
     FadeInFromBlack();
@@ -1572,12 +2070,7 @@ static void FieldTask_ReturnToPcMenu(void)
 
 static void CreatePCMainMenu(u8 whichMenu, s16 *windowIdPtr)
 {
-    s16 windowId = AddWindow(&sWindowTemplate_MainMenu);
-
-    DrawStdWindowFrame(windowId, FALSE);
-    PrintMenuActionTextsAtPos(windowId, FONT_NORMAL, GetMenuCursorDimensionByFont(FONT_NORMAL, 0), 2, 16, ARRAY_COUNT(sMainMenuTexts), (void *)sMainMenuTexts);
-    InitMenuNormal(windowId, FONT_NORMAL, 0, 2, 16, ARRAY_COUNT(sMainMenuTexts), whichMenu);
-    *windowIdPtr = windowId;
+    CreatePartyPresetMenu(windowIdPtr, sMainMenuTexts, ARRAY_COUNT(sMainMenuTexts), whichMenu);
 }
 
 void CB2_ExitPokeStorage(void)
@@ -1590,6 +2083,7 @@ void CB2_ExitPokeStorage(void)
 void ResetPokemonStorageSystem(void)
 {
     u16 boxId, boxPosition;
+    u16 slotId;
 
     SetCurrentBox(0);
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
@@ -1605,6 +2099,9 @@ void ResetPokemonStorageSystem(void)
 
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
         SetBoxWallpaper(boxId, boxId % (MAX_DEFAULT_WALLPAPER + 1));
+
+    for (slotId = 0; slotId < PARTY_PRESET_SLOTS_COUNT; slotId++)
+        ClearPartyPresetSlot(slotId);
 }
 
 void LoadChooseBoxMenuGfx(struct ChooseBoxMenu *menu, u16 tileTag, u16 palTag, u8 subpriority, bool32 loadPal)
@@ -9335,4 +9832,3 @@ void RemoveSelectedPcMon(struct Pokemon *mon)
     BoxMonToMon(boxmon, mon);
     ZeroBoxMonData(boxmon);
 }
-

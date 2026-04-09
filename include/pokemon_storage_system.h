@@ -7,6 +7,7 @@
 #define IN_BOX_COUNT            (IN_BOX_ROWS * IN_BOX_COLUMNS)
 #define BOX_NAME_LENGTH         8
 #define MAX_FUSION_STORAGE      4
+#define PARTY_PRESET_SLOTS_COUNT 3
 
 /*
             COLUMNS
@@ -17,6 +18,20 @@ ROWS        0   1   2   3   4   5
             24  25  26  27  28  29
 */
 
+struct PartyPresetMember
+{
+    u16 species;
+    u8 occupied;
+    u8 unused;
+    u32 personality;
+    u32 otId;
+};
+
+struct PartyPreset
+{
+    struct PartyPresetMember members[PARTY_SIZE];
+};
+
 struct PokemonStorage
 {
     /*0x0000*/ u8 currentBox;
@@ -24,6 +39,7 @@ struct PokemonStorage
     /*0x8344*/ u8 boxNames[TOTAL_BOXES_COUNT][BOX_NAME_LENGTH + 1];
     /*0x83C2*/ u8 boxWallpapers[TOTAL_BOXES_COUNT];
     /*0x8432*/ struct Pokemon fusions[MAX_FUSION_STORAGE];
+    struct PartyPreset partyPresets[PARTY_PRESET_SLOTS_COUNT];
 };
 
 extern struct PokemonStorage *gPokemonStoragePtr;
